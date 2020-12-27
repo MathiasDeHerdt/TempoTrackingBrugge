@@ -7,14 +7,12 @@ class Database:
     @staticmethod
     def __open_connection():
         try:
-            db = connector.connect(option_files=os.path.abspath(
-                os.path.join(os.path.dirname(__file__), "../config.py")),
-                autocommit=False
-            )
+            db = connector.connect(option_files=os.path.abspath(os.path.join(
+                os.path.dirname(__file__), "../config.py")), autocommit=False)
             if "AttributeError" in(str(type(db))):
                 raise Exception("foutieve database parameters in config")
-            cursor = db.cursor(
-                dictionary=True, buffered=True)  # lazy loaded
+
+            cursor = db.cursor(dictionary=True, buffered=True)
             return db, cursor
 
         except connector.Error as err:
@@ -35,17 +33,18 @@ class Database:
         result = None
         db, cursor = Database.__open_connection()
         try:
-
             cursor.execute(sqlQuery, params)
-
             result = cursor.fetchall()
             cursor.close()
+
             if (result is None):
                 print(ValueError(f"Resultaten zijn onbestaand.[DB Error]"))
             db.close()
+
         except Exception as error:
             print(error)  # development boodschap
             result = None
+
         finally:
             return result
 
@@ -56,11 +55,14 @@ class Database:
             cursor.execute(sqlQuery, params)
             result = cursor.fetchone()
             cursor.close()
+
             if (result is None):
                 raise ValueError("Resultaten zijn onbestaand.[DB Error]")
+
         except Exception as error:
             print(error)  # development boodschap
             result = None
+
         finally:
             db.close()
             return result
@@ -73,25 +75,27 @@ class Database:
         try:
             cursor.execute(sqlQuery, params)
             db.commit()
-            # bevestigig van create (int of 0)
             result = cursor.lastrowid
-            # bevestiging van update, delete (array)
-            # result = result if result != 0 else params  # Extra controle doen!!
-            if result != 0:  # is een insert, deze stuur het lastrowid terug.
+            if result != 0:
                 result = result
-            else:  # is een update of een delete
-                if cursor.rowcount == -1:  # Er is een fout in de SQL
+
+            else:
+                if cursor.rowcount == -1:
                     raise Exception("Fout in SQL")
-                elif cursor.rowcount == 0:  # Er is niks gewijzigd, where voldoet niet of geen wijziging in de data
+
+                elif cursor.rowcount == 0:
                     result = 0
-                elif result == "undefined":  # Hoeveel rijen werden gewijzigd
+
+                elif result == "undefined":
                     raise Exception("SQL error")
                 else:
                     result = cursor.rowcount
+
         except connector.Error as error:
             db.rollback()
             result = None
             print(f"Error: Data niet bewaard.{error.msg}")
+
         finally:
             cursor.close()
             db.close()
