@@ -24,12 +24,6 @@ endpoint = '/api/v1'
 # =========================================================
 # Routes
 # =========================================================
-@app.route(endpoint + '/team', methods=['GET'])
-def get_team():
-  if request.method == 'GET':
-    s = DataRepository.read_team()
-    return jsonify(s), 200
-
 @app.route(endpoint + '/beacon', methods=['GET'])
 def get_beacon():
   if request.method == 'GET':
@@ -46,6 +40,24 @@ def get_player():
 def get_result():
   if request.method == 'GET':
     s = DataRepository.read_result()
+    return jsonify(s), 200
+
+@app.route(endpoint + '/beacon_player', methods=['GET'])
+def get_beacon_player():
+  if request.method == 'GET':
+    s = DataRepository.read_beacon_player()
+    return jsonify(s), 200
+
+@app.route(endpoint + '/player_result', methods=['GET'])
+def get_player_result():
+  if request.method == 'GET':
+    s = DataRepository.read_player_result()
+    return jsonify(s), 200
+
+@app.route(endpoint + '/all', methods=['GET'])
+def get_all_tables():
+  if request.method == 'GET':
+    s = DataRepository.read_all_tables()
     return jsonify(s), 200
 
 
