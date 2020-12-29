@@ -510,7 +510,7 @@ select {
 
 /* Gebruik dit om positie close aan te passen*/
 .c-main-nav__list__items{
-    min-height: 72vh;
+    min-height: 75vh;
 }
 
 .c-main-nav__list__items{
