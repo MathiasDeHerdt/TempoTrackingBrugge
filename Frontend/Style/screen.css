@@ -460,7 +460,7 @@ select {
     top: 0;
     left: 0;
     background-color: var(--global-color-neutral-xx-dark);
-    opacity: 0.95;
+    opacity: 1;
     overflow-x: hidden;
     transition: 0.5s;
     z-index: 30;
@@ -687,6 +687,76 @@ select {
 
 /* #region Main page */
 
+
+.c-stopwatch {
+    display: grid;
+    justify-items: center;
+    grid-row-gap: 23px;
+    width: 100%;
+    padding-top: 25px;
+  }
+  
+  .c-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    height: 160px;
+    width: 160px;
+  
+    border: 2px solid;
+    border-radius: 50%;
+  }
+  
+  .u-font-time {
+    font-family: "Roboto Mono", monospace;
+    font-weight: 300;
+    font-size: 24px;
+  }
+  
+  .c-controls {
+    display: flex;
+    justify-content: space-between;
+  
+    width: 187px;
+  }
+  
+  .c-button__stopwatch {
+    cursor: pointer;
+    background: transparent;
+    padding: 0;
+    border: none;
+    margin: 0;
+    outline: none;
+  }
+
+  .c-buttonPlay{
+      outline:none;
+      background-color:transparent;
+      border:none;
+      width: 4rem;
+  }
+  
+  .c-buttonReset{
+    outline:none;
+    background-color:transparent;
+    border:none;
+    background-color:black;
+    width: 4rem;
+}
+
+
+  #playButton {
+    display: block;
+  }
+  
+  #pauseButton {
+    display: none;
+  }
+
+  #resetButton {
+    fill: red;
+  }
 /* #endregion */
 
 /* #region Leaderboard page */
