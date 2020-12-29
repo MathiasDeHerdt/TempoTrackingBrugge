@@ -498,8 +498,34 @@ select {
 
 .o-list{
     list-style: none;
-    padding:0
+    padding:0;
+    width:100%
 }
+
+.c-main-nav{
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 100vh;
+}
+
+/* Gebruik dit om positie close aan te passen*/
+.c-main-nav__list__items{
+    min-height: 72vh;
+}
+
+.c-main-nav__list__items{
+    align-self: flex-start;
+}
+
+.c-main-nav__list__closed{
+    list-style: none;
+    padding:0;
+    height:auto;
+    width: 100%;
+    bottom:0;
+}
+
+
 .c-main-nav__item {
     margin: var(--global-baseline-x10) 0;
 }
@@ -509,6 +535,7 @@ select {
     align-items: center;
     text-decoration: none;
     color: #fff;
+    width:100%;
     /* font-size: 15px; */
     /* line-height: 20px; */
     /* padding: 15px 25px 15px 20px; */
@@ -517,8 +544,7 @@ select {
     padding: var(--global-whitespace-sm) var(--global-whitespace-lg) var(--global-whitespace-sm) var(--global-whitespace-md);
     border-left: 5px solid var(--global-color-beta-neutral);
     transform: translateX(-5px);
-    width: calc(100% + 5px);
-    transition: transform var(--global-transitionDuration-beta);
+    transition: transform var(--global-transitionDuration-alpha);
 }
 
 .c-main-nav__link:hover {
