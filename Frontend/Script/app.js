@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> develop
 // #region ==== DOM //
 document.addEventListener('DOMContentLoaded', function() {
 
