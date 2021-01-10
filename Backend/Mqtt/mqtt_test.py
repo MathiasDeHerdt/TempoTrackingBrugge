@@ -6,7 +6,7 @@ mqttClient = MqttClient()
 def menu(keuze):
     global mqttClient
     if keuze == 1:
-        mqttClient.sendMessage('{ "message" : "hello world" }')
+        mqttClient.sendMessage("{\"message\":\"hello world\"}")
 
     if keuze == 9:
         sys.exit()
