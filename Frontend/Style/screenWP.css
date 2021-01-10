@@ -201,7 +201,7 @@ html {
   color: var(--global-page-textColor-black);
   font-size: 16px;
   line-height: 1.5;
-  font-family: 'Insert custom font here', Helvetica, arial, sans-serif;
+  font-family: 'Montserrat', Helvetica, arial, sans-serif;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -381,6 +381,17 @@ select {
   height: 100%;
 }
 
+.o-hide {
+  font-size: 8px;
+  color: transparent;
+}
+
+.o-layout_center {
+  display: block;
+  align-items: center;
+  justify-content: center;
+}
+
 /*==============================================================================================================================================================================================*/
 
 /* #region Welcome page */
@@ -389,7 +400,7 @@ select {
   --c-button-transition: var(--global-transitionDuration-alpha);
   --c-button-boxShadow-focus: var(--global-boxschadow-focus);
 
-  --c-button-backgroundColor: var(--global-color-beta-light-x);
+  --c-button-backgroundColor: var(--global-color-beta-neutral);
   --c-button-backgroundColor-active: var(--global-color-beta-darkish);
   --c-button-borderRadius: var(--global-borderRadius);
 
@@ -398,6 +409,7 @@ select {
 
   padding: var(--global-whitespace-sm) var(--global-whitespace-lg);
 
+  background-color: var(--c-button-backgroundColor);
   background-color: var(--c-button-backgroundColor);
   color: var(--c-button-textColor) !important;
   font-weight: var(--c-button-textWeight);
@@ -469,11 +481,29 @@ select {
   top: 2rem;
 }
 
-.o-layout_center {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+.c-title {
+  margin-top: -2rem;
+  position: relative;
+  text-align: right;
+}
+
+.c-title::after {
+  content: '';
+  position: absolute;
+  border-top: 1px solid var(--global-color-beta-neutral);
+  left: 25%;
+  bottom: 0;
+  width: 50%;
+  height: 0px;
+}
+
+.c-content-center {
+  margin-top: 1rem;
+  margin-left: 6.5rem;
+
+  /* display: block;
   align-items: center;
+  justify-content: center; */
 }
 
 .u-text-color_1 {
@@ -497,59 +527,72 @@ select {
 
 .u-fz-lg {
   font-size: var(--global-fz-lg);
+  font-weight: 600;
 }
 
 .u-text-center {
   text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (min-width: 1700px) {
   /* Grid */
   .c-top-welcome {
     display: grid;
+
     grid-template-columns: 37.5rem 15rem 15rem 15rem 37.5rem;
-    grid-template-rows: 4rem 4rem;
-    min-height: 50vh;
+    grid-template-rows: 10rem 5rem 5rem 5rem;
   }
 
-  /* Podium*/
+  /* Podium */
   .c-postion-1 {
-    grid-row-start: 2;
-    grid-row-end: 6;
     grid-column: 3;
-    background-color: var(--global-color-neutral-xxxx-dark);
   }
 
   .c-postion-2 {
-    grid-row-start: 3;
-    grid-row-end: 6;
     grid-column: 2;
-    background-color: var(--global-color-neutral-dark);
   }
 
   .c-postion-3 {
-    grid-row-start: 4;
-    grid-row-end: 6;
     grid-column: 4;
-    background-color: var(--global-color-neutral-light);
   }
 
-  /* Cyclist*/
+  /* Cyclist */
   .c-cyclist {
-    width: 10rem; /* origineel 8rem*/
-    top: 5rem;
-    fill: var(--global-color-beta-neutral);
-    grid-row: 4;
+    grid-row: 3;
     grid-column: 3;
+
+    width: 15rem; /* origineel 8rem*/
+    margin-top: 0.5rem;
   }
 
-  /* Welcome to tempotrack*/
-  .u-text-color_1 {
-    color: var(--global-color-neutral-xxxx-dark);
-  }
-
+  /* Fontsizes */
   .u-fz-lg {
     font-size: var(--global-fz-lg-xxx);
+  }
+
+  .u-fz-md {
+    font-size: var(--global-fz-lg);
+  }
+
+  .u-fz-sm {
+    font-size: var(--global-fz-lg);
+  }
+
+  .c-content-center {
+    margin-top: 2.5rem;
+    margin-left: 35rem;
+  }
+
+  .c-title::after {
+    content: '';
+    position: absolute;
+    border-top: 1px solid var(--global-color-beta-neutral);
+    left: 35%;
+    bottom: 0;
+    width: 30%;
+    height: 0px;
   }
 }
 
