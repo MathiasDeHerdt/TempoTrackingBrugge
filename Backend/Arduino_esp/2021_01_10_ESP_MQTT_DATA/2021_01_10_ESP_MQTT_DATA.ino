@@ -10,6 +10,7 @@
 
 // BLE VARIABLES
 int scanTime = 1; //In seconds
+int delayLoop = 100;
 BLEScan* pBLEScan;
 const int MAJOR_DESIRED = 2;
 const int MINOR_DESIRED = 10;
@@ -29,7 +30,7 @@ long lastMsg = 0;
 //===================================================================================================================
 class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
       void onResult(BLEAdvertisedDevice advertisedDevice) {
-        Serial.printf("Advertised Device: %s \n", advertisedDevice.toString().c_str());
+        Serial.printf("\n Advertised Device: %s \n", advertisedDevice.toString().c_str());
       }
 };
 
@@ -46,6 +47,46 @@ void setupBle(){
   Serial.println("BLE scanning setup!");
 }
 
+void loopBLE() {
+  // put your main code here, to run repeatedly:
+  BLEScanResults foundDevices = pBLEScan->start(scanTime, false);
+  Serial.println("Start scan!-----------------------------------------------------------------------------------------------");
+  Serial.println("Devices found: " + String(foundDevices.getCount()) + " - scan done!");
+
+  checkFoundBleDevices(foundDevices);
+  delay(delayLoop);
+
+  pBLEScan->clearResults();   // delete results fromBLEScan buffer to release memory
+  Serial.println("Clear scan!-----------------------------------------------------------------------------------------------\n\n");
+}
+
+void checkFoundBleDevices(BLEScanResults foundDevices){
+  int count = foundDevices.getCount();
+  for (int i = 0; i < count; i++) {
+    BLEAdvertisedDevice advertisedDevice = foundDevices.getDevice(i);
+      
+    BLEBeacon myBeacon;
+    myBeacon.setData(advertisedDevice.getManufacturerData());
+    int major = getMajor(myBeacon);
+    int minor = getMinor(myBeacon);
+  
+    if(checkBeacon(major, minor))
+    {
+      extractBeacon(advertisedDevice, myBeacon);
+    }
+  }
+}
+
+int getMajor(BLEBeacon myBeacon){
+    uint16_t majorUINT = myBeacon.getMajor();
+    return majorUINT / 256;
+}
+
+int getMinor(BLEBeacon myBeacon){
+    uint16_t minorUINT = myBeacon.getMinor();
+    return minorUINT / 256;
+}
+
 bool checkBeacon(int major, int minor){
   if(MAJOR_DESIRED == major && MINOR_DESIRED == minor){
     return true;
@@ -53,61 +94,45 @@ bool checkBeacon(int major, int minor){
   return false;
 }
 
-void loopBLE() {
-  // put your main code here, to run repeatedly:
-  BLEScanResults foundDevices = pBLEScan->start(scanTime, false);
-  Serial.print("Devices found: " + String(foundDevices.getCount()) + "- scan done!");
-
-
-  int count = foundDevices.getCount();
-  for (int i = 0; i < count; i++) {
-    BLEAdvertisedDevice advertisedDevice = foundDevices.getDevice(i);
-    
-    BLEBeacon myBeacon;
-    myBeacon.setData(advertisedDevice.getManufacturerData());
-    uint16_t majorUINT = myBeacon.getMajor();
-    uint16_t minorUINT = myBeacon.getMinor();
-    int major = majorUINT / 256;
-    int minor = minorUINT / 256;
-
-    if(checkBeacon(major, minor))
-    {
-      String nameDevice = advertisedDevice.getName().c_str();
-      String address = advertisedDevice.getAddress().toString().c_str();
-      int rssi = advertisedDevice.getRSSI();
-      int txPower = advertisedDevice.getTXPower();
-      //String stringUUID = String(advertisedDevice.getServiceUUID().toString().c_str());
-          
-      Serial.println("address:" + address + " name:" + nameDevice + "");
-      Serial.println("rssi: " + String(rssi) + " m \n");
-      Serial.println("txPower: " + String(txPower));
-      Serial.println("major: " + String(major) + " minor: " + String(minor));
-      
-      String mqttAddress = "\"address\":\"" + address + "\"";
-      String mqttName = "\"name\":\"" + nameDevice + "\"";
-      String mqttRSSI = "\"rssi\":" + String(rssi);
-      String mqttTx = "\"txPower\":" + String(txPower);
-      String mqttMajor = "\"major\":" + String(major);
-      String mqttMinor = "\"minor\":" + String(minor);
-      //String mqttUUID = "\"UUID\":\"" + stringUUID + "\"";
-      
-      String mqqtMessage = "{" ;
-      mqqtMessage += mqttAddress + "," ;
-      mqqtMessage += mqttName + "," ;
-      mqqtMessage += mqttRSSI + "," ;
-      mqqtMessage += mqttTx + "," ;
-      mqqtMessage += mqttMajor + "," ;
-      mqqtMessage += mqttMinor;
-      //mqqtMessage += mqttUUID;
-      mqqtMessage +=  "}";
-      
-      sendMessageMqtt(mqqtMessage);
-    }
+void extractBeacon(BLEAdvertisedDevice advertisedDevice, BLEBeacon myBeacon){
+  String nameDevice = advertisedDevice.getName().c_str();
+  String address = advertisedDevice.getAddress().toString().c_str();
+  int rssi = advertisedDevice.getRSSI();
+  int txPower = advertisedDevice.getTXPower();
+  int major = getMajor(myBeacon);
+  int minor = getMinor(myBeacon);
+  String stringUUID = "null";
+  if(advertisedDevice.haveServiceUUID())
+  {
+    BLEUUID uuidObj = advertisedDevice.getServiceUUID();
+    stringUUID = String(uuidObj.toString().c_str());
   }
-
-  pBLEScan->clearResults();   // delete results fromBLEScan buffer to release memory
+          
+  Serial.println("address:" + address + " name:" + nameDevice + "");
+  Serial.println("rssi: " + String(rssi));
+  Serial.println("txPower: " + String(txPower));
+  Serial.println("major: " + String(major) + " minor: " + String(minor));
+      
+  String mqttAddress = "\"address\":\"" + address + "\"";
+  String mqttName = "\"name\":\"" + nameDevice + "\"";
+  String mqttRSSI = "\"rssi\":" + String(rssi);
+  String mqttTx = "\"txPower\":" + String(txPower);
+  String mqttMajor = "\"major\":" + String(major);
+  String mqttMinor = "\"minor\":" + String(minor);
+  String mqttUUID = "\"UUID\":\"" + stringUUID + "\"";
+      
+  String mqqtMessage = "{" ;
+  mqqtMessage += mqttAddress + "," ;
+  mqqtMessage += mqttName + "," ;
+  mqqtMessage += mqttRSSI + "," ;
+  mqqtMessage += mqttTx + "," ;
+  mqqtMessage += mqttMajor + ",";
+  mqqtMessage += mqttMinor + ",";
+  mqqtMessage += mqttUUID;
+  mqqtMessage +=  "}";
+      
+  sendMessageMqtt(mqqtMessage);
 }
-
 
 // WIFI
 //===================================================================================================================
@@ -156,13 +181,13 @@ String extractMessage(byte* message, int lengthMessage){
 
 void reconnect() {
   while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");     // Attempt to connect
+    Serial.println("Attempting MQTT connection...");     // Attempt to connect
     if (client.connect("ESP32Client")) {
       Serial.println("Connected");
       client.subscribe(inTopic);
     }
     else {
-      Serial.print("failed, rc=");
+      Serial.println("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");  // Wait 5 seconds before retrying
       delay(5000);
@@ -195,7 +220,5 @@ void setup() {
 
 void loop() {
   checkConnected();
-
   loopBLE();
-  delay(200);
 }

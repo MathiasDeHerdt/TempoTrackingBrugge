@@ -35,10 +35,8 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
     }
 };
 
-
-void setup() {
-  Serial.begin(115200);
-  Serial.println("Scanning...");
+void setupBle(){
+  Serial.println("Start BLE scanning....");
 
   BLEDevice::init("");
   pBLEScan = BLEDevice::getScan(); //create new scan
@@ -46,6 +44,13 @@ void setup() {
   pBLEScan->setActiveScan(true); //active scan uses more power, but get results faster
   pBLEScan->setInterval(100);
   pBLEScan->setWindow(99);  // less or equal setInterval value
+
+  Serial.println("BLE scanning setup!");
+}
+
+void setup() {
+  Serial.begin(115200);
+  setupBle();
 }
 
 void loop() {
