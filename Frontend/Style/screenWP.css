@@ -442,31 +442,41 @@ select {
 }
 
 .c-cyclist {
-  width: 10rem; /* origineel 8rem*/
-  top: 5rem;
-  fill: var(--global-color-beta-neutral);
-  grid-row: 4;
+  display: block;
+  margin: 0 auto;
+
+  grid-row-end: 6;
   grid-column: 2;
+
+  width: 10rem; /* origineel 8rem*/
+  fill: var(--global-color-beta-neutral);
 }
 
 .c-postion-1 {
-  grid-row-start: 2;
+  grid-row-start: 3;
   grid-row-end: 6;
   grid-column: 2;
+
   background-color: var(--global-color-neutral-xxxx-dark);
 }
 
 .c-postion-2 {
-  grid-row-start: 3;
+  grid-row-start: 4;
   grid-row-end: 6;
   grid-column: 1;
+
+  margin-left: 5%;
+
   background-color: var(--global-color-neutral-dark);
 }
 
 .c-postion-3 {
-  grid-row-start: 4;
+  grid-row-start: 5;
   grid-row-end: 6;
   grid-column: 3;
+
+  margin-right: 5%;
+
   background-color: var(--global-color-neutral-light);
 }
 
@@ -489,8 +499,10 @@ select {
 
 .c-title::after {
   content: '';
+
   position: absolute;
   border-top: 1px solid var(--global-color-beta-neutral);
+
   left: 25%;
   bottom: 0;
   width: 50%;
@@ -498,12 +510,8 @@ select {
 }
 
 .c-content-center {
-  margin-top: 1rem;
-  margin-left: 6.5rem;
-
-  /* display: block;
-  align-items: center;
-  justify-content: center; */
+  margin: 0 auto;
+  display: block;
 }
 
 .u-text-color_1 {
@@ -541,20 +549,26 @@ select {
   .c-top-welcome {
     display: grid;
 
-    grid-template-columns: 37.5rem 15rem 15rem 15rem 37.5rem;
+    grid-template-columns: auto 15rem 15rem 15rem auto;
     grid-template-rows: 10rem 5rem 5rem 5rem;
   }
 
   /* Podium */
   .c-postion-1 {
+    grid-row-start: 2;
+    grid-row-end: 6;
     grid-column: 3;
   }
 
   .c-postion-2 {
+    grid-row-start: 3;
+    grid-row-end: 6;
     grid-column: 2;
   }
 
   .c-postion-3 {
+    grid-row-start: 4;
+    grid-row-end: 6;
     grid-column: 4;
   }
 
@@ -564,7 +578,7 @@ select {
     grid-column: 3;
 
     width: 15rem; /* origineel 8rem*/
-    margin-top: 0.5rem;
+    margin-top: 0rem;
   }
 
   /* Fontsizes */
