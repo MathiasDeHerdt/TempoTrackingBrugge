@@ -18,14 +18,13 @@ class MqttClient:
 
 
     def on_connect(self, client, userdata, flags, resultCode):
-        print("Connected with result code " + str(resultCode))
+        print(f'Connected with result code {str(resultCode)}\n')
 
 
     def on_message(self, client, userdata, msg):
-        payload = str(msg.payload)
-        print(f"Topic: {msg.topic} - Payload: {payload}")
-        #beacon = BleBeacon(json.loads(msg.payload))
-        #print(f"address: {beacon.address} - rssi: {beacon.rssi} - distance: {beacon.distance}m")
+        print(f"Topic: {msg.topic} - Payload: {str(msg.payload)}")
+        beacon = self.create_beacon(msg.payload)
+        beacon.debug()
 
 
     def sendMessage(self, message):
@@ -36,3 +35,6 @@ class MqttClient:
     def subscribe(self):
         self.client.subscribe(self.topic_subscribe)
         self.client.loop_start()
+
+    def create_beacon(self, payload):
+        return BleBeacon(payload)
