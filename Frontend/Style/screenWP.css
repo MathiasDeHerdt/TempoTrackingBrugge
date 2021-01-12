@@ -493,13 +493,16 @@ select {
 }
 
 .c-title {
-  margin-top: -2rem;
+  display: inline-block;
+
+  margin-top: -5rem;
+
   position: relative;
   text-align: right;
 
-  display: inline-block;
-  margin-left: auto;
-  margin-right: auto;
+  bottom: 0.7rem;
+
+  width: auto;
 }
 
 .c-title::after {
@@ -549,10 +552,50 @@ select {
   align-items: center;
 }
 
+.c-text-lower {
+  margin-top: -2rem;
+}
+
+@media (min-width: 356px) {
+  .c-title {
+    display: inline-block;
+
+    margin-top: -5rem;
+
+    position: relative;
+    text-align: right;
+
+    bottom: 2rem;
+
+    width: 100%;
+  }
+
+  .c-title::after {
+    content: '';
+
+    position: absolute;
+    border-top: 1px solid var(--global-color-beta-neutral);
+
+    left: 25%;
+    bottom: 0;
+    width: 50%;
+    height: 0px;
+  }
+  .c-text-lower {
+    margin-top: -2.5rem;
+  }
+}
+
 @media (min-width: 400px) {
-  .text::after {
-    left: 50%;
-    width: 5rem;
+  .c-title {
+    display: inline-block;
+
+    margin-top: -5rem;
+
+    position: relative;
+    text-align: center;
+
+    width: 100%;
   }
 }
 
@@ -582,10 +625,30 @@ select {
   }
 }
 
-@media (min-width: 600px) {
-  .text::after {
-    left: 50%;
-    width: 2rem;
+@media (min-width: 664px) {
+  .c-title {
+    display: inline-block;
+
+    margin-top: -2rem;
+
+    position: relative;
+    text-align: center;
+
+    margin-left: 25%;
+    margin-right: 25%;
+    width: 50%;
+  }
+
+  .c-title::after {
+    content: '';
+
+    position: absolute;
+    border-top: 1px solid var(--global-color-beta-neutral);
+
+    left: 25%;
+    bottom: 0;
+    width: 50%;
+    height: 0px;
   }
 }
 
@@ -606,6 +669,31 @@ select {
 
   .c-content-center {
     margin-top: 2.5rem;
+  }
+
+  .c-title {
+    margin-left: 10%;
+    margin-right: 10%;
+
+    bottom: 0rem;
+
+    width: 80%;
+  }
+
+  .c-title::after {
+    content: '';
+
+    position: absolute;
+    border-top: 1px solid var(--global-color-beta-neutral);
+
+    left: 25%;
+    bottom: 0;
+    width: 50%;
+    height: 0px;
+  }
+
+  .c-text-lower {
+    margin-top: 0rem;
   }
 }
 
@@ -635,11 +723,6 @@ select {
     grid-row-start: 4;
     grid-row-end: 6;
     grid-column: 4;
-  }
-
-  .c-title::after {
-    left: 35%;
-    width: 30%;
   }
 }
 
