@@ -418,6 +418,10 @@ select {
   transition: var(--c-button-transition);
   box-shadow: var(--global-boxshadow);
 
+  width: 10rem;
+
+  text-decoration: none;
+
   outline: none;
 }
 
@@ -694,6 +698,10 @@ select {
 
   .c-text-lower {
     margin-top: 0rem;
+  }
+
+  .c-button{
+    width: 15rem;
   }
 }
 
