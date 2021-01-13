@@ -794,6 +794,7 @@ select {
   background-color: transparent;
   border: none;
   color: var(--global-color-neutral-xxxx-dark);
+  font-family: 'Montserrat', Helvetica, arial, sans-serif;
 }
 
 .c-custom-select__text {
@@ -810,6 +811,20 @@ select {
   display: block;
 }
 
+.c-button-grid {
+  display: flex;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 400px) {
+  .c-button-grid {
+    margin-left: 15%;
+    margin-right: 15%;
+  }
+}
+
 @media (min-width: 600px) {
   .c-settings-setup__item {
     width: 25rem;
@@ -823,11 +838,38 @@ select {
   }
 }
 
+@media (min-width: 900px) {
+  .c-button-grid {
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+}
+
 @media (min-width: 1000px) {
   .c-settings-setup__item {
     width: 35rem;
+    font-size: var(--global-fz-md);
   }
 
+  .c-settings-player__item {
+    font-size: var(--global-fz-md);
+  }
+
+  .c-settings-player__header {
+    font-size: var(--global-fz-lg);
+  }
+
+  .c-settings-setup__item-invis {
+    font-size: var(--global-fz-lg);
+  }
+
+  .u-fz-lg {
+    font-size: var(--global-fz-lg-xx);
+  }
+
+  .c-button {
+    font-size: calc(var(--global-fz-lg) / 1.2);
+  }
   .c-settings-player__bg {
     width: 35rem;
   }
@@ -836,4 +878,10 @@ select {
   }
 }
 
+@media (min-width: 1600px) {
+  .c-button-grid {
+    margin-left: 25%;
+    margin-right: 25%;
+  }
+}
 /* #endregion */
