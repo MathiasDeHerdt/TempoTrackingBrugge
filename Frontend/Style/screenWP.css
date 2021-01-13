@@ -452,6 +452,13 @@ select {
   margin-top: 1rem;
 }
 
+.c-button-grid {
+  display: flex;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 1rem;
+}
+
 .c-nav {
   min-height: 100%;
   width: 10rem;
@@ -692,7 +699,6 @@ select {
 
   border-color: transparent;
   background-color: var(--global-color-neutral-xxxx-light);
-
 }
 
 .u-font-time {
