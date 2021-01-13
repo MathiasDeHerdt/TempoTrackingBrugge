@@ -684,17 +684,21 @@ select {
   justify-content: center;
   align-items: center;
 
-  height: 160px;
-  width: 160px;
+  height: 4rem;
+  width: 12rem;
 
-  border: 2px solid;
-  border-radius: 50%;
+  border: 0.125rem solid;
+  border-radius: 1rem;
+
+  border-color: transparent;
+  background-color: var(--global-color-neutral-xxxx-light);
+
 }
 
 .u-font-time {
   font-family: 'Roboto Mono', monospace;
   font-weight: 300;
-  font-size: 24px;
+  font-size: var(--global-fz-lg);
 }
 
 .c-controls {
