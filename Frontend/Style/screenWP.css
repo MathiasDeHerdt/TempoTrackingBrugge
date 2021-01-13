@@ -441,7 +441,7 @@ select {
 .c-top-welcome {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 4rem 4rem 4rem 4rem;
+  grid-template-rows: 1fr 4rem 4rem 4rem;
   min-height: 50vh;
 }
 
@@ -486,8 +486,8 @@ select {
 }
 
 .c-bottom-welcome {
-  min-height: 50vh;
   background-color: var(--global-color-neutral-xxx-dark);
+  height: 50vh;
 }
 
 .c-bottom-welcome-content {
@@ -700,7 +700,7 @@ select {
     margin-top: 0rem;
   }
 
-  .c-button{
+  .c-button {
     width: 15rem;
   }
 }
