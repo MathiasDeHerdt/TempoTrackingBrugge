@@ -3,17 +3,21 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <link rel="stylesheet" href="Style/normalize.css">
-        <link rel="stylesheet" href="Style/screen.css">
-        <script src="./Script/app.js"></script>
+        <link rel="stylesheet" href="Style/screenWP.css">
+
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+        </style>
+
+
+        <script src="./Script/appWP.js"></script>
     </head>
         <title>MainPage</title>
     </head>
 
 <body>
-
-
-
     <div  class="c-nav" id="myNav">
 
         <div class="c-nav-content">
@@ -97,16 +101,36 @@
   
         <div class="c-controls">
           <button class="c-buttonPlay">
-            <img id="playButton" src="https://res.cloudinary.com/https-tinloof-com/image/upload/v1593360448/blog/time-in-js/play-button_opkxmt.svg" />
+            <!-- <img id="playButton" src="https://res.cloudinary.com/https-tinloof-com/image/upload/v1593360448/blog/time-in-js/play-button_opkxmt.svg" /> -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="63" height="63" viewBox="0 0 63 63">
+                <g id="playButton" transform="translate(-0.5 -0.5)">
+                  <circle id="Ellipse_14" data-name="Ellipse 14" cx="31.5" cy="31.5" r="31.5" transform="translate(0.5 0.5)" fill="#fffefc"/>
+                  <path id="Path_1097" data-name="Path 1097" d="M22.9,16.911l24.169,15.38L22.9,47.671Z" stroke="#000" stroke-width="1"/>
+                </g>
+              </svg>
+
+              <svg xmlns="http://www.w3.org/2000/svg" width="63" height="63" viewBox="0 0 63 63">
+                <g id="pauseButton" transform="translate(-0.5 -0.5)">
+                  <circle id="Ellipse_15" data-name="Ellipse 15" cx="31.5" cy="31.5" r="31.5" transform="translate(0.5 0.5)" fill="#fffefc"/>
+                  <path id="Path_1098" data-name="Path 1098" d="M43.5,17.5V45.667H36.167V17.5Zm-16.667,0V45.667H19.5V17.5Z" stroke="#000" stroke-width="1"/>
+                </g>
+              </svg>
+              
   
-            <img id="pauseButton" src="https://res.cloudinary.com/https-tinloof-com/image/upload/v1593360448/blog/time-in-js/pause-button_pinhpy.svg" />
+            <!-- <img id="pauseButton" src="https://res.cloudinary.com/https-tinloof-com/image/upload/v1593360448/blog/time-in-js/pause-button_pinhpy.svg" /> -->
           </button>
   
-          <button class="c-buttonReset">
+          <!-- <button class="c-buttonReset">
             <img id="resetButton" src="https://res.cloudinary.com/https-tinloof-com/image/upload/v1593360448/blog/time-in-js/reset-button_mdv6wf.svg" />
-          </button>
+          </button> -->
         </div>
       </div>
+
+      <div class="c-settings-save c-button-grid">
+        <button id="End_button"class="c-button c-button__save" style="background-color: #D70202;">End</button>
+        <p style="color: transparent; font-size: 8px;">test</p>
+        <button id="Retry_button" class="c-button c-button__save" style="background-color: #FFE600; color: #332719;">Retry</button>
+    </div>
 </body>
 
 </html>

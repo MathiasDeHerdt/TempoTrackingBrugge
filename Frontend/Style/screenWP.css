@@ -201,7 +201,7 @@ html {
   color: var(--global-page-textColor-black);
   font-size: 16px;
   line-height: 1.5;
-  font-family: 'Insert custom font here', Helvetica, arial, sans-serif;
+  font-family: 'Montserrat', Helvetica, arial, sans-serif;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -443,9 +443,18 @@ select {
   border: 1px solid pink;
 }
 
+.c-button__save {
+  display: block;
+  margin: auto;
+  border: none;
+  width: 8.5rem;
+  height: 2.5rem;
+  margin-top: 1rem;
+}
+
 .c-nav {
   min-height: 100%;
-  width: 50%;
+  width: 10rem;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -709,6 +718,10 @@ select {
   background-color: transparent;
   border: none;
   width: 4rem;
+
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .c-buttonReset {
