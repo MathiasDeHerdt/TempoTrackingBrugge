@@ -423,6 +423,7 @@ select {
   text-decoration: none;
 
   outline: none;
+
 }
 
 .c-button:hover,
@@ -524,6 +525,7 @@ select {
 .c-content-center {
   margin: 0 auto;
   display: block;
+  margin-top: 3rem;
 }
 
 .u-text-color_1 {
