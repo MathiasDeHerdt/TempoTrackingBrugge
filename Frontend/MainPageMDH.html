@@ -5,19 +5,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="stylesheet" href="Style/normalize.css">
-        <link rel="stylesheet" href="Style/screenSP.css">
+        <link rel="stylesheet" href="Style/screenMP.css">
 
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
         </style>
 
-        <script type = "text/javascript" src="./Script/appSP.js"></script>
+
+        <script src="./Script/appMP.js"></script>
     </head>
-        <title>SettingsPage</title>
+        <title>MainPage</title>
     </head>
 
 <body>
-    <div class="c-nav" id="myNav">
+    <div  class="c-nav" id="myNav">
+
         <div class="c-nav-content">
             <div class="c-app__logo">
                 <h1 class="c-logo">
@@ -26,6 +28,7 @@
             </div>
             <nav class="c-main-nav">
                 <ul class="o-list c-main-nav__list">
+
                     <div class="c-main-nav__list__items">
                         <li class="c-main-nav__item">
                             <a class="c-main-nav__link" href="#">
@@ -70,88 +73,62 @@
         </div>
     </div>
 
-    <section class="o-row">
+
+
+        
+
+    <section class=" o-row">
         <div class='o-container'>
+
             <button class="c-button-nav" id="js-button-open">
+
                 <svg id="Nav_icon" data-name="Nav icon" xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16">
                     <rect id="Rectangle_14" data-name="Rectangle 14" width="20" height="4" rx="2" transform="translate(0 12)"/>
                     <rect id="Rectangle_15" data-name="Rectangle 15" width="20" height="4" rx="2" transform="translate(0 6)"/>
                     <rect id="Rectangle_16" data-name="Rectangle 16" width="20" height="4" rx="2"/>
-                </svg>    
+                </svg>
+                    
             </button>
+
         </div>
     </section>
 
-    <section class="o-row o-row--lg">
-        <form id="gameSettings" action="">
-            <div class="o-container u-max-width-xs">
-                <h1 class="c-page-logo">
-                    <svg class="c-page-nav__icon" id="settings_3_" data-name="settings (3)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-                        <path id="Path_1045" data-name="Path 1045" d="M19.555,8.3l-2.34-.574a7.547,7.547,0,0,0-.492-1.2l1.2-1.992a.583.583,0,0,0-.082-.715L16.172,2.164a.583.583,0,0,0-.715-.082l-1.992,1.2a7.547,7.547,0,0,0-1.2-.492L11.707.445A.6.6,0,0,0,11.133,0H8.789a.6.6,0,0,0-.574.445l-.562,2.34a7.547,7.547,0,0,0-1.2.492l-1.992-1.2a.583.583,0,0,0-.715.082L2.086,3.828A.583.583,0,0,0,2,4.543L3.2,6.535a7.547,7.547,0,0,0-.492,1.2L.445,8.3A.578.578,0,0,0,0,8.867v2.344a.578.578,0,0,0,.445.563l2.262.574a7.547,7.547,0,0,0,.492,1.2L2,15.535a.583.583,0,0,0,.082.715L3.75,17.914A.583.583,0,0,0,4.465,18l1.992-1.2a7.547,7.547,0,0,0,1.2.492l.562,2.262A.6.6,0,0,0,8.789,20h2.344a.6.6,0,0,0,.574-.445l.562-2.262a7.547,7.547,0,0,0,1.2-.492L15.457,18a.583.583,0,0,0,.715-.082l1.664-1.664a.583.583,0,0,0,.082-.715l-1.2-1.992a7.547,7.547,0,0,0,.492-1.2l2.34-.574A.578.578,0,0,0,20,11.211V8.867A.578.578,0,0,0,19.555,8.3ZM9.961,12.969a2.93,2.93,0,1,1,2.93-2.93A2.931,2.931,0,0,1,9.961,12.969Z" fill="#ffe600"/>
-                    </svg>
-                    
-                </h1>
-                <p class="u-text-center u-fz-lg">Settings</p>
-                <div class="c-settings-setup">
-                    <h2 class="c-settings-setup__header c-settings-setup__item-invis">
-                        Players & Etappes
-                    </h2>
-                    <div class="c-settings-setup__item">
-                        <label class="c-settings-setup__text" for="select_players">
-                            Player count
-                        </label>
-                        <div class="c-settings-player__input">
-                            <span class="c-custom-select">
-                                <select class="c-input c-custom-select__dropdown" name="select_players" id="select_players" onchange="selectPlayers(); validateSettings();">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="c-settings-setup__item">
-                        <label class="c-settings-player__text" for="select_group">
-                            Game group
-                        </label>
-                        <div class="c-settings-player__input">
-                            <input class="c-custom-select__text" type="text" id="select_group" name="select_group" placeholder="GROUP" onchange="validateSettings();">
-                        </div>
-                    </div>
-                    <div class="c-settings-setup__item">
-                        <label class="c-settings-setup__text" for="select_etappes">
-                            Etappes
-                        </label>
-                        <div class="c-settings-player__input">
-                            <span class="c-custom-select">
-                                <select class="c-input c-custom-select__dropdown" name="select_etappes" id="select_etappes" onchange="validateSettings();">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                </select>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div id="player_container">
-    
-                </div>
-            </div>
-            <div class="c-settings-save c-button-grid">
-                <button id="go_to_game"class="c-button c-button__save" disabled>Go to game</button>
-                <p style="color: transparent; font-size: 8px;">test</p>
-                <button id="save_settings" type="button" class="c-button c-button__save" onclick="enableButton()" disabled>Save</button>
-            </div>
-        </form>
-    </section>
+
+    <div class="c-stopwatch">
+        <div class="c-circle">
+          <span class="u-font-time" id="display">00:00:00</span>
+        </div>
+  
+        <div class="c-controls">
+          <button class="c-buttonPlay">
+            <!-- <img id="playButton" src="https://res.cloudinary.com/https-tinloof-com/image/upload/v1593360448/blog/time-in-js/play-button_opkxmt.svg" /> -->
+            <svg id="playButton" xmlns="http://www.w3.org/2000/svg" width="63" height="63" viewBox="0 0 63 63">
+                <g id="test" transform="translate(-0.5 -0.5)">
+                  <circle id="Ellipse_14" data-name="Ellipse 14" cx="31.5" cy="31.5" r="31.5" transform="translate(0.5 0.5)" fill="#fffefc"/>
+                  <path id="Path_1097" data-name="Path 1097" d="M22.9,16.911l24.169,15.38L22.9,47.671Z" stroke="#000" stroke-width="1"/>
+                </g>
+              </svg>
+
+              <!-- <img id="pauseButton" src="https://res.cloudinary.com/https-tinloof-com/image/upload/v1593360448/blog/time-in-js/pause-button_pinhpy.svg" /> -->
+              <svg id="pauseButton" xmlns="http://www.w3.org/2000/svg" width="63" height="63" viewBox="0 0 63 63">
+                <g id="test" transform="translate(-0.5 -0.5)">
+                  <circle id="Ellipse_15" data-name="Ellipse 15" cx="31.5" cy="31.5" r="31.5" transform="translate(0.5 0.5)" fill="#fffefc"/>
+                  <path id="Path_1098" data-name="Path 1098" d="M43.5,17.5V45.667H36.167V17.5Zm-16.667,0V45.667H19.5V17.5Z" stroke="#000" stroke-width="1"/>
+                </g>
+              </svg>            
+          </button>
+  
+          <!-- <button class="c-buttonReset">
+            <img id="resetButton" src="https://res.cloudinary.com/https-tinloof-com/image/upload/v1593360448/blog/time-in-js/reset-button_mdv6wf.svg" />
+          </button> -->
+        </div>
+      </div>
+
+      <div class="c-settings-save c-button-grid">
+        <button id="End_button"class="c-button c-button__save" style="background-color: #D70202;">End</button>
+        <p style="color: transparent; font-size: 8px;">test</p>
+        <button id="Retry_button" class="c-button c-button__save" style="background-color: #FFE600; color: #332719;">Retry</button>
+    </div>
 </body>
+
 </html>
