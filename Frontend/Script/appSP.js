@@ -36,7 +36,7 @@ function createNewPlayer(number) {
 
   const playerInnerHTML = `
   <div class="c-settings-player">
-    <h2 class="c-settings-player__header">
+    <h2 class="c-settings-player__header c-settings-setup__item-invis">
         Player ${number}
     </h2>
     <div class="c-settings-player__bg">
