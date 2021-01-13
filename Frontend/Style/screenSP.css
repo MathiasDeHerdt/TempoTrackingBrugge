@@ -624,146 +624,167 @@ select {
     text-align: center;
 }
 
-
-
 /*==============================================================================================================================================================================================*/
 
-/* #region Welcome page */
+/* #region Settings page */
 
-.c-top-welcome{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr) ;
-    grid-template-rows: 4rem 4rem 4rem 4rem;
-    min-height: 50vh;
-}
-
-.c-cyclist{
-    width: 8rem;
-    top:5rem;
-    fill: var(--global-color-beta-neutral);
-    grid-row: 4;
-    grid-column: 2;
-}
-
-
-.c-postion-1{
-    grid-row-start: 2;
-    grid-row-end: 6;
-    grid-column: 2;
-    background-color: var(--global-color-neutral-xxxx-dark);
-}
-
-.c-postion-2{
-    grid-row-start:3;
-    grid-row-end: 6;
-    grid-column: 1;
-    background-color: var(--global-color-neutral-dark);
-}
-
-.c-postion-3{
-    grid-row-start: 4;
-    grid-row-end: 6;
-    grid-column: 3;
-    background-color: var(--global-color-neutral-light);
-}
-
-
-
-
-.c-bottom-welcome{
-    min-height: 50vh;
-    background-color: var(--global-color-neutral-xxx-dark);
-}
-
-.c-bottom-welcome-content{
-    position: relative;
-    z-index: 1;
-    top:2rem;
-}
-
-
-
-/* #endregion */
-
-/* #region Main page */
-
-
-.c-stopwatch {
-    display: grid;
-    justify-items: center;
-    grid-row-gap: 23px;
-    width: 100%;
-    padding-top: 25px;
-  }
-  
-  .c-circle {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  
-    height: 160px;
-    width: 160px;
-  
-    border: 2px solid;
-    border-radius: 50%;
-  }
-  
-  .u-font-time {
-    font-family: "Roboto Mono", monospace;
-    font-weight: 300;
-    font-size: 24px;
-  }
-  
-  .c-controls {
-    display: flex;
-    justify-content: space-between;
-  
-    width: 187px;
-  }
-  
-  .c-button__stopwatch {
-    cursor: pointer;
-    background: transparent;
-    padding: 0;
-    border: none;
-    margin: 0;
+.c-button {
+    --c-button-transition: var(--global-transitionDuration-alpha);
+    --c-button-boxShadow-focus: var(--global-boxschadow-focus);
+    
+    --c-button-backgroundColor: var(--global-color-beta-neutral);
+    --c-button-backgroundColor-active: var(--global-color-neutral-xx-light);
+    --c-button-borderRadius: var(--global-borderRadius);
+    
+    --c-button-textColor: var(--global-color-alpha-dark-xx);
+    --c-button-textWeight: bold;
+    
+    padding: var(--global-whitespace-sm);
+    
+    background-color: var(--c-button-backgroundColor);
+    color: var(--c-button-textColor) !important;
+    font-weight: var(--c-button-textWeight);
+    
+    border-radius: var(--c-button-borderRadius);
+    transition: var(--c-button-transition);
+    box-shadow: var(--global-boxshadow);
+    
     outline: none;
   }
-
-  .c-buttonPlay{
-      outline:none;
-      background-color:transparent;
-      border:none;
-      width: 4rem;
+  
+  .c-button:hover,
+  .c-button:focus {
+    background-color: var(--global-color-neutral-xx-light);
+    box-shadow: var(--global-boxshadow);
   }
   
-  .c-buttonReset{
-    outline:none;
-    background-color:transparent;
-    border:none;
-    background-color:black;
-    width: 4rem;
+  .c-button:active,
+  .c-button:visited {
+    --c-button-backgroundColor: var(--c-button-backgroundColor-active);
+  
+    background-color: var(--c-button-backgroundColor);
+  }
+
+  .c-button:disabled {
+    --c-button-backgroundColor: var(--global-color-neutral-xx-light);
+  }
+
+/*
+    Component: Page logo
+    ---
+    Website page logo
+*/
+
+.c-page-logo {
+    height: var(--global-whitespace-md);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--global-whitespace-lg);
 }
 
+.c-page-nav__icon {
+    width: 45px;
+    height: 45px; 
+    margin-right: var(--global-whitespace-xs);
+    fill: black;
+}
 
-  #playButton {
-    display: block;
-  }
-  
-  #pauseButton {
-    display: none;
-  }
+.c-page-nav__icon path {
+    fill: black;
+}
 
-  #resetButton {
-    fill: red;
-  }
-/* #endregion */
+.c-settings-setup {
+    margin: 55px;
+}
 
-/* #region Leaderboard page */
+.c-settings-setup__header {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
 
-/* #endregion */
+.c-settings-setup__item {
+   font-size: 12px;
+   height: 40px;
+   color: var(--global-color-neutral-xxxx-dark);
+   background-color: var(--global-color-beta-light-xx);
+   border-radius: 10px;
+   margin: 8px 0px;
+   display: flex;
+   align-items: center;
+}
 
-/* #region Settings page */
+.c-settings-setup__text {
+    margin: 0 0 0 16px;
+}
+
+.c-settings-player {
+    margin: 55px;
+}
+
+.c-settings-player__header {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.c-settings-player__bg {
+    background-color: var(--global-color-beta-light-xx);
+    border-radius: 10px;
+}
+
+.c-settings-player__item {
+   font-size: 12px;
+   height: 40px;
+   color: var(--global-color-neutral-xxxx-dark);
+   margin: 8px 0px;
+   display: flex;
+   align-items: center;
+}
+
+.c-settings-player__text {
+    margin: 0 0 0 16px;
+}
+
+.c-settings-player__input {
+    margin-left: auto;
+    margin-right: 16px;
+}
+
+.c-settings-player__icon-img {
+    height: 50px;
+    margin-bottom: 8px;
+}
+
+.c-settings-save {
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+
+.c-button__save {
+    display: block;    
+    margin: auto;
+    border: none;
+    width: 136px;
+    height: 40px;
+}
+
+.c-custom-select__dropdown {
+    outline:none;
+    background-color:transparent;
+    border: none;
+    color: var(--global-color-neutral-xxxx-dark);
+}
+
+.c-custom-select__text {
+    width: 125px;
+    text-align: right;
+    outline:none;
+    background-color:transparent;
+    border: none;
+    border-bottom: 1px solid var(--global-color-neutral-xxxx-dark);
+}
 
 /* #endregion */
 
