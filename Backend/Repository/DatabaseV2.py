@@ -8,7 +8,7 @@ class Database:
     def __open_connection():
         try:
             db = connector.connect(option_files=os.path.abspath(os.path.join(
-                os.path.dirname(__file__), "../config.py")), autocommit=False)
+                os.path.dirname(__file__), "../configdb.py")), autocommit=False)
             if "AttributeError" in(str(type(db))):
                 raise Exception("foutieve database parameters in config")
 
