@@ -70,7 +70,13 @@
   /* #endregion Global colors background page */
 
   /* #region Global colors gradiant */
-  --global-color-gradient: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(26, 24, 22, 1) 0%, rgba(77, 75, 73, 1) 52%, rgba(26, 24, 22, 1) 100%);
+  --global-color-gradient: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(26, 24, 22, 1) 0%,
+    rgba(77, 75, 73, 1) 52%,
+    rgba(26, 24, 22, 1) 100%
+  );
   /* #endregion Global colors gradiant pagege */
 
   /* #region Global colors error input settings */
@@ -183,7 +189,8 @@
   --global-borderRadius: 3rem;
 
   --global-border: var(--global-borderWidth-2) solid var(--global-borderColor);
-  --global-border-focus: var(--global-borderWidth-2) solid var(--global-borderColor-focus);
+  --global-border-focus: var(--global-borderWidth-2) solid
+    var(--global-borderColor-focus);
 }
 
 /*------------------------------------*\
@@ -335,7 +342,8 @@ hr {
 }
 
 a {
-  --link-transition: all var(--global-transitionDuration-alpha) var(--global-transitionEasing-out);
+  --link-transition: all var(--global-transitionDuration-alpha)
+    var(--global-transitionEasing-out);
   transition: var(--link-transition);
   color: var(--link-color, var(--global-color-alpha));
   outline-color: var(--link-boxShadowColor);
@@ -546,7 +554,8 @@ select {
   /* padding: 15px 25px 15px 20px; */
   font-size: 1rem;
   line-height: calc(var(--global-baseline) * 4);
-  padding: var(--global-whitespace-sm) var(--global-whitespace-lg) var(--global-whitespace-sm) var(--global-whitespace-md);
+  padding: var(--global-whitespace-xs) var(--global-whitespace-xs)
+    var(--global-whitespace-xs) var(--global-whitespace-md);
   border-left: 5px solid var(--global-color-beta-neutral);
   transform: translateX(-5px);
   transition: transform var(--global-transitionDuration-alpha);
