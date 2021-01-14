@@ -17,10 +17,10 @@ class Database:
 
         except connector.Error as err:
             if err.errno == connector.errorcode.ER_ACCESS_DENIED_ERROR:
-                print("Error: Er is geen toegang tot de database")
+                print("\nACCES DENIED!\n")
 
             elif err.errno == connector.errorcode.ER_BAD_DB_ERROR:
-                print("Error: De database is niet gevonden")
+                print("\nDATABASE NOT FOUND\n")
 
             else:
                 print(err)
