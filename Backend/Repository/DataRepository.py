@@ -51,3 +51,9 @@ class DataRepository:
     def read_all_tables():
         sql = "SELECT * FROM beacontbl as beacon, playertbl as player, resulttbl as result WHERE beacon.BeaconID = player.PlayerID and player.PlayerID = result.ResultID;"
         return Database.get_rows(sql)
+
+    @staticmethod
+    def insert_game(player, etappe, group):
+        sql = "INSERT INTO gametbl(TotalEtappe, TotalPlayer, GroupName) VALUES (%s, %s, %s)"
+        param = [player, etappe, group]
+        return Database.execute_sql(sql, param)

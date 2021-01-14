@@ -1,5 +1,13 @@
-  
+const lanIP = `${window.location.hostname}:5000`;
+const socket = io(`http://${lanIP}`);
+
+console.log(lanIP)  
+
 var total_number = 1; 
+
+var global_count_etappes = "";
+var global_count_players = "";
+var global_group_name = "";
 
 function selectIcon() {
   for (let i = 1; i <= total_number; i++) {
@@ -105,11 +113,15 @@ function validateSettings() {
     const select_players = document.getElementById('select_players').value;
     const select_group = document.getElementById('select_group').value;
     const select_etappes = document.getElementById('select_etappes').value;
+
+    global_count_etappes = select_etappes
+    global_count_players = select_players
+    global_group_name = select_group
     
     console.log("Player count: " + select_players);
     console.log("Game group: " + select_group);
     console.log("Etappe count: " + select_etappes);
-    
+
     if ( select_players && select_group && select_etappes) {
         validate_game_settings = true;
     }
@@ -153,7 +165,8 @@ function validateSettings() {
 function enableButton() {
     const go_to_game = document.getElementById('go_to_game');
     go_to_game.disabled = false;
-    console.log('Saved!')
+
+    socket.emit('F2B_game_settings', global_count_players, global_count_etappes, global_group_name)
 }
 
 function goToGame(){

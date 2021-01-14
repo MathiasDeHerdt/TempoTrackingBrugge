@@ -51,7 +51,7 @@ def get_result():
         return jsonify(s), 200
 
 
-@app.route(endpoint + '/beacon_player', methods=['GET'])
+@app.route(endpoint + '', methods=['GET'])
 def get_beacon_player():
     if request.method == 'GET':
         s = DataRepository.read_beacon_player()
@@ -71,10 +71,26 @@ def get_all_tables():
         s = DataRepository.read_all_tables()
         return jsonify(s), 200
 
+# =========================================================
+# socketio gets data from frontend
+# =========================================================
+
+# GAME SETTINGS
+@socketio.on('F2B_game_settings')
+def all_game_settings(player, etappes, group):
+    tekst = f'# players: {player}\n# etappes: {etappes}\nGroup name: {group}'
+    print(tekst)
+    gamesettingsToDatebase(player, etappes, group)
+
+
+def gamesettingsToDatebase(player, etappe, group):
+    DataRepository.insert_game(player, etappe, group)
+    print('inserting into database')
+
 
 # =========================================================
 # App run
 # =========================================================
 if __name__ == '__main__':
-    # app.run(host="0.0.0.0", port=5000, debug=True)
+        # app.run(host="0.0.0.0", port=5000, debug=True)
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
