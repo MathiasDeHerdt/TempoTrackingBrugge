@@ -67,10 +67,11 @@ function timeToString(time) {
     buttonToShow.style.display = "block";
     buttonToHide.style.display = "none";
   }
-  // Create event listeners
+    // Create event listeners
   
   let playButton = document.getElementById("playButton");
   let pauseButton = document.getElementById("pauseButton");
+  let retryButton = document.getElementById("Retry_button")
   //let resetButton = document.getElementById("resetButton");
   
   playButton.addEventListener("click", start);
@@ -78,19 +79,28 @@ function timeToString(time) {
   //resetButton.addEventListener("click", reset);
 
 
-// #endregion
+    // #endregion
 
-
-    // #region ===== Buttons visibility
+    // #region ===== Buttons  (start and retry)
     function showButtons(){
       let gridButtons = document.getElementById("c-buttons_mainPage")
       gridButtons.classList.remove("o-hide")
-      console.log("we raken in de")
+      console.log("REVEAL YOURSELF!")
     }
 
-    
+    function Retry(){
+      let gridButtons = document.getElementById("c-buttons_mainPage")
+      gridButtons.classList.add("o-hide")
+      console.log("BEGONE!")
+
+      clearInterval(timerInterval);
+      print("00:00:00");
+      elapsedTime = 0;
+      showButton("PLAY");
+    }
 
     playButton.addEventListener("click",showButtons);
-    // //#endregion
+    retryButton.addEventListener("click",Retry);
+    //#endregion
 });
 // #endregion

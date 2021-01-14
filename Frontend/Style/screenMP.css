@@ -44,6 +44,9 @@
   --global-color-beta-dark-x: #998a00;
   --global-color-beta-dark-xx: #665c00;
 
+  /*Red*/
+  --global-color-charlie-neutral: #d70202;
+
   /* #endregion Global colors brown & yellow */
 
   /* #region Global colors black & white*/
@@ -451,13 +454,22 @@ select {
   border: 1px solid pink;
 }
 
-.c-button__save {
+.c-buttons_mainPage__layout {
   display: block;
   margin: auto;
   border: none;
   width: 8.5rem;
   height: 2.5rem;
   margin-top: 1rem;
+}
+
+.c-button_mainPage__save-color {
+  background: var(--global-color-charlie-neutral);
+}
+
+.c-button_mainPage__retry-color {
+  background: var(--global-color-beta-neutral);
+  color: var(--global-color-alpha-dark-xx);
 }
 
 .c-button-grid {
@@ -690,9 +702,9 @@ select {
 .c-stopwatch {
   display: grid;
   justify-items: center;
-  grid-row-gap: 23px;
+  grid-row-gap: 1.5rem;
   width: 100%;
-  padding-top: 25px;
+  padding-top: 1.5rem;
 }
 
 .c-circle {
@@ -719,8 +731,7 @@ select {
 .c-controls {
   display: flex;
   justify-content: space-between;
-
-  width: 187px;
+  width: 12rem;
 }
 
 .c-button__stopwatch {
