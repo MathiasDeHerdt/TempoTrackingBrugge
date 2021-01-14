@@ -153,6 +153,12 @@ function validateSettings() {
 function enableButton() {
     const go_to_game = document.getElementById('go_to_game');
     go_to_game.disabled = false;
+    console.log('Saved!')
+}
+
+function goToGame(){
+    console.log('Going to MainPage.html...')
+    document.location.href = "./MainPageMDH.html"
 }
 
 document.addEventListener('DOMContentLoaded', function () {
