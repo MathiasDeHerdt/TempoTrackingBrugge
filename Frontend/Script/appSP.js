@@ -1,109 +1,4 @@
-// start MainPage js
-// #region ==== DOM //
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM content loaded")
-
-    // #region ===== Sidebar  //
-
-    // width moet nog aangepast worden naar transform.
-    document.getElementById("js-button-open").addEventListener("click",function(){
-    document.getElementById("myNav").style.transform= "translateX(0)";
-    });
-
-    document.getElementById("js-option-close").addEventListener("click",function(){
-    document.getElementById("myNav").style.transform= "translateX(-100%)";
-
-
-    // Settingspage
-    const player_container = document.getElementById('player_container');
-    getPlayers();
-    });
-    // #endregion
-    
-
-    // #region ===== timer  //
-
-function timeToString(time) {
-    let diffInHrs = time / 3600000;
-    let hh = Math.floor(diffInHrs);
   
-    let diffInMin = (diffInHrs - hh) * 60;
-    let mm = Math.floor(diffInMin);
-  
-    let diffInSec = (diffInMin - mm) * 60;
-    let ss = Math.floor(diffInSec);
-  
-    let diffInMs = (diffInSec - ss) * 100;
-    let ms = Math.floor(diffInMs);
-  
-    let formattedMM = mm.toString().padStart(2, "0");
-    let formattedSS = ss.toString().padStart(2, "0");
-    let formattedMS = ms.toString().padStart(2, "0");
-  
-    return `${formattedMM}:${formattedSS}:${formattedMS}`;
-  }
-  
-  // Declare variables to use in our functions below
-  
-  let startTime;
-  let elapsedTime = 0;
-  let timerInterval;
-  
-  // Create function to modify innerHTML
-  
-  function print(txt) {
-    document.getElementById("display").innerHTML = txt;
-  }
-  
-  // Create "start", "pause" and "reset" functions
-  
-  function start() {
-    startTime = Date.now() - elapsedTime;
-    timerInterval = setInterval(function printTime() {
-      elapsedTime = Date.now() - startTime;
-      print(timeToString(elapsedTime));
-    }, 10);
-    showButton("PAUSE");
-  }
-  
-  function pause() {
-    clearInterval(timerInterval);
-    showButton("PLAY");
-  }
-  
-  function reset() {
-    clearInterval(timerInterval);
-    print("00:00:00");
-    elapsedTime = 0;
-    showButton("PLAY");
-  }
-  
-  // Create function to display buttons
-  
-  function showButton(buttonKey) {
-    const buttonToShow = buttonKey === "PLAY" ? playButton : pauseButton;
-    const buttonToHide = buttonKey === "PLAY" ? pauseButton : playButton;
-    buttonToShow.style.display = "block";
-    buttonToHide.style.display = "none";
-  }
-  // Create event listeners
-  
-  let playButton = document.getElementById("playButton");
-  let pauseButton = document.getElementById("pauseButton");
-  
-  playButton.addEventListener("click", start);
-  pauseButton.addEventListener("click", pause);
-
-});
-// ========================
-// End MainPage js
-// =======================
-
-
-// ======================
-// Start SettingsPage JS
-// ======================
-
 var total_number = 1; 
 
 function selectIcon() {
@@ -214,8 +109,6 @@ function validateSettings() {
     console.log("Player count: " + select_players);
     console.log("Game group: " + select_group);
     console.log("Etappe count: " + select_etappes);
-
-    printerFunction(select_etappes)
     
     if ( select_players && select_group && select_etappes) {
         validate_game_settings = true;
@@ -262,3 +155,8 @@ function enableButton() {
     go_to_game.disabled = false;
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('DOM - Settings Page');
+  const player_container = document.getElementById('player_container');
+  getPlayers();
+});
