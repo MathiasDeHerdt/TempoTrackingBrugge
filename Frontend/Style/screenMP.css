@@ -770,3 +770,7 @@ select {
 /* #region Settings page */
 
 /* #endregion */
+
+.o-hide {
+  display: none;
+}

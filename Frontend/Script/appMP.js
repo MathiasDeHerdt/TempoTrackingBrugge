@@ -71,14 +71,26 @@ function timeToString(time) {
   
   let playButton = document.getElementById("playButton");
   let pauseButton = document.getElementById("pauseButton");
-  let resetButton = document.getElementById("resetButton");
+  //let resetButton = document.getElementById("resetButton");
   
   playButton.addEventListener("click", start);
   pauseButton.addEventListener("click", pause);
-  resetButton.addEventListener("click", reset);
+  //resetButton.addEventListener("click", reset);
 
 
 // #endregion
 
+
+    // #region ===== Buttons visibility
+    function showButtons(){
+      let gridButtons = document.getElementById("c-buttons_mainPage")
+      gridButtons.classList.remove("o-hide")
+      console.log("we raken in de")
+    }
+
+    
+
+    playButton.addEventListener("click",showButtons);
+    // //#endregion
 });
 // #endregion
