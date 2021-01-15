@@ -29,6 +29,7 @@ function timeToString(time) {
   let startTime;
   let elapsedTime = 0;
   let timerInterval;
+  let counter = 0
   
   // Create function to modify innerHTML
   
@@ -77,15 +78,15 @@ function timeToString(time) {
 
     // #region ===== Buttons  (start and retry)
     function showButtons(){
-      let gridButtons = document.getElementById("c-buttons_mainPage")
-      gridButtons.classList.remove("o-hide")
-      console.log("REVEAL YOURSELF!")
+      let gridButtons = document.getElementById("c-buttons_mainPage");
+      gridButtons.classList.remove("o-hide");
+      console.log("REVEAL YOURSELF!");
     }
 
     function Retry(){
-      let gridButtons = document.getElementById("c-buttons_mainPage")
-      gridButtons.classList.add("o-hide")
-      console.log("BEGONE!")
+      let gridButtons = document.getElementById("c-buttons_mainPage");
+      gridButtons.classList.add("o-hide");
+      console.log("BEGONE!");
 
       clearInterval(timerInterval);
       print("00:00:00");
@@ -95,6 +96,29 @@ function timeToString(time) {
 
     playButton.addEventListener("click",showButtons);
     retryButton.addEventListener("click",Retry);
+    //#endregion
+
+    //#region ===== dropdown
+    function dropDown(){
+      counter += 1;
+      let dropdown = document.querySelector(".c-wrapper-dropdown")
+
+      if (counter == 1){
+        console.log(counter);
+        dropdown.classList.add("active");
+      }
+
+      if (counter == 2){
+        console.log(counter);
+        dropdown.classList.remove("active");
+        counter = 0;
+        console.log(counter);
+      }
+      
+    }
+
+    let arrow = document.querySelector(".c-wrapper-dropdown__arrow")
+    arrow.addEventListener("click",dropDown)
     //#endregion
 });
 // #endregion
