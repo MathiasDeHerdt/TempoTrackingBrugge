@@ -5,6 +5,7 @@ print("Importing ble_beacon.py....")
 
 class BleMeasurement():
     def __init__(self, jsonObj):
+        self.__deviceId = jsonObj['deviceId']
         self.__address = jsonObj['address']
         self.__rssi = jsonObj['rssi']
         self.__distance = BleHelper.distance_from_rssi(self.rssi, 4)
@@ -21,39 +22,34 @@ class BleMeasurement():
     def distance(self):
         return self.__distance
 
+    @property
+    def deviceId(self):
+        return self.__deviceId
+
     def __str__(self):
-        ret = f'BleMeasurement: address:{self.address} - rssi:{self.rssi}dB - distance:{self.distance}m'
+        ret = f'BleMeasurement: deviceId:{self.deviceId} - address:{self.address} - rssi:{self.rssi}dB - distance:{self.distance}m'
         return ret
 
 
 class BleBeacon:
     def __init__(self, jsonObj):
-        self.__deviceId = jsonObj['deviceId']
         self.__address = jsonObj['address']
-        self.__name = jsonObj['name']
-        self.__txPower = jsonObj['txPower']
+        self.__uuid = jsonObj['uuid']
+        self.__txPower = jsonObj['txpower']
         self.__major = jsonObj['major']
         self.__minor = jsonObj['minor']
 
-
-    def debug(self):
-        print(f'--')
-        print(f'deviceId: {self.__deviceId}')
-        print(f'address: {self.__address} - name: {self.__name}')
-        print(f'major: {self.__major} - minor: {self.__minor} - txPower: {self.__txPower}dB')
-        print(f'--')
-
-    @property
-    def deviceId(self):
-        return self.__deviceId
+    def __str__(self):
+        ret = f'address:{self.address} - uuid:{self.uuid}\nmajor: {self.__major} - minor: {self.__minor} - txPower: {self.__txPower}dB'
+        return ret
 
     @property
     def address(self):
         return self.__address
 
     @property
-    def name(self):
-        return self.__name
+    def uuid(self):
+        return self.__uuid
 
     @property
     def txPower(self):
