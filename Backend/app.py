@@ -17,23 +17,21 @@ from Repository.DataRepository import DataRepository
 # Start apps
 # =========================================================
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'tempotracking'
+app.config['SECRET_KEY'] = 'tempotrackingtest'
 
 CORS(app)
 
 socketio = SocketIO(app, cors_allowed_origins='*')
 
-
 endpoint = '/api/v1'
-
 
 # =========================================================
 # Routes
 # =========================================================
-@app.route(endpoint + '/beacon', methods=['GET'])
-def get_beacon():
+@app.route(endpoint + '/game', methods=['GET'])
+def get_game():
     if request.method == 'GET':
-        s = DataRepository.read_beacon()
+        s = DataRepository.read_game()
         return jsonify(s), 200
 
 

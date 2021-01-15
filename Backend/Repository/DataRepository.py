@@ -18,8 +18,8 @@ class DataRepository:
 
     # beacon
     @staticmethod
-    def read_beacon():
-        sql = "SELECT * FROM beacontbl"
+    def read_game():
+        sql = "SELECT * FROM gametbl"
         return Database.get_rows(sql)
 
     # player

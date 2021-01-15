@@ -9,9 +9,15 @@ class Database:
         try:
             print("in de try")
 
-            db = connector.connect(option_files=os.path.abspath(os.path.join(
-                os.path.dirname(__file__), "../configdb.py")), autocommit=False)
+            configFile = "../configdb.py"
+            print(configFile)
 
+            db = connector.connect(option_files=os.path.abspath(os.path.join(
+                os.path.dirname(__file__), configFile)), autocommit=False)
+
+            print("====================")
+            print(db)
+            print("====================")
             print("na inlezen configdb")
 
             if "AttributeError" in(str(type(db))):
