@@ -98,9 +98,7 @@ def parse_events(sock, loop_count=100):
                 num_reports = struct.unpack("B", pkt[0:1])[0]
                 report_pkt_offset = 0
                 for i in range(0, num_reports):
-                    # build the return string
                     beacon = extract_details(pkt, report_pkt_offset)
-                    #Prevent duplicates in results
                     if beacon not in listBeacon: 
                         listBeacon.append(beacon)
 
