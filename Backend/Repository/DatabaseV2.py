@@ -7,12 +7,19 @@ class Database:
     @staticmethod
     def __open_connection():
         try:
+            print("in de try")
+
             db = connector.connect(option_files=os.path.abspath(os.path.join(
                 os.path.dirname(__file__), "../configdb.py")), autocommit=False)
+
+            print("na inlezen configdb")
+
             if "AttributeError" in(str(type(db))):
                 raise Exception("foutieve database parameters in config")
 
             cursor = db.cursor(dictionary=True, buffered=True)
+
+            print("net voor de return")
             return db, cursor
 
         except connector.Error as err:
