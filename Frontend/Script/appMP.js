@@ -52,12 +52,6 @@ function timeToString(time) {
     showButton("PLAY");
   }
   
-  function reset() {
-    clearInterval(timerInterval);
-    print("00:00:00");
-    elapsedTime = 0;
-    showButton("PLAY");
-  }
   
   // Create function to display buttons
   
