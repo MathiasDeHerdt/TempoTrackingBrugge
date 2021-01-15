@@ -12,7 +12,8 @@ class ResultManager():
         return False
 
     def checkResultToBeacon(self, result):
-        if result.address ==  self.__beacon.address:
+        #print(f'{result.address} trying to add {result}')
+        if result.address == self.beacon.address:
             return True
         return False
 
@@ -21,3 +22,7 @@ class ResultManager():
         for result in self.__results:
             ret += f'{result}\n'
         return ret
+
+    @property
+    def beacon(self):
+        return self.__beacon
