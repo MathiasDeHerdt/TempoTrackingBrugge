@@ -1,12 +1,16 @@
 from ble_result_manager import ResultManager
 
 class DeviceManager():
-    def __init__(self, deviceId, list_beacons):
+    def __init__(self, deviceId):
         self.__deviceId = deviceId
-        list_result_manager = []
+        self.__list_result_manager = []
+
+    def append_beacon(self, beacon):
+        self.__list_result_manager.append(ResultManager(beacon))
+
+    def append_beacon_list(self, list_beacons):
         for beacon in list_beacons:
-            list_result_manager.append(ResultManager(beacon))
-        self.__list_result_manager = list_result_manager
+            self.append_beacon(beacon)
 
     def append_result(self, result):
         if result.deviceId ==  self.__deviceId:
