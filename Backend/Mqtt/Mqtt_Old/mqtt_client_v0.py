@@ -2,10 +2,12 @@ import paho.mqtt.client as mqtt
 import json
 import urllib.request
 
+from Helpers.ble_beacon import BleBeacon
+
 print("Importing mqtt_client.py....")
 
 class MqttClient:
-    def __init__(self, callback_subscribe):
+    def __init__(self):
         self.topic_publish = '/tempotracking4/pi_to_esp'
         self.topic_subscribe = '/tempotracking4/esp_to_pi'
         self.host = '169.254.10.1'
@@ -14,7 +16,6 @@ class MqttClient:
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.client.connect(self.host, 1883, 60)
-        self.callback_subscribe = callback_subscribe
 
 
     def on_connect(self, client, userdata, flags, resultCode):
@@ -22,8 +23,9 @@ class MqttClient:
 
 
     def on_message(self, client, userdata, msg):
-        #print(f"Topic: {msg.topic} - Payload: {str(msg.payload)}")
-        self.callback_subscribe(msg)
+        print(f"Topic: {msg.topic} - Payload: {str(msg.payload)}")
+        beacon = self.create_beacon(msg.payload)
+        beacon.debug()
 
 
     def sendMessage(self, message):
@@ -34,3 +36,6 @@ class MqttClient:
     def subscribe(self):
         self.client.subscribe(self.topic_subscribe)
         self.client.loop_start()
+
+    def create_beacon(self, payload):
+        return BleBeacon(payload)

@@ -1,5 +1,7 @@
 import math
 
+print("Importing ble_helper.py....")
+
 class BleHelper:
     def __init__(self):
         self.txPower = -65

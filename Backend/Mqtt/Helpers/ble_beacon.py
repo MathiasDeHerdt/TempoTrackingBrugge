@@ -1,5 +1,7 @@
 import json
-from ble_helper import BleHelper
+from .ble_helper import BleHelper
+
+print("Importing ble_beacon.py....")
 
 class BleBeacon:
     def __init__(self, payload):
@@ -7,6 +9,7 @@ class BleBeacon:
         jsonObj = json.loads(payload)
         helper = BleHelper()
 
+        self.__deviceId = jsonObj['deviceId']
         self.__address = jsonObj['address']
         self.__name = jsonObj['name']
         self.__rssi = jsonObj['rssi']
@@ -21,6 +24,7 @@ class BleBeacon:
 
     def debug(self):
         print(f'--')
+        print(f'deviceId: {self.__deviceId}')
         print(f'address: {self.__address} - name: {self.__name}')
         print(f'rssi: {self.__rssi} - txPower: {self.__txPower}')
         print(f'major: {self.__major} - minor: {self.__minor}')
@@ -28,7 +32,11 @@ class BleBeacon:
         #print(f'distance2: {self.__distance2}')
         #print(f'distance3: {self.__distance3}')
         #print(f'distance4: {self.__distance4}\n')
-        print(f'--\n\n')
+        print(f'--')
+
+    @property
+    def deviceId(self):
+        return self.__deviceId
 
     @property
     def address(self):

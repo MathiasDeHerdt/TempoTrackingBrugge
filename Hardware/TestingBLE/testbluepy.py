@@ -1,5 +1,6 @@
-from bluepy import btle
+import sys
 import math
+from bluepy import btle
 txPower = -65.0
 
 
@@ -17,11 +18,14 @@ def calculateAccuracy(txPower, rssi):
     distance = math.pow(10, ((txPower - rssi) / (10 * 2)))
     return distance
 
-try:
-    while True:
-        scan_for_devices()
-    print("finish program")
-except Exception as e:
-  print("An exception occurred") 
-  print(e)
+if __name__ == '__main__':
+    print(sys.path)
+    try:
+        print("Start program!...")
+        while True:
+            scan_for_devices()
+        print("finish program")
+    except Exception as e:
+        print("An exception occurred") 
+        print(e)
 
