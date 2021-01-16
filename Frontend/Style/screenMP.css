@@ -389,6 +389,10 @@ select {
   padding: var(--global-whitespace) var(--global-whitespace) 0;
 }
 
+.o-row__top{
+  height: 10rem;
+}
+
 .o-container {
   margin-left: auto;
   margin-right: auto;
@@ -713,7 +717,6 @@ select {
   justify-items: center;
   grid-row-gap: 1.5rem;
   width: 100%;
-  padding-top: 1.5rem;
 }
 
 .c-circleTimer {
@@ -873,12 +876,13 @@ select {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-content: center;
+  align-content: flex-start;
   
 }
 
 .c-wrapper{
   width: 40%;
+  height: 2.25rem;
 }
 
 .c-wrapper-dropdown {
@@ -886,7 +890,7 @@ select {
   position: relative;
   width: 100%;
   margin: 0 auto;
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem 0.5rem 0.25rem 0.5rem;
   display: flex;
   align-items: center;
 
@@ -909,7 +913,6 @@ select {
   width: 0;
   height: 0;
   position: absolute;
-  top: 50%;
   right: 0.75rem;
   margin-top: -3px;
   border-width: 6px 6px 0 6px;
@@ -949,18 +952,18 @@ select {
   color: var(--global-color-neutral-xxxx-dark);
   transition: all 0.3s ease-out;
   border-bottom: 1px solid rgba(1, 1, 1, 0.2);
-  margin-top: 0.25rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 .c-wrapper-dropdown .c-dropdown li:last-of-type a {
   border: none;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
 }
 
 .c-wrapper-dropdown .c-dropdown li:first-of-type a {
   border-top: 1px solid rgba(0,0,0,0.2);
   margin-top: 0;
-  padding-top: 0.25rem;
 }
 
 /* Hover state */
@@ -981,7 +984,7 @@ select {
 
 .c-wrapper-dropdown.active .c-dropdown {
   border-bottom: 1px solid rgba(0,0,0,0.2);
-  max-height: 4rem;
+  max-height: 5.5rem;
 }
 /* #endregion */
 

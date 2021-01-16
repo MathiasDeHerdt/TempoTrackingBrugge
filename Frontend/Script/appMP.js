@@ -29,7 +29,6 @@ function timeToString(time) {
   let startTime;
   let elapsedTime = 0;
   let timerInterval;
-  let counter = 0
   
   // Create function to modify innerHTML
   
@@ -99,26 +98,81 @@ function timeToString(time) {
     //#endregion
 
     //#region ===== dropdown
+    //variables
+    let counter = 0
+    let wrapperdropdown = document.querySelector(".c-wrapper-dropdown")
+    let dropdownItem = document.querySelector(".c-wrapper-dropdown__activeObject")
+
+    //Dropdown up down animation
     function dropDown(){
       counter += 1;
-      let dropdown = document.querySelector(".c-wrapper-dropdown")
 
       if (counter == 1){
-        console.log(counter);
-        dropdown.classList.add("active");
+        wrapperdropdown.classList.add("active");
+        let arrow = document.querySelector(".c-wrapper-dropdown__arrow")
+        arrow.style.transform = "rotate(180deg)"
       }
 
       if (counter == 2){
-        console.log(counter);
-        dropdown.classList.remove("active");
+        wrapperdropdown.classList.remove("active");
+        let arrow = document.querySelector(".c-wrapper-dropdown__arrow")
+        arrow.style.transform = "rotate(0deg)"
         counter = 0;
-        console.log(counter);
       }
-      
+    }
+    wrapperdropdown.addEventListener("click",dropDown)
+
+    //Update title once item is clicked
+
+    var list = [];
+
+    const listItems = document.querySelectorAll('.c-dropdown li');
+    for (let i = 0; i <= listItems.length - 1; i++) {
+      list.push(listItems[i].id);
     }
 
-    let arrow = document.querySelector(".c-wrapper-dropdown__arrow")
-    arrow.addEventListener("click",dropDown)
+    function SelectOption1(){
+      let a1 = document.getElementById("a1");
+      let a0 = document.getElementById("a0");
+      
+      if(a0 != a1){
+        let savedWord1 = a0.textContent;
+        a0.innerHTML = a1.textContent;
+        a1.innerHTML = savedWord1;
+      }
+    }
+
+    function SelectOption2(){
+      let a2 = document.getElementById("a2");
+      let a0 = document.getElementById("a0");
+      
+      if(a0 != a2){
+        let savedWord2 = a0.textContent;
+        a0.innerHTML = a2.textContent;
+        a2.innerHTML = savedWord2;
+      }
+    }
+    
+    function clickfunction(op){
+      let option = document.getElementById(op);
+      
+      if(op == "option1"){
+        option.addEventListener("click", SelectOption1)
+      }
+
+      if(op == "option2"){
+        option.addEventListener("click", SelectOption2)
+      }
+    }
+
+    list.forEach(clickfunction)
+
+
+    //#endregion
+
+    //#region ===== html creation based on dropdown and settings
+
     //#endregion
 });
+
 // #endregion
