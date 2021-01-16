@@ -1,6 +1,6 @@
 
-from Helpers.ble_beacon import BleBeacon, BleMeasurement
-from BLE_RPI import rpi_ble_scan
+from .Helpers.ble_beacon import BleBeacon, BleMeasurement
+from .BLE_RPI import rpi_ble_scan
 from bluepy import btle
 import json
 
@@ -11,7 +11,7 @@ class RpiScanManager():
         self.scanner_measure = btle.Scanner()
         self.rpi_deviceId = rpi_deviceId
 
-    def scan_initial(self, beacon_manager, rpi_manager):
+    def scan_initial(self, beacon_manager, dict_manager):
         try:
             dev_id = 0
             sock = rpi_ble_scan.getBLESocket(dev_id)
@@ -27,10 +27,12 @@ class RpiScanManager():
             for registered_beacon in registered_beacons:
                 #print(str(registered_beacon))
                 beacon = BleBeacon(registered_beacon)
-                if beacon_manager.append_beacon(beacon):
-                    print(str(beacon))
+                if beacon.major == 2 and beacon.minor == 10:
+                    if beacon_manager.append_beacon(beacon):
+                        print(str(beacon))
 
-        rpi_manager.append_beacon_list(beacon_manager.beacons)
+        for key in dict_manager:
+            dict_manager[key].append_beacon_list(beacon_manager.beacons)
 
 
     def scan_rssi(self):

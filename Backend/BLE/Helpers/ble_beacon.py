@@ -5,8 +5,8 @@ print("Importing ble_beacon.py....")
 
 class BleMeasurement():
     def __init__(self, jsonObj):
-        self.__deviceId = jsonObj['deviceId']
-        self.__address = jsonObj['address']
+        self.__deviceId = jsonObj['deviceId'].strip()
+        self.__address = jsonObj['address'].strip()
         self.__rssi = jsonObj['rssi']
         self.__distance = BleHelper.distance_from_rssi(self.rssi, 4)
     
@@ -33,8 +33,8 @@ class BleMeasurement():
 
 class BleBeacon:
     def __init__(self, jsonObj):
-        self.__address = jsonObj['address']
-        self.__uuid = jsonObj['uuid']
+        self.__address = jsonObj['address'].strip()
+        self.__uuid = jsonObj['uuid'].strip()
         self.__txPower = jsonObj['txpower']
         self.__major = jsonObj['major']
         self.__minor = jsonObj['minor']
