@@ -390,7 +390,7 @@ select {
 }
 
 .o-row__top{
-  height: 10rem;
+  height: 9rem;
 }
 
 .o-container {
@@ -908,6 +908,11 @@ select {
   transition: all 0.3s ease-out;
 }
 
+.c-wrapper-dropdown__activeObject{
+  margin-left: 0.5rem;
+
+}
+
 .c-wrapper-dropdown__arrow { /* Little arrow */
   content: "";
   width: 0;
@@ -954,6 +959,7 @@ select {
   border-bottom: 1px solid rgba(1, 1, 1, 0.2);
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  padding-left: 0.5rem;
 }
 
 .c-wrapper-dropdown .c-dropdown li:last-of-type a {
