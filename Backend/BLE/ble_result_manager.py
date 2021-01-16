@@ -1,4 +1,4 @@
-
+#print("Importing result_manager....")
 
 class ResultManager():
     def __init__(self, beacon):
@@ -16,6 +16,9 @@ class ResultManager():
         if result.address == self.beacon.address:
             return True
         return False
+
+    def clear_results(self):
+        self.__results = []
 
     def __str__(self):
         ret = f'{self.__beacon}\n'

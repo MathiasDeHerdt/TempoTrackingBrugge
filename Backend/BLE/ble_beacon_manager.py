@@ -1,3 +1,5 @@
+#print("Importing beacon_manager....")
+
 class BeaconManager():
     def __init__(self):
         self.__beacons = [] #BleBeacon
@@ -16,6 +18,9 @@ class BeaconManager():
         if can_append == True:
             self.__beacons.append(beacon)
         return can_append
+
+    def clear(self):
+        self.__beacons = []
 
     @property
     def beacons(self):

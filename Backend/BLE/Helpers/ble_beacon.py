@@ -1,7 +1,7 @@
 import json
 from .ble_helper import BleHelper
 
-print("Importing ble_beacon.py....")
+#print("Importing ble_beacon.py....")
 
 class BleMeasurement():
     def __init__(self, jsonObj):
@@ -9,7 +9,15 @@ class BleMeasurement():
         self.__address = jsonObj['address'].strip()
         self.__rssi = jsonObj['rssi']
         self.__distance = BleHelper.distance_from_rssi(self.rssi, 4)
-    
+        self.__timestamp = None
+
+    def set_timestamp(self, timestamp):
+        self.__timestamp = timestamp
+
+    @property
+    def timestamp(self):
+        return self.__timestamp
+
     @property
     def address(self):
         return self.__address
