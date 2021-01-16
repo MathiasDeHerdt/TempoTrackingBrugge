@@ -97,13 +97,12 @@ function timeToString(time) {
     retryButton.addEventListener("click",Retry);
     //#endregion
 
-    //#region ===== dropdown
+    //#region ===== dropdown & HTML generating
     //variables
     let counter = 0
     let wrapperdropdown = document.querySelector(".c-wrapper-dropdown")
-    let dropdownItem = document.querySelector(".c-wrapper-dropdown__activeObject")
 
-    //Dropdown up down animation
+    //Dropdown up / down animation
     function dropDown(){
       counter += 1;
 
@@ -122,7 +121,7 @@ function timeToString(time) {
     }
     wrapperdropdown.addEventListener("click",dropDown)
 
-    //Update title once item is clicked
+    //Update item once item is clicked and generate specific html if necessary
 
     var list = [];
 
@@ -155,7 +154,7 @@ function timeToString(time) {
     
     function clickfunction(op){
       let option = document.getElementById(op);
-      
+
       if(op == "option1"){
         option.addEventListener("click", SelectOption1)
       }
@@ -169,8 +168,6 @@ function timeToString(time) {
 
 
     //#endregion
-
-    //#region ===== html creation based on dropdown and settings
 
     //#endregion
 });
