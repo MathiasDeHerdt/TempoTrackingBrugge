@@ -25,3 +25,11 @@ class DeviceManager():
             ret += str(result_manager)
         ret += f'--\n'
         return ret
+
+    @property
+    def results(self):
+        list_results = {}
+        for result_manager in self.__list_result_manager:
+            objDict = result_manager.results_dictionnary
+            list_results[objDict['address']] = objDict['results']
+        return list_results

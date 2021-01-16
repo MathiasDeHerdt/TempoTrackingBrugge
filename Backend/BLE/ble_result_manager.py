@@ -26,3 +26,11 @@ class ResultManager():
     @property
     def beacon(self):
         return self.__beacon
+
+    @property
+    def results(self):
+        return self.__results
+
+    @property
+    def results_dictionnary(self):
+        return {"address" : self.beacon.address, "results" : self.results}

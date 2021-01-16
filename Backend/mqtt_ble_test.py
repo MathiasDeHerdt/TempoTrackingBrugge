@@ -38,6 +38,28 @@ def menu(keuze):
         for key in dict_manager:
             print(dict_manager[key])
             print(f'+++++++++++++++++++++++++++++++')
+    if keuze == 3:  
+            print("finish check")
+            rpi_results = (dict_manager["device_rpi"]).results
+            esp_results = (dict_manager["device_esp_2"]).results
+
+            for beacon in beacon_manager.beacons:
+                address = str(beacon.address).strip()
+                print(f'Checking distances for {address}')
+                try:
+                    #print(f'rpi_results {rpi_results}')
+                    rpi_results_beacon = rpi_results[address]
+                    #print(f'rpi_results_beacon {rpi_results_beacon}')
+
+                    #print(f'esp_results {esp_results}')
+                    esp_results_beacon = esp_results[address]
+                    #print(f'esp_results_beacon {esp_results_beacon}')
+                    finish_width = 1.3
+
+                    getDistanceFinish(rpi_results_beacon, esp_results_beacon, finish_width)
+                except:
+                    print(f'Failed to get distance for {address}')
+                    continue
 
     if keuze == 9:
         sys.exit()
@@ -76,6 +98,51 @@ def thread_scan():
     x = threading.Thread(target=thread_scan)
     x.start()
 
+def getDistanceFinish(rpi_results_beacon, esp_results_beacon, width_finish):
+    length_rpi_results = len(rpi_results_beacon)
+    length_esp_results = len(esp_results_beacon)
+
+    length_list = 0
+    if length_esp_results > length_rpi_results:
+        length_list = length_rpi_results
+    else:
+        length_list = length_esp_results
+
+    #print(f'length_list {length_list}')
+    for index in range(0, length_list):
+        try:
+            writeDistance(index, width_finish, rpi_results_beacon, esp_results_beacon)
+        except:
+            print(f'Failed distance check at index {index}')
+            continue
+
+def writeDistance(index, width_finish, rpi_results_beacon, esp_results_beacon):
+    was_changed = 0
+    distance_to_rpi = rpi_results_beacon[index].distance
+    #print(f'distance_to_rpi {distance_to_rpi}')
+    distance_to_esp = esp_results_beacon[index].distance
+    #print(f'distance_to_esp {distance_to_esp}')
+
+    #correctionArray = math_race.calculate_sides(distance_to_rpi, distance_to_esp, width_finish)
+    #was_changed = correctionArray[0]
+    #distance_to_rpi = correctionArray[1]
+    #distance_to_esp = correctionArray[2]
+
+    angle_opp_esp = math_race.get_triangle_corner_angle(distance_to_esp, distance_to_rpi, width_finish)
+    angle_opp_rpi = math_race.get_triangle_corner_angle(distance_to_rpi, width_finish, distance_to_esp)
+    angle_opp_finish = math_race.get_triangle_corner_angle(width_finish, distance_to_esp, distance_to_rpi)
+    #print(f'Angle opposite to esp = {math.degrees(angle_opp_esp)}*')
+    #print(f'Angle opposite to rpi = {math.degrees(angle_opp_rpi)}*')
+    #print(f'Angle opposite to finish = {math.degrees(angle_opp_finish)}*')
+
+    height_from_point_rpi = math_race.get_triangle_height(distance_to_rpi, angle_opp_esp)
+    height_from_point_esp = math_race.get_triangle_height(distance_to_esp, angle_opp_rpi)
+    #print(f'height_rpi = {height_from_point_rpi}m - height_esp = {height_from_point_esp}m')
+    distance_to_finish = (height_from_point_rpi + height_from_point_esp) / 2.0
+    debug_msg = f'distance to finish = {distance_to_finish}m'
+    if(was_changed != 0):
+        debug_msg += f'------Distances did not follow maximum rules'
+    print(debug_msg)
 
 if __name__ == '__main__':
     try:
