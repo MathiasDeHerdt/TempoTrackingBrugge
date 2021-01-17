@@ -1,6 +1,10 @@
 // ---------- TESTDATA ----------
 
-const resulttbl = '{"resulttbl":[' +
+let counter = 0;
+const max_etappes = 10;
+
+
+const resulttbl3 = '{"resulttbl":[' +
 '{"ResultID":"0","Date":"","":"","PlayerID":"0"},' +
 '{"ResultID":"1","Date":"2021","Time":"124","PlayerID":"2"},' +
 '{"ResultID":"2","Date":"2021","Time":"129","PlayerID":"4"},' +
@@ -12,6 +16,21 @@ const resulttbl = '{"resulttbl":[' +
 '{"ResultID":"8","Date":"2021","Time":"156","PlayerID":"5"},' +
 '{"ResultID":"9","Date":"2021","Time":"164","PlayerID":"3"},' +
 '{"ResultID":"10","Date":"2021","Time":"187","PlayerID":"1"}]}';
+
+const resulttbl5 = '{"resulttbl":[' +
+'{"ResultID":"0","Date":"","":"","PlayerID":"0"},' +
+'{"ResultID":"1","Date":"2021","Time":"224","PlayerID":"4"},' +
+'{"ResultID":"2","Date":"2021","Time":"229","PlayerID":"3"},' +
+'{"ResultID":"3","Date":"2021","Time":"238","PlayerID":"6"},' +
+'{"ResultID":"4","Date":"2021","Time":"242","PlayerID":"7"},' +
+'{"ResultID":"5","Date":"2021","Time":"245","PlayerID":"5"},' +
+'{"ResultID":"6","Date":"2021","Time":"249","PlayerID":"1"},' +
+'{"ResultID":"7","Date":"2021","Time":"255","PlayerID":"10"},' +
+'{"ResultID":"8","Date":"2021","Time":"256","PlayerID":"9"},' +
+'{"ResultID":"9","Date":"2021","Time":"264","PlayerID":"8"},' +
+'{"ResultID":"10","Date":"2021","Time":"287","PlayerID":"2"}]}';
+
+const resulttbl = [resulttbl3, resulttbl5]
 
 const playertbl = '{"playertbl":[' +
 '{"PlayerID":"0","PlayerName":"","GroupName":"","BeaconID":"0","Team":""},' +
@@ -26,15 +45,53 @@ const playertbl = '{"playertbl":[' +
 '{"PlayerID":"9","PlayerName":"John","GroupName":"IOT","BeaconID":"9","Team":"ineos-grenadiers"},' +
 '{"PlayerID":"10","PlayerName":"Louis","GroupName":"IOT","BeaconID":"10","Team":"israel-start-up-nation"}]}';
 
+function dropDown(){
+  counter += 1;
+  let dropdown = document.querySelector(".c-wrapper-dropdown");
+
+  if (counter == 1){
+    dropdown.classList.add("active");
+  }
+
+  if (counter == 2){
+    dropdown.classList.remove("active");
+    counter = 0;
+  }
+  
+}
+
+function showEtappes(etappes) {
+  removeLeaderboard();
+  getLeaderboard(etappes);
+}
+
 function selectTeam(team) {
     var team_selected = `<img class="c-img-icon" src="Images/teams/${team}-2021.png" alt="${team}-2021">`;
     return team_selected;
 }
 
-const getLeaderboard = async () => {
-    var object_result = JSON.parse(resulttbl);
+function removeLeaderboard() {
+	while (row_container.firstChild) {
+		row_container.removeChild(row_container.lastChild);
+	}
+}
+
+const getLeaderboard = async (etappes) => {
+    var result;
+
+    if (etappes == 3) {
+      result = resulttbl3
+    }
+    else if (etappes == 5) {
+      result = resulttbl5;
+    }
+    
+    var object_result = JSON.parse(result);
     var object_player = JSON.parse(playertbl);
+
+
     var total_number = Object.keys(object_result.resulttbl).length;
+    
     for (let number = 0; number <= total_number; number++) {
         var count = Object.keys(object_player.playertbl).length;
 
@@ -99,8 +156,6 @@ function showPodium(number, name, team, time) {
   var second = document.getElementById('second');
   var third = document.getElementById('third');
 
-  console.log(team)
-
   if (number == 1) {
     const firstInnerHTML = `
     <div class="c-circle" id="first">
@@ -141,7 +196,7 @@ function showPodium(number, name, team, time) {
     third.innerHTML = thirdInnerHTML;
   }
   else {
-    console.log("Niet op het podium");
+
   }
 
 };
@@ -149,5 +204,7 @@ function showPodium(number, name, team, time) {
 document.addEventListener('DOMContentLoaded', function () {
   console.log('Script loaded!');
   const row_container = document.getElementById('row_container');
-  getLeaderboard();
+  getLeaderboard(3);
+  const dropdown = document.querySelector(".c-wrapper-dropdown");
+  dropdown.addEventListener("click",dropDown);
 });
