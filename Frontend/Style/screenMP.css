@@ -459,7 +459,10 @@ select {
   align-content: center;
   width: 2rem;
   height:2rem;
-  display: flex;
+  position: fixed;
+  left:6%;
+  top:4%;
+  z-index: 100;
 
 }
 
@@ -503,7 +506,7 @@ select {
   opacity: 1;
   overflow-x: hidden;
   transition: 0.5s;
-  z-index: 30;
+  z-index: 1000;
   text-align: center;
   transform: translatex(-100%);
 }
@@ -809,10 +812,24 @@ select {
 }
 
 
-.c-etappe{
+
+.c-etappe__1{
   display: grid;
   grid-template-columns: 1fr 14rem 1fr;
-  grid-template-rows: 1rem 10rem 1rem;
+  grid-template-rows: 1rem 6rem 1rem;
+}
+
+
+.c-etappe__2{
+  display: grid;
+  grid-template-columns: 1fr 14rem 1fr;
+  grid-template-rows: 1rem 8rem 1rem;
+}
+
+.c-etappe__3{
+  display: grid;
+  grid-template-columns: 1fr 14rem 1fr;
+  grid-template-rows: 1rem 10.25rem 1rem;
 }
 
 .c-etappe__card{
@@ -875,7 +892,7 @@ select {
 .o-topPage{
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-content: flex-start;
   
 }
@@ -883,6 +900,7 @@ select {
 .c-wrapper{
   width: 40%;
   height: 2.25rem;
+
 }
 
 .c-wrapper-dropdown {
