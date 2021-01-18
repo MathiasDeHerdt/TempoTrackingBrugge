@@ -153,9 +153,6 @@ function validateSettings() {
             global_player_name = select_name
             global_team_name = select_team
 
-            // console.log("Player " + i + " name: " + select_name);
-            // console.log("Player " + i + " team: " + select_team);
-
             if (select_name && select_team) {
                 validate_game_settings = true;
             }
