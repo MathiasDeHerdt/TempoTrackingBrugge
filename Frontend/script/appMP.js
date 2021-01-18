@@ -1,5 +1,5 @@
 const lanIP = `${window.location.hostname}:5000`;
-const socket = io(`http://${lanIP}`);
+//const socket = io(`http://${lanIP}`);
 
 const script = function () {
     function timeToString(time) {
@@ -57,7 +57,7 @@ const script = function () {
         console.log("Game starts in 10 seconds")
 
         const startTimer = 'start!';
-        socket.emit('F2B_start_timer', startTimer)
+        //socket.emit('F2B_start_timer', startTimer)
 
         setTimeout(start, 2000) // staat nu op 2sec om te testen
     }
@@ -135,6 +135,7 @@ const script = function () {
 
         gridButtons.classList.add("o-hide")
         playButtonMain.classList.add("o-hide")
+
 
         clearInterval(timerInterval);
         print("00:00:00");
@@ -3342,7 +3343,7 @@ const script = function () {
         }
   
         let html = document.querySelector(".js-etappes")
-        html.innerHTML = createEtappeHTML(a0.textContent,3,7);   
+        html.innerHTML = createEtappeHTML(a0.textContent,3,3);   
     }
   
     function SelectOption2(){
@@ -3356,7 +3357,7 @@ const script = function () {
         }
   
         let html = document.querySelector(".js-etappes")
-        html.innerHTML = createEtappeHTML(a0.textContent,3,7);
+        html.innerHTML = createEtappeHTML(a0.textContent,1,3);
       }
   
     //Make items in dropdown clickable and add functions to them (SelectOption1 & SelectOption2)
@@ -3397,6 +3398,7 @@ const script = function () {
 // #region ==== DOM //
 document.addEventListener('DOMContentLoaded', function () {
     console.log("DOM - Main Page")
+    
 
     script()
 });

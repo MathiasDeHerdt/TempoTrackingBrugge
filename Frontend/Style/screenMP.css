@@ -447,17 +447,19 @@ select {
   padding: 0.2rem;
   display: flex;
   align-content: center;
+  justify-content: center;
   width: 2rem;
   height: 2rem;
   position: fixed;
-  left: 6%;
-  top: 4%;
+  left: 4%;
+  top: 3.5%;
   z-index: 100;
 }
 
 .c-button-nav:focus {
   border: 1px solid var(--global-color-beta-neutral);
 }
+
 
 .c-buttons_mainPage__layout {
   display: block;
@@ -466,6 +468,8 @@ select {
   width: 8.5rem;
   height: 2.5rem;
   margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding: 0;
 }
 
 .c-button_mainPage__save-color {
@@ -879,7 +883,7 @@ select {
 }
 
 .c-wrapper {
-  width: 40%;
+  width: 8rem;
   height: 2.25rem;
 }
 
@@ -989,6 +993,227 @@ select {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   max-height: 5.5rem;
 }
+
+
+
+@media(min-width: 640px){
+  .c-etappe__1 {
+    display: grid;
+    grid-template-columns: 1fr 24rem 1fr;
+    grid-template-rows: 1rem 7rem 2rem;
+  }
+  
+  .c-etappe__2 {
+    display: grid;
+    grid-template-columns: 1fr 24rem 1fr;
+    grid-template-rows: 1rem 9.25rem 2rem;
+  }
+  
+  .c-etappe__3 {
+    grid-template-columns: 1fr 24rem 1fr;
+    grid-template-rows: 1rem 12rem 2rem;
+  }
+
+  .c-wrapper {
+    width: 12rem;
+  }
+
+  .c-nav {
+    width: 30%;
+  }
+
+  .c-circleTimer {
+    height: 6rem;
+    width: 18rem;
+  }
+
+  .u-font-time {
+    font-weight: 300;
+    font-size: var(--global-fz-lg-xx);
+  }
+  .c-buttonPlay {
+    width: 5.75rem;
+    height: 5.75rem;
+  }
+
+  .c-buttonSVG {
+    height: 5rem;
+    width: 5rem;
+  }
+
+  .c-button-nav {
+    width: 3rem;
+    height: 3rem;
+    left: 3%;
+    top: 2.25%;
+  }
+  .c-navSVG{
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .c-buttons_mainPage__layout {
+    width: 10.5rem;
+    height: 3rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 0;
+    font-size: 1.25rem;
+  }
+
+  .c-text__info{
+    font-size: 1rem;
+  }
+
+  .c-etappe__title{
+    font-size: 1.25rem;
+  }
+
+  .c-etappe__playersTotal{
+    font-size: 1rem;
+    margin:0.75rem 1.25rem 0 1.25rem
+  }
+  .c-button-grid {
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-bottom: 1.5rem;
+  }
+
+  .c-app__logo{
+    height: 4rem;
+  }
+
+  .c-logo{
+    font-size: 1.05rem;
+  }
+
+  .c-main-nav__link{
+    font-size: 1.15rem;
+  }
+
+  .c-main-nav__icon{
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.75rem;
+  }
+
+
+}
+
+
+@media(min-width: 960px){
+  .c-etappe__1 {
+    display: grid;
+    grid-template-columns: 1fr 24rem 1fr;
+    grid-template-rows: 1rem 8.5rem 3rem;
+  }
+  
+  .c-etappe__2 {
+    display: grid;
+    grid-template-columns: 1fr 24rem 1fr;
+    grid-template-rows: 1rem 11.5rem 3rem;
+  }
+  
+  .c-etappe__3 {
+    grid-template-columns: 1fr 32rem 1fr;
+    grid-template-rows: 1rem 14.5rem 3rem;
+  }
+
+  .c-wrapper {
+    width: 16rem;
+  }
+
+  .c-wrapper-dropdown {
+    font-size: 1.25rem;
+  }
+
+  .c-wrapper-dropdown.active .c-dropdown {
+    max-height: 7rem;
+  }
+
+  .c-nav {
+    width: 25%;
+  }
+
+  .c-circleTimer {
+    height: 8rem;
+    width: 24rem;
+  }
+
+  .u-font-time {
+    font-weight: 300;
+    font-size: var(--global-fz-lg-xxx);
+  }
+  .c-buttonPlay {
+    width: 6.75rem;
+    height: 6.75rem;
+  }
+
+  .c-buttonSVG {
+    height: 6rem;
+    width: 6rem;
+  }
+
+  .c-button-nav {
+    width: 4rem;
+    height: 4rem;
+    left: 2%;
+    top: 0.75%;
+  }
+  .c-navSVG{
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .c-buttons_mainPage__layout {
+    width: 12.5rem;
+    height: 3.5rem;
+
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 0;
+    font-size: 1.25rem;
+  }
+
+  .c-text__info{
+    font-size: 1.25rem;
+  }
+
+  .c-etappe__title{
+    font-size: 1.5rem;
+  }
+
+  .c-etappe__playersTotal{
+    font-size: 1.25rem;
+    margin:1rem 1.5rem 0 1.5rem
+  }
+
+  .c-button-grid {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 1.5rem;
+  }
+  .c-app__logo{
+    height: 5rem;
+  }
+
+  .c-logo{
+    font-size: 1.25rem;
+  }
+
+  .c-main-nav__link{
+    font-size: 1.25rem;
+  }
+
+  .c-main-nav__icon{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 1rem;
+  }
+
+}
+
+
 /* #endregion */
 
 /* #region Leaderboard page */
