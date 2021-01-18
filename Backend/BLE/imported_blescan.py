@@ -100,12 +100,12 @@ def parse_events(sock, loop_count=100):
                 report_pkt_offset = 0
                 for i in range(0, num_reports):
                     # build the return string
-                    address = packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9]) #address
-                    uuid += ',' + returnstringpacket(pkt[report_pkt_offset -22: report_pkt_offset - 6]) #uuid
+                    Adstring = packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9]) #address
+                    Adstring += ',' + returnstringpacket(pkt[report_pkt_offset -22: report_pkt_offset - 6]) #uuid
                     #Adstring += ',' + "%i" % returnnumberpacket(pkt[report_pkt_offset -6: report_pkt_offset - 4])
-                    major += ',' + returnstringpacket(pkt[report_pkt_offset -6: report_pkt_offset - 4]) #major
+                    Adstring += ',' + returnstringpacket(pkt[report_pkt_offset -6: report_pkt_offset - 4]) #major
                     #Adstring += ',' + "%i" % returnnumberpacket(pkt[report_pkt_offset -4: report_pkt_offset - 2])
-                    minor += ',' + returnstringpacket(pkt[report_pkt_offset -4: report_pkt_offset - 2]) #minor
+                    Adstring += ',' + returnstringpacket(pkt[report_pkt_offset -4: report_pkt_offset - 2]) #minor
                     try:
                         #Adstring += ',' + "%i" % struct.unpack("b", pkt[report_pkt_offset -2:report_pkt_offset -1])
                         Adstring += ',' + returnstringpacket(pkt[report_pkt_offset -2:report_pkt_offset -1]) #txpower
@@ -114,7 +114,9 @@ def parse_events(sock, loop_count=100):
                         #Adstring += ',' + returnstringpacket(pkt[report_pkt_offset -1:report_pkt_offset])
                     except: 1
                     #Prevent duplicates in results
-                    if Adstring not in myFullList: myFullList.append(Adstring)
+                    if Adstring not in myFullList: 
+                        myFullList.append(Adstring)
+                        print(f'pkt - {pkt}')
     sock.setsockopt( bluez.SOL_HCI, bluez.HCI_FILTER, old_filter )
     return myFullList
 

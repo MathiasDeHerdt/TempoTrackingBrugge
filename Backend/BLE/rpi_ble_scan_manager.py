@@ -12,7 +12,7 @@ class RpiScanManager():
         self.rpi_deviceId = rpi_deviceId
         self.sock = None
 
-    def scan_initial(self):
+    def __initialize_scan(self):
         try:
             dev_id = 0
             self.sock = rpi_ble_scan.getBLESocket(dev_id)
@@ -25,6 +25,7 @@ class RpiScanManager():
 
     def __scan_details(self):
         list_beacons_found = []
+        self.__initialize_scan() #Needs to happen, otherwise will get stuck
         for i in range(0, self.scan_count_initial):
             registered_beacons = rpi_ble_scan.parse_events(self.sock, 5)
             for registered_beacon in registered_beacons:
@@ -51,14 +52,11 @@ class RpiScanManager():
     def scan_beacon_uuid(self, uuid):
         return self.__scan_details_by_uuid(uuid)
 
-    def scan_beacon_details(self, beacon_manager, dict_manager):
-        list_beacons = self.__scan_details()
-        for beacon in list_beacons:
-            if beacon_manager.append_beacon(beacon):
-                print(str(beacon))
+    def scan_beacon_details(self):
+        return self.__scan_details()
 
-        for key in dict_manager:
-            dict_manager[key].append_beacon_list(beacon_manager.beacons)
+    def scan_beacon_details_filter(self):
+        return self.__scan_details_filter_major_minor()
 
 
     def __scan_rssi(self):

@@ -1,7 +1,5 @@
 import math
 
-print("Importing ble_helper.py....")
-
 
 class BleHelper():
     nValue = 4 #range2 - 4 , afhankelijk van factoren in omgeving die storing verooorzaken

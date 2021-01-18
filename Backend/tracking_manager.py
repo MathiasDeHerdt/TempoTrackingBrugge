@@ -56,12 +56,8 @@ class TrackingManager:
         print("Scanning for beacons to measure...")
         self.rpi_scanner.scan_initial()
         self.rpi_scanner.scan_beacon_details(self.beacon_manager, self.dict_manager)
-        self.advertise_esp()
         self.finish_width = self.get_finish_width()
         print(f'Finish width = {self.finish_width}')
-
-    def advertise_esp(self):
-        self.mqttClient.sendMessage("esp_advertise")
 
     def get_finish_width(self):
         list_esp_scans = self.rpi_scanner.scan_beacon_uuid(self.BEACON_UUID_ESP_1)

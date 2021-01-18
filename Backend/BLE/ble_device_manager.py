@@ -3,7 +3,7 @@
 from .ble_result_manager import ResultManager
 
 class DeviceManager():
-    def __init__(self, deviceId):
+    def __init__(self, deviceId, etappe_count):
         self.__deviceId = deviceId
         self.__list_result_manager = []
 

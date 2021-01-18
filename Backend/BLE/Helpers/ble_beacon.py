@@ -5,23 +5,23 @@ from .ble_helper import BleHelper
 
 class BleMeasurement():
     def __init__(self, jsonObj):
-        self.__deviceId = jsonObj['deviceId'].strip()
+        self.__device_id = jsonObj['deviceId'].strip()
         self.__address = jsonObj['address'].strip()
         self.__rssi = jsonObj['rssi']
-        self.__txPower = -65
+        self.__time_stamp = jsonObj['timestamp']
+        txPower = -65
         try:
             txPower = jsonObj['txPower']
-            self.__txPower = txPower
         except: 1
-        self.__distance = BleHelper.distance_from_rssi(self.rssi, 4, self.__txPower)
-        self.__timestamp = None
+        self.set_tx_power(txPower)
 
-    def set_timestamp(self, timestamp):
-        self.__timestamp = timestamp
+    def set_tx_power(self, txPower):
+        self.__txPower = txPower
+        self.__distance = BleHelper.distance_from_rssi(self.rssi, 4, self.__txPower)
 
     @property
-    def timestamp(self):
-        return self.__timestamp
+    def time_stamp(self):
+        return self.__time_stamp
 
     @property
     def address(self):
@@ -36,11 +36,11 @@ class BleMeasurement():
         return self.__distance
 
     @property
-    def deviceId(self):
-        return self.__deviceId
+    def device_id(self):
+        return self.__device_id
 
     def __str__(self):
-        ret = f'BleMeasurement: deviceId:{self.deviceId} - address:{self.address} - rssi:{self.rssi}dB - distance:{self.distance}m'
+        ret = f'BleMeasurement: deviceId:{self.device_id} - address:{self.address} - timestamp:{self.__time_stamp} - rssi:{self.rssi}dB - txPower:{self.__txPower}dB - distance:{self.distance}m'
         return ret
 
 

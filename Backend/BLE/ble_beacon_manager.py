@@ -1,4 +1,4 @@
-#print("Importing beacon_manager....")
+
 
 class BeaconManager():
     def __init__(self):
@@ -8,7 +8,7 @@ class BeaconManager():
         for beacon in self.__beacons:
             print(beacon)
 
-    def append_beacon(self, beacon):
+    def append(self, beacon):
         can_append = True
         for registered_beacon in self.__beacons:
             if beacon.uuid == registered_beacon.uuid and beacon.address == registered_beacon.address:
@@ -22,11 +22,16 @@ class BeaconManager():
     def clear(self):
         self.__beacons = []
 
+    def get_beacon_by_uuid(self, uuid):
+        for beacon in self.__beacons:
+            if beacon.uuid == uuid:
+                return beacon
+
     def get_beacon_by_address(self, address):
-        for beacon in self.beacons:
+        for beacon in self.__beacons:
             if beacon.address == address:
                 return beacon
 
     @property
-    def beacons(self):
+    def list_beacons(self):
         return self.__beacons

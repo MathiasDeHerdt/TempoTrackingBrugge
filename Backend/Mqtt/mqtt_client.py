@@ -2,7 +2,6 @@ import paho.mqtt.client as mqtt
 import json
 import urllib.request
 
-print("Importing mqtt_client.py....")
 
 class MqttClient:
     def __init__(self, callback_subscribe):
@@ -34,6 +33,10 @@ class MqttClient:
     def subscribe(self):
         self.client.subscribe(self.topic_subscribe)
         self.client.loop_start()
+
+    def unsubscribe(self):
+        self.client.loop_stop()
+        self.client.unsubscribe(self.topic_subscribe)
 
     def publish_to_pi(self, message):
         self.client.publish(self.topic_subscribe, message)
