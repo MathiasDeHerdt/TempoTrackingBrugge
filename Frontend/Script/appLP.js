@@ -5,60 +5,72 @@ const max_etappes = 10;
 
 
 const resulttbl3 = '{"resulttbl":[' +
-'{"ResultID":"0","Date":"","":"","PlayerID":"0"},' +
-'{"ResultID":"1","Date":"2021","Time":"124","PlayerID":"2"},' +
-'{"ResultID":"2","Date":"2021","Time":"129","PlayerID":"4"},' +
-'{"ResultID":"3","Date":"2021","Time":"138","PlayerID":"6"},' +
-'{"ResultID":"4","Date":"2021","Time":"142","PlayerID":"8"},' +
-'{"ResultID":"5","Date":"2021","Time":"145","PlayerID":"10"},' +
-'{"ResultID":"6","Date":"2021","Time":"149","PlayerID":"9"},' +
-'{"ResultID":"7","Date":"2021","Time":"155","PlayerID":"7"},' +
-'{"ResultID":"8","Date":"2021","Time":"156","PlayerID":"5"},' +
-'{"ResultID":"9","Date":"2021","Time":"164","PlayerID":"3"},' +
-'{"ResultID":"10","Date":"2021","Time":"187","PlayerID":"1"}]}';
+  '{"ResultID":"0","Date":"","":"","PlayerID":"0"},' +
+  '{"ResultID":"1","Date":"2021","Time":"124","PlayerID":"2"},' +
+  '{"ResultID":"2","Date":"2021","Time":"129","PlayerID":"4"},' +
+  '{"ResultID":"3","Date":"2021","Time":"138","PlayerID":"6"},' +
+  '{"ResultID":"4","Date":"2021","Time":"142","PlayerID":"8"},' +
+  '{"ResultID":"5","Date":"2021","Time":"145","PlayerID":"10"},' +
+  '{"ResultID":"6","Date":"2021","Time":"149","PlayerID":"9"},' +
+  '{"ResultID":"7","Date":"2021","Time":"155","PlayerID":"7"},' +
+  '{"ResultID":"8","Date":"2021","Time":"156","PlayerID":"5"},' +
+  '{"ResultID":"9","Date":"2021","Time":"164","PlayerID":"3"},' +
+  '{"ResultID":"10","Date":"2021","Time":"187","PlayerID":"1"}]}';
 
 const resulttbl5 = '{"resulttbl":[' +
-'{"ResultID":"0","Date":"","":"","PlayerID":"0"},' +
-'{"ResultID":"1","Date":"2021","Time":"224","PlayerID":"4"},' +
-'{"ResultID":"2","Date":"2021","Time":"229","PlayerID":"3"},' +
-'{"ResultID":"3","Date":"2021","Time":"238","PlayerID":"6"},' +
-'{"ResultID":"4","Date":"2021","Time":"242","PlayerID":"7"},' +
-'{"ResultID":"5","Date":"2021","Time":"245","PlayerID":"5"},' +
-'{"ResultID":"6","Date":"2021","Time":"249","PlayerID":"1"},' +
-'{"ResultID":"7","Date":"2021","Time":"255","PlayerID":"10"},' +
-'{"ResultID":"8","Date":"2021","Time":"256","PlayerID":"9"},' +
-'{"ResultID":"9","Date":"2021","Time":"264","PlayerID":"8"},' +
-'{"ResultID":"10","Date":"2021","Time":"287","PlayerID":"2"}]}';
+  '{"ResultID":"0","Date":"","":"","PlayerID":"0"},' +
+  '{"ResultID":"1","Date":"2021","Time":"224","PlayerID":"4"},' +
+  '{"ResultID":"2","Date":"2021","Time":"229","PlayerID":"3"},' +
+  '{"ResultID":"3","Date":"2021","Time":"238","PlayerID":"6"},' +
+  '{"ResultID":"4","Date":"2021","Time":"242","PlayerID":"7"},' +
+  '{"ResultID":"5","Date":"2021","Time":"245","PlayerID":"5"},' +
+  '{"ResultID":"6","Date":"2021","Time":"249","PlayerID":"1"},' +
+  '{"ResultID":"7","Date":"2021","Time":"255","PlayerID":"10"},' +
+  '{"ResultID":"8","Date":"2021","Time":"256","PlayerID":"9"},' +
+  '{"ResultID":"9","Date":"2021","Time":"264","PlayerID":"8"},' +
+  '{"ResultID":"10","Date":"2021","Time":"287","PlayerID":"2"}]}';
 
 const resulttbl = [resulttbl3, resulttbl5]
 
 const playertbl = '{"playertbl":[' +
-'{"PlayerID":"0","PlayerName":"","GroupName":"","BeaconID":"0","Team":""},' +
-'{"PlayerID":"1","PlayerName":"Bent","GroupName":"MCT","BeaconID":"1","Team":"ag2r-citroen-team"},' +
-'{"PlayerID":"2","PlayerName":"Tom","GroupName":"React","BeaconID":"2","Team":"alpecin-fenix"},' +
-'{"PlayerID":"3","PlayerName":"Jan","GroupName":"MIT","BeaconID":"3","Team":"astana-premier-tech"},' +
-'{"PlayerID":"4","PlayerName":"Alex","GroupName":"MCT","BeaconID":"4","Team":"bahrain-victorious"},' +
-'{"PlayerID":"5","PlayerName":"Piet","GroupName":"IOT","BeaconID":"5","Team":"bora-hansgrohe"},' +
-'{"PlayerID":"6","PlayerName":"Matt","GroupName":"MCT","BeaconID":"6","Team":"cofidis-solutions-credits"},' +
-'{"PlayerID":"7","PlayerName":"Rob","GroupName":"React","BeaconID":"7","Team":"deceuninck-quick-step"},' +
-'{"PlayerID":"8","PlayerName":"Seppe","GroupName":"MCT","BeaconID":"8","Team":"groupama-fdj"},' +
-'{"PlayerID":"9","PlayerName":"John","GroupName":"IOT","BeaconID":"9","Team":"ineos-grenadiers"},' +
-'{"PlayerID":"10","PlayerName":"Louis","GroupName":"IOT","BeaconID":"10","Team":"israel-start-up-nation"}]}';
+  '{"PlayerID":"0","PlayerName":"","GroupName":"","BeaconID":"0","Team":""},' +
+  '{"PlayerID":"1","PlayerName":"Bent","GroupName":"MCT","BeaconID":"1","Team":"ag2r-citroen-team"},' +
+  '{"PlayerID":"2","PlayerName":"Tom","GroupName":"React","BeaconID":"2","Team":"alpecin-fenix"},' +
+  '{"PlayerID":"3","PlayerName":"Jan","GroupName":"MIT","BeaconID":"3","Team":"astana-premier-tech"},' +
+  '{"PlayerID":"4","PlayerName":"Alex","GroupName":"MCT","BeaconID":"4","Team":"bahrain-victorious"},' +
+  '{"PlayerID":"5","PlayerName":"Piet","GroupName":"IOT","BeaconID":"5","Team":"bora-hansgrohe"},' +
+  '{"PlayerID":"6","PlayerName":"Matt","GroupName":"MCT","BeaconID":"6","Team":"cofidis-solutions-credits"},' +
+  '{"PlayerID":"7","PlayerName":"Rob","GroupName":"React","BeaconID":"7","Team":"deceuninck-quick-step"},' +
+  '{"PlayerID":"8","PlayerName":"Seppe","GroupName":"MCT","BeaconID":"8","Team":"groupama-fdj"},' +
+  '{"PlayerID":"9","PlayerName":"John","GroupName":"IOT","BeaconID":"9","Team":"ineos-grenadiers"},' +
+  '{"PlayerID":"10","PlayerName":"Louis","GroupName":"IOT","BeaconID":"10","Team":"israel-start-up-nation"}]}';
 
-function dropDown(){
-  counter += 1;
-  let dropdown = document.querySelector(".c-wrapper-dropdown");
+// #region ===== dropdown & HTML generating
 
-  if (counter == 1){
-    dropdown.classList.add("active");
+//Variables
+let counter2 = 0;
+let wrapperdropdown = document.querySelector(".c-wrapper-dropdown");
+var list = [];
+
+
+//Dropdown up / down animation
+function Dropdown() {
+  counter2 += 1;
+
+  if (counter == 1) {
+    wrapperdropdown.classList.add("active");
+    let arrow = document.querySelector(".c-wrapper-dropdown__arrow");
+    arrow.style.transform = "rotate(180deg)";
   }
 
-  if (counter == 2){
-    dropdown.classList.remove("active");
-    counter = 0;
+  if (counter2 == 2) {
+    wrapperdropdown.classList.remove("active");
+    let arrow = document.querySelector(".c-wrapper-dropdown__arrow");
+    arrow.style.transform = "rotate(0deg)";
+    counter2 = 0;
   }
-  
 }
+wrapperdropdown.addEventListener("click", Dropdown);
 
 function showEtappes(etappes) {
   removeLeaderboard();
@@ -66,57 +78,57 @@ function showEtappes(etappes) {
 }
 
 function selectTeam(team) {
-    var team_selected = `<img class="c-img-icon" src="Images/teams/${team}-2021.png" alt="${team}-2021">`;
-    return team_selected;
+  var team_selected = `<img class="c-img-icon" src="Images/teams/${team}-2021.png" alt="${team}-2021">`;
+  return team_selected;
 }
 
 function removeLeaderboard() {
-	while (row_container.firstChild) {
-		row_container.removeChild(row_container.lastChild);
-	}
+  while (row_container.firstChild) {
+    row_container.removeChild(row_container.lastChild);
+  }
 }
 
 const getLeaderboard = async (etappes) => {
-    var result;
+  var result;
 
-    if (etappes == 3) {
-      result = resulttbl3
+  if (etappes == 3) {
+    result = resulttbl3
+  }
+  else if (etappes == 5) {
+    result = resulttbl5;
+  }
+
+  var object_result = JSON.parse(result);
+  var object_player = JSON.parse(playertbl);
+
+
+  var total_number = Object.keys(object_result.resulttbl).length;
+
+  for (let number = 0; number <= total_number; number++) {
+    var count = Object.keys(object_player.playertbl).length;
+
+    for (let i = 0; i <= count - 1; i++) {
+      var res = object_result.resulttbl[number].PlayerID;
+      var pla = object_player.playertbl[i].PlayerID;
+
+      if (res == pla) {
+
+        var team = object_player.playertbl[i].Team;
+
+        var name = object_player.playertbl[i].PlayerName;
+        var icon = selectTeam(team);
+        var group = object_player.playertbl[i].GroupName;
+        var time = object_result.resulttbl[number].Time;
+      }
     }
-    else if (etappes == 5) {
-      result = resulttbl5;
-    }
-    
-    var object_result = JSON.parse(result);
-    var object_player = JSON.parse(playertbl);
-
-
-    var total_number = Object.keys(object_result.resulttbl).length;
-    
-    for (let number = 0; number <= total_number; number++) {
-        var count = Object.keys(object_player.playertbl).length;
-
-        for (let i = 0; i <= count-1; i++) {
-          var res = object_result.resulttbl[number].PlayerID;
-          var pla = object_player.playertbl[i].PlayerID;
-
-          if (res == pla) {
-
-            var team = object_player.playertbl[i].Team;
-
-            var name = object_player.playertbl[i].PlayerName;
-            var icon = selectTeam(team);
-            var group = object_player.playertbl[i].GroupName;
-            var time = object_result.resulttbl[number].Time;
-          }
-        }
-        await createNewRow(number, name, icon, group, time, team);
-	  }
+    await createNewRow(number, name, icon, group, time, team);
+  }
 }
 
 function createNewRow(number, name, icon, group, time, team) {
   const rowEl = document.createElement('tr');
   var rowInnerHTML = "";
-  
+
   if (number <= 3) {
     showPodium(number, name, team, time);
   }
@@ -132,7 +144,7 @@ function createNewRow(number, name, icon, group, time, team) {
       <th>Time</th>
     </tr>
     `;
-  } 
+  }
   else {
     rowEl.classList.add('c-leaderboard-row');
     rowInnerHTML = `
@@ -148,7 +160,7 @@ function createNewRow(number, name, icon, group, time, team) {
 
   rowEl.innerHTML = rowInnerHTML;
 
-	row_container.appendChild(rowEl);
+  row_container.appendChild(rowEl);
 };
 
 function showPodium(number, name, team, time) {
@@ -206,5 +218,5 @@ document.addEventListener('DOMContentLoaded', function () {
   const row_container = document.getElementById('row_container');
   getLeaderboard(3);
   const dropdown = document.querySelector(".c-wrapper-dropdown");
-  dropdown.addEventListener("click",dropDown);
+  dropdown.addEventListener("click", dropDown);
 });
