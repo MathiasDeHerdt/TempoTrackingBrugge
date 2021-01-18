@@ -6,31 +6,42 @@ const max_etappes = 10;
 
 const resulttbl3 = '{"resulttbl":[' +
   '{"ResultID":"0","Date":"","":"","PlayerID":"0"},' +
-  '{"ResultID":"1","Date":"2021","Time":"124","PlayerID":"2"},' +
-  '{"ResultID":"2","Date":"2021","Time":"129","PlayerID":"4"},' +
-  '{"ResultID":"3","Date":"2021","Time":"138","PlayerID":"6"},' +
-  '{"ResultID":"4","Date":"2021","Time":"142","PlayerID":"8"},' +
-  '{"ResultID":"5","Date":"2021","Time":"145","PlayerID":"10"},' +
-  '{"ResultID":"6","Date":"2021","Time":"149","PlayerID":"9"},' +
-  '{"ResultID":"7","Date":"2021","Time":"155","PlayerID":"7"},' +
-  '{"ResultID":"8","Date":"2021","Time":"156","PlayerID":"5"},' +
-  '{"ResultID":"9","Date":"2021","Time":"164","PlayerID":"3"},' +
-  '{"ResultID":"10","Date":"2021","Time":"187","PlayerID":"1"}]}';
+  '{"ResultID":"1","Date":"2021","Time":"324","PlayerID":"2"},' +
+  '{"ResultID":"2","Date":"2021","Time":"329","PlayerID":"4"},' +
+  '{"ResultID":"3","Date":"2021","Time":"338","PlayerID":"6"},' +
+  '{"ResultID":"4","Date":"2021","Time":"342","PlayerID":"8"},' +
+  '{"ResultID":"5","Date":"2021","Time":"345","PlayerID":"10"},' +
+  '{"ResultID":"6","Date":"2021","Time":"349","PlayerID":"9"},' +
+  '{"ResultID":"7","Date":"2021","Time":"355","PlayerID":"7"},' +
+  '{"ResultID":"8","Date":"2021","Time":"356","PlayerID":"5"},' +
+  '{"ResultID":"9","Date":"2021","Time":"364","PlayerID":"3"},' +
+  '{"ResultID":"10","Date":"2021","Time":"387","PlayerID":"1"}]}';
 
 const resulttbl5 = '{"resulttbl":[' +
   '{"ResultID":"0","Date":"","":"","PlayerID":"0"},' +
-  '{"ResultID":"1","Date":"2021","Time":"224","PlayerID":"4"},' +
-  '{"ResultID":"2","Date":"2021","Time":"229","PlayerID":"3"},' +
-  '{"ResultID":"3","Date":"2021","Time":"238","PlayerID":"6"},' +
-  '{"ResultID":"4","Date":"2021","Time":"242","PlayerID":"7"},' +
-  '{"ResultID":"5","Date":"2021","Time":"245","PlayerID":"5"},' +
-  '{"ResultID":"6","Date":"2021","Time":"249","PlayerID":"1"},' +
-  '{"ResultID":"7","Date":"2021","Time":"255","PlayerID":"10"},' +
-  '{"ResultID":"8","Date":"2021","Time":"256","PlayerID":"9"},' +
-  '{"ResultID":"9","Date":"2021","Time":"264","PlayerID":"8"},' +
-  '{"ResultID":"10","Date":"2021","Time":"287","PlayerID":"2"}]}';
+  '{"ResultID":"1","Date":"2021","Time":"524","PlayerID":"4"},' +
+  '{"ResultID":"2","Date":"2021","Time":"529","PlayerID":"3"},' +
+  '{"ResultID":"3","Date":"2021","Time":"538","PlayerID":"6"},' +
+  '{"ResultID":"4","Date":"2021","Time":"542","PlayerID":"7"},' +
+  '{"ResultID":"5","Date":"2021","Time":"545","PlayerID":"5"},' +
+  '{"ResultID":"6","Date":"2021","Time":"549","PlayerID":"1"},' +
+  '{"ResultID":"7","Date":"2021","Time":"555","PlayerID":"10"},' +
+  '{"ResultID":"8","Date":"2021","Time":"556","PlayerID":"9"},' +
+  '{"ResultID":"9","Date":"2021","Time":"564","PlayerID":"8"},' +
+  '{"ResultID":"10","Date":"2021","Time":"587","PlayerID":"2"}]}';
 
-const resulttbl = [resulttbl3, resulttbl5]
+const resulttbl7 = '{"resulttbl":[' +
+  '{"ResultID":"0","Date":"","":"","PlayerID":"0"},' +
+  '{"ResultID":"1","Date":"2021","Time":"724","PlayerID":"10"},' +
+  '{"ResultID":"2","Date":"2021","Time":"729","PlayerID":"9"},' +
+  '{"ResultID":"3","Date":"2021","Time":"738","PlayerID":"8"},' +
+  '{"ResultID":"4","Date":"2021","Time":"742","PlayerID":"7"},' +
+  '{"ResultID":"5","Date":"2021","Time":"745","PlayerID":"6"},' +
+  '{"ResultID":"6","Date":"2021","Time":"749","PlayerID":"5"},' +
+  '{"ResultID":"7","Date":"2021","Time":"755","PlayerID":"4"},' +
+  '{"ResultID":"8","Date":"2021","Time":"756","PlayerID":"3"},' +
+  '{"ResultID":"9","Date":"2021","Time":"764","PlayerID":"2"},' +
+  '{"ResultID":"10","Date":"2021","Time":"787","PlayerID":"1"}]}';
 
 const playertbl = '{"playertbl":[' +
   '{"PlayerID":"0","PlayerName":"","GroupName":"","BeaconID":"0","Team":""},' +
@@ -45,32 +56,95 @@ const playertbl = '{"playertbl":[' +
   '{"PlayerID":"9","PlayerName":"John","GroupName":"IOT","BeaconID":"9","Team":"ineos-grenadiers"},' +
   '{"PlayerID":"10","PlayerName":"Louis","GroupName":"IOT","BeaconID":"10","Team":"israel-start-up-nation"}]}';
 
-// #region ===== dropdown & HTML generating
+const DropdownEtappes = function () {
+  // ################################
+  // Code dropdown en andere html dingen (van Thibeau)
+  // ################################
 
-//Variables
-let counter2 = 0;
-let wrapperdropdown = document.querySelector(".c-wrapper-dropdown");
-var list = [];
+  //Variables
+  let counter = 0
+  let wrapperdropdown = document.querySelector(".c-wrapper-dropdown")
+  var list = [];
 
+  //Dropdown up / down animation
+  function Dropdown() {
+    counter += 1;
+    if (counter == 1) {
+      wrapperdropdown.classList.add("active");
+      let arrow = document.querySelector(".c-wrapper-dropdown__arrow")
+      arrow.style.transform = "rotate(180deg)"
+    }
+    if (counter == 2) {
+      wrapperdropdown.classList.remove("active");
+      let arrow = document.querySelector(".c-wrapper-dropdown__arrow")
+      arrow.style.transform = "rotate(0deg)"
+      counter = 0;
+    }
+  }
+  wrapperdropdown.addEventListener("click", Dropdown)
 
-//Dropdown up / down animation
-function Dropdown() {
-  counter2 += 1;
-
-  if (counter == 1) {
-    wrapperdropdown.classList.add("active");
-    let arrow = document.querySelector(".c-wrapper-dropdown__arrow");
-    arrow.style.transform = "rotate(180deg)";
+  const createEtappeHTML = function(etappes){
+    removeLeaderboard();
+    getLeaderboard(etappes);
   }
 
-  if (counter2 == 2) {
-    wrapperdropdown.classList.remove("active");
-    let arrow = document.querySelector(".c-wrapper-dropdown__arrow");
-    arrow.style.transform = "rotate(0deg)";
-    counter2 = 0;
+  //Make list with li items to make them clickable with ClickFunction
+  const listItems = document.querySelectorAll('.c-dropdown li');
+  for (let i = 0; i <= listItems.length - 1; i++) {
+    list.push(listItems[i].id);
   }
+
+  //Functions connected to a click event
+  function SelectOption1() {
+    let a1 = document.getElementById("a1");
+    let a0 = document.getElementById("a0");
+
+    if (a0 != a1) {
+      let savedWord1 = a0.textContent;
+      a0.innerHTML = a1.textContent;
+      a1.innerHTML = savedWord1;
+    }
+
+    let html = document.querySelector(".js-etappes")
+    html.innerHTML = createEtappeHTML(a0.textContent.slice(0,1));
+  }
+
+  function SelectOption2() {
+    let a2 = document.getElementById("a2");
+    let a0 = document.getElementById("a0");
+
+    if (a0 != a2) {
+      let savedWord2 = a0.textContent;
+      a0.innerHTML = a2.textContent;
+      a2.innerHTML = savedWord2;
+    }
+
+    let html = document.querySelector(".js-etappes")
+    html.innerHTML = createEtappeHTML(a0.textContent.slice(0,1));
+  }
+
+  //Make items in dropdown clickable and add functions to them (SelectOption1 & SelectOption2)
+  //o is the element of the list
+  function Clickfunction(o) {
+    let option = document.getElementById(o);
+
+    if (o == "option1") {
+      option.addEventListener("click", SelectOption1)
+    }
+
+    if (o == "option2") {
+      option.addEventListener("click", SelectOption2)
+    }
+  }
+
+  // for each item in the list, add the Clickfunction to it.
+  list.forEach(Clickfunction)
+
+  // ################################
+  // Code code dropdown en andere html dingen (van Thibeau)
+  // ################################
+
 }
-wrapperdropdown.addEventListener("click", Dropdown);
 
 function showEtappes(etappes) {
   removeLeaderboard();
@@ -97,6 +171,9 @@ const getLeaderboard = async (etappes) => {
   else if (etappes == 5) {
     result = resulttbl5;
   }
+  else if (etappes == 7) {
+    result = resulttbl7;
+  }
 
   var object_result = JSON.parse(result);
   var object_player = JSON.parse(playertbl);
@@ -104,7 +181,7 @@ const getLeaderboard = async (etappes) => {
 
   var total_number = Object.keys(object_result.resulttbl).length;
 
-  for (let number = 0; number <= total_number; number++) {
+  for (let number = 0; number <= total_number-1; number++) {
     var count = Object.keys(object_player.playertbl).length;
 
     for (let i = 0; i <= count - 1; i++) {
@@ -217,6 +294,5 @@ document.addEventListener('DOMContentLoaded', function () {
   console.log('Script loaded!');
   const row_container = document.getElementById('row_container');
   getLeaderboard(3);
-  const dropdown = document.querySelector(".c-wrapper-dropdown");
-  dropdown.addEventListener("click", dropDown);
+  DropdownEtappes();
 });
