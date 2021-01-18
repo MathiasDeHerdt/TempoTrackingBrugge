@@ -28,6 +28,7 @@ class PiScannerBle:
 
 
     def get_details(self, device):
+        print(f'get_details')
         address = device.addr
         rssi = device.rssi
         txPower = 0

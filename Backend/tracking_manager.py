@@ -30,6 +30,7 @@ class TrackingManager:
         self.is_rssi_scan_active = False
 
         self.finish_width = 1.3
+        self.BEACON_UUID_ESP_1 = "6465766963655f6573705f31020a0305" # 6fc88bbe756698da486866a36ec78e05 #"8ec76ea3-6668-48da-9866-75be8bc86f4d" #unexpected results with ESP
 
         self.beacon_manager = BeaconManager()
         self.dict_manager = {
@@ -53,17 +54,59 @@ class TrackingManager:
     #=================================================================================================================
     def register_beacons_for_game(self):
         print("Scanning for beacons to measure...")
-        self.rpi_scanner.scan_initial(self.beacon_manager, self.dict_manager)
+        self.rpi_scanner.scan_initial()
+        self.rpi_scanner.scan_beacon_details(self.beacon_manager, self.dict_manager)
+        self.advertise_esp()
+        self.finish_width = self.get_finish_width()
+        print(f'Finish width = {self.finish_width}')
+
+    def advertise_esp(self):
+        self.mqttClient.sendMessage("esp_advertise")
+
+    def get_finish_width(self):
+        list_esp_scans = self.rpi_scanner.scan_beacon_uuid(self.BEACON_UUID_ESP_1)
+
+        #print(f'list_esp_scans {list_esp_scans}')
+        try:
+            esp_dev = list_esp_scans[0]
+            list_scans = self.rpi_scanner.scan_rssi_by_address(esp_dev.address, 5)
+            esp_beacon = self.beacon_manager.get_beacon_by_address(esp_dev.address)
+
+            esp_beacon.setTxPower(-65)
+            txPower = esp_beacon.txPower #tx from ble is flawed
+            finish_width = 0
+
+            for scan in list_scans:
+                print(f'scan {scan}')
+                jsonObj = json.loads(scan)
+                jsonObj['txPower'] = txPower
+                measure = BleMeasurement(jsonObj)
+                print(f'measure {measure}')
+                finish_width += measure.distance
+            finish_width = finish_width / len(list_scans)
+            return finish_width
+        except:
+            print("No ESP was detected")
+            return self.finish_width
 
     def begin_scanning_for_distance(self):
         self.is_rssi_scan_active = True
-        self.execute_menu_command(4)
+        self.start_esp_scan()
         self.current_rpi_rssi_scan = threading.Thread(target=self.thread_scan)
         self.current_rpi_rssi_scan.start()
+
+    def stop_scanning(self):
+        self.is_rssi_scan_active = False
+        self.stop_esp_scan()
 
     def thread_scan(self):
         results = self.rpi_scanner.scan_rssi()
         for result in results:
+            try: 
+                beacon = self.beacon_manager.get_beacon_by_address(result["address"])
+                result["txPower"] = beacon.txPower
+            except:1
+
             self.mqttClient.publish_to_pi(result)
         if self.is_rssi_scan_active == True:
             self.current_rpi_rssi_scan = threading.Thread(target=self.thread_scan)
@@ -77,9 +120,6 @@ class TrackingManager:
     def stop_esp_scan(self):
         self.mqttClient.sendMessage("esp_scan_stop")
 
-    def stop_scanning(self):
-        self.is_rssi_scan_active = False
-        self.stop_esp_scan()
 
     # REGISTERING
     #=================================================================================================================

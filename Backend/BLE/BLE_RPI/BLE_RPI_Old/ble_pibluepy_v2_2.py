@@ -9,7 +9,7 @@ class Beacon(object):
         self._address = address
     def __str__(self):
         ret = "Beacon: address:{ADDR} uuid:{UUID} major:{MAJOR}"\
-                " minor:{MINOR} txpower:{POWER} rssi:{RSSI}"\
+                " minor:{MINOR} txPower:{POWER} rssi:{RSSI}"\
                 .format(ADDR=self._address, UUID=self._uuid, MAJOR=self._major,
                         MINOR=self._minor, POWER=self._power, RSSI=self._rssi)
         return ret

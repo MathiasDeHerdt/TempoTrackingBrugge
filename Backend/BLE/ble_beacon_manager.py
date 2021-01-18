@@ -22,6 +22,11 @@ class BeaconManager():
     def clear(self):
         self.__beacons = []
 
+    def get_beacon_by_address(self, address):
+        for beacon in self.beacons:
+            if beacon.address == address:
+                return beacon
+
     @property
     def beacons(self):
         return self.__beacons

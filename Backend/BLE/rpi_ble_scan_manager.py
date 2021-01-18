@@ -10,45 +10,91 @@ class RpiScanManager():
         self.scan_duration = scan_duration #minimum is 1 sec to avoid infinite loop
         self.scanner_measure = btle.Scanner()
         self.rpi_deviceId = rpi_deviceId
+        self.sock = None
 
-    def scan_initial(self, beacon_manager, dict_manager):
+    def scan_initial(self):
         try:
             dev_id = 0
-            sock = rpi_ble_scan.getBLESocket(dev_id)
-            print("BLE thread started")
+            self.sock = rpi_ble_scan.getBLESocket(dev_id)
         except Exception as e:
             print(f'\n-->ERROR accessing bluetooth device!<---\nErrorMessage:{e}\n\n')
 
-        rpi_ble_scan.hci_le_set_scan_parameters(sock)
-        rpi_ble_scan.hci_enable_le_scan(sock)
-        
+        rpi_ble_scan.hci_le_set_scan_parameters(self.sock)
+        rpi_ble_scan.hci_enable_le_scan(self.sock)
+
+
+    def __scan_details(self):
+        list_beacons_found = []
         for i in range(0, self.scan_count_initial):
-            registered_beacons = rpi_ble_scan.parse_events(sock, 10)
+            registered_beacons = rpi_ble_scan.parse_events(self.sock, 5)
             for registered_beacon in registered_beacons:
-                #print(str(registered_beacon))
                 beacon = BleBeacon(registered_beacon)
-                if beacon.major == 2 and beacon.minor == 10:
-                    if beacon_manager.append_beacon(beacon):
-                        print(str(beacon))
+                list_beacons_found.append(beacon)
+        return list_beacons_found
+
+    def __scan_details_filter_major_minor(self, major = 2, minor = 10):
+        filter_list = []
+        list_beacons_found = self.__scan_details()
+        for beacon in list_beacons_found:
+            if beacon.major == 2 and beacon.minor == 10:
+                filter_list.append(beacon)
+        return filter_list
+
+    def __scan_details_by_uuid(self, uuid):
+        filter_list = []
+        list_beacons_found = self.__scan_details()
+        for beacon in list_beacons_found:
+            if beacon.uuid == uuid:
+                filter_list.append(beacon)
+        return filter_list
+
+    def scan_beacon_uuid(self, uuid):
+        return self.__scan_details_by_uuid(uuid)
+
+    def scan_beacon_details(self, beacon_manager, dict_manager):
+        list_beacons = self.__scan_details()
+        for beacon in list_beacons:
+            if beacon_manager.append_beacon(beacon):
+                print(str(beacon))
 
         for key in dict_manager:
             dict_manager[key].append_beacon_list(beacon_manager.beacons)
 
 
-    def scan_rssi(self):
-        scan_results = []
+    def __scan_rssi(self):
+        list_beacons = []
         devices = self.scanner_measure.scan(self.scan_duration)
         for device in devices:
-            tempDict = {
+            devObj = {
                 'deviceId': self.rpi_deviceId,
                 'address':str(device.addr), 
                 'name': '',
                 'rssi': int(str(device.rssi))
                 }
-            jsonObj = json.dumps(tempDict)
+            list_beacons.append(devObj)
+        return list_beacons
+
+
+    def scan_rssi(self):
+        list_beacons = self.__scan_rssi()
+        scan_results = []
+
+        for devObj in list_beacons:
+            jsonObj = json.dumps(devObj)
             scan_results.append(jsonObj)
         return scan_results
 
+
+    def scan_rssi_by_address(self, address, count = 1):
+        scan_results = []
+        for i in range(0, count):
+            list_beacons = self.__scan_rssi()
+
+            for devObj in list_beacons:
+                if(devObj["address"] == address):
+                    jsonObj = json.dumps(devObj)
+                    scan_results.append(jsonObj)
+        return scan_results
 
         
 

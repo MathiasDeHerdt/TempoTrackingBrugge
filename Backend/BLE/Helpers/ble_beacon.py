@@ -8,7 +8,12 @@ class BleMeasurement():
         self.__deviceId = jsonObj['deviceId'].strip()
         self.__address = jsonObj['address'].strip()
         self.__rssi = jsonObj['rssi']
-        self.__distance = BleHelper.distance_from_rssi(self.rssi, 4)
+        self.__txPower = -65
+        try:
+            txPower = jsonObj['txPower']
+            self.__txPower = txPower
+        except: 1
+        self.__distance = BleHelper.distance_from_rssi(self.rssi, 4, self.__txPower)
         self.__timestamp = None
 
     def set_timestamp(self, timestamp):
@@ -42,18 +47,26 @@ class BleMeasurement():
 class BleBeacon:
     def __init__(self, jsonObj):
         self.__address = jsonObj['address'].strip()
+        self.__name = jsonObj['name']
         self.__uuid = jsonObj['uuid'].strip()
-        self.__txPower = jsonObj['txpower']
+        self.__txPower = jsonObj['txPower']
         self.__major = jsonObj['major']
         self.__minor = jsonObj['minor']
 
+    def setTxPower(self, txPower):
+        self.__txPower = txPower
+
     def __str__(self):
-        ret = f'address:{self.address} - uuid:{self.uuid}\nmajor: {self.__major} - minor: {self.__minor} - txPower: {self.__txPower}dB'
+        ret = f'address:{self.address} - name:{self.name} - uuid:{self.uuid}\nmajor: {self.__major} - minor: {self.__minor} - txPower: {self.__txPower}dB'
         return ret
 
     @property
     def address(self):
         return self.__address
+
+    @property
+    def name(self):
+        return self.__name
 
     @property
     def uuid(self):
