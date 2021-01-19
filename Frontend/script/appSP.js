@@ -11,8 +11,9 @@ var global_count_players = "";
 var global_group_name = "";
 
 // Players
-var global_player_name = "";
-var global_team_name = "";
+var array_player_names = []
+var array_player_team = []
+var array_big = []
 
 function selectIcon() {
     for (let i = 1; i <= total_number; i++) {
@@ -134,11 +135,13 @@ function validateSettings() {
         validate_game_settings = false;
     }
 
-    console.log("----- PLAYER SETTINGS ------");
+    console.log("\n----- PLAYER SETTINGS ------");
 
     for (let i = 1; i <= total_number; i++) {
         const name = "select_beacon_" + i;
         const team = "select_team_" + i;
+
+
 
         if (document.getElementById(name) != null) {
             const select_name = document.getElementById(name).value;
@@ -147,11 +150,35 @@ function validateSettings() {
             var playerName = "Player " + i + " name: " + select_name
             var teamName = "Player " + i + " team: " + select_team
 
-            console.log(playerName)
-            console.log(teamName)
+            console.log("Player " + i + " name: " + select_name);
+            console.log("Player " + i + " team: " + select_team);
 
             global_player_name = select_name
             global_team_name = select_team
+
+
+            // kijken of de naam leeg is of als de naam al in de array zit
+
+            if (select_name == "" | array_player_names.includes(select_name)) {
+                console.log("not happening")
+            }
+            // hier voegen we de naam toe aan de array
+            else {
+                array_player_names.push(select_name)
+            }
+
+
+            // kijken of het team leeg is of als het team al in de array zit
+            if (select_team == "" | array_player_team.includes(select_team)) {
+                console.log("not happening")
+            }
+
+            // hier voegen we het team to aan de array
+            else {
+                array_player_team.push(select_team)
+            }
+
+
 
             if (select_name && select_team) {
                 validate_game_settings = true;
@@ -179,7 +206,7 @@ function enableButton() {
     go_to_game.disabled = false;
 
     socket.emit('F2B_game_settings', global_count_players, global_count_etappes, global_group_name)
-    socket.emit('F2B_player_settings', global_player_name, global_team_name)
+    socket.emit('F2B_player_settings', array_player_names, array_player_team)
 }
 
 function goToGame() {

@@ -32,6 +32,9 @@ endpoint = '/api/v1'
 playercount = 0
 etappecount = 0
 
+playerName = ""
+teamName = ""
+
 
 # =========================================================
 # Hardware functions
@@ -72,8 +75,8 @@ def all_game_settings(players, etappes, group):  # game settings
     # enkel het eerste deel hebben we nodig yyyy-mm-dd hh:mm:ss
     dateToday = substring[0]
 
-    tekst = f'# players: {players}\n# etappes: {etappes}\nGroup name: {group}'
-    print(tekst)
+    # tekst = f('# players: {players}\n# etappes: {etappes}\nGroup name: {group}')
+    # print(tekst)
 
     # gamesettings data naar de database sturen
     # gamesettings_to_datebase(players, etappes, group, dateToday)
@@ -87,9 +90,18 @@ def all_game_settings(players, etappes, group):  # game settings
 
 @socketio.on('F2B_player_settings')  # player settings
 def all_player_settings(name, team):
-    print("--- Player settings ---")
-    tekst = f'Player name: {name}\nTeam name: {team}'
-    print(tekst)
+    global playerName
+    global teamName
+
+    playerName = name
+    teamName = team
+
+    for i in range(len(playerName)):
+        # uploadtodatabase(names[i],teams[i])
+
+        print(f"user {playerName[i]} zit in team {teamName[i]}")
+
+    return playerName, playercount
 
 
 @socketio.on('F2B_send_player_count')  # sending player count to frontend
@@ -117,9 +129,15 @@ def emit_to_front():
     global playercount
     global etappecount
 
+    global playerName
+    global teamName
+
     # game settings
     socketio.emit('B2F_game_settings',  {
                   "Playercount": playercount, "Etappecount": etappecount})
+
+    socketio.emit("B2F_player_settings", {
+                  "Playername": playerName, "Teamname": teamName})
 
     # player settings
 # =========================================================

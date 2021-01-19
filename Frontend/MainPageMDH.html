@@ -5,24 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="Images/Favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="Images/Favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="Images/Favicon/favicon-16x16.png">
+    <link rel="manifest" href="Images/Favicon/site.webmanifest">
+    <link rel="mask-icon" href="Images/Favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
 
     <link rel="stylesheet" href="style/normalize.css">
     <link rel="stylesheet" href="style/screenMP.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
     </style>
 
-    <script src="./script/appMP.js"></script>
-    <script src="./script/connectie.js"></script>
+    <script src="./script/appMPV2.js"></script>
     <script src="./script/sidebar.js"></script>
 
 </head>
 <title>MainPage</title>
+
 </head>
 
 <body>
+    <!-- Navigation/Sidebar -->
     <div class="c-nav" id="myNav">
 
         <div class="c-nav-content">
@@ -92,98 +101,119 @@
             </nav>
         </div>
     </div>
+    <!-- Hamburger icon and dropdown -->
+    <section class="o-row o-row__top">
+        <div class="o-container o-topPage">
 
-        <!-- Hamburger icon and dropdown -->
-        <section class="o-row o-row__top">
-            <div class="o-container o-topPage">
+            <button class="c-button-nav" id="js-button-open">
 
-                <button class="c-button-nav" id="js-button-open">
+                <svg class="c-navSVG" id="Nav_icon" data-name="Nav icon" xmlns="http://www.w3.org/2000/svg" width="20"
+                    height="16" viewBox="0 0 20 16">
+                    <rect id="Rectangle_14" data-name="Rectangle 14" width="20" height="4" rx="2"
+                        transform="translate(0 12)" />
+                    <rect id="Rectangle_15" data-name="Rectangle 15" width="20" height="4" rx="2"
+                        transform="translate(0 6)" />
+                    <rect id="Rectangle_16" data-name="Rectangle 16" width="20" height="4" rx="2" />
+                </svg>
 
-                    <svg id="Nav_icon" data-name="Nav icon" xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16">
-                        <rect id="Rectangle_14" data-name="Rectangle 14" width="20" height="4" rx="2" transform="translate(0 12)"/>
-                        <rect id="Rectangle_15" data-name="Rectangle 15" width="20" height="4" rx="2" transform="translate(0 6)"/>
-                        <rect id="Rectangle_16" data-name="Rectangle 16" width="20" height="4" rx="2"/>
-                    </svg>
-                        
-                </button>
+            </button>
 
-                <div class="c-wrapper">
-                    <div class="c-wrapper-dropdown" tabindex="1">
-                        <span id ="a0" class="c-wrapper-dropdown__activeObject">Time</span> 
-                        <svg class="c-wrapper-dropdown__arrow" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                            width="284.929px" height="284.929px" viewBox="0 0 284.929 284.929" style="enable-background:new 0 0 284.929 284.929;"
-                            xml:space="preserve">
-                            <path d="M282.082,76.511l-14.274-14.273c-1.902-1.906-4.093-2.856-6.57-2.856c-2.471,0-4.661,0.95-6.563,2.856L142.466,174.441
+            <div class="c-wrapper">
+                <div class="c-wrapper-dropdown" tabindex="1">
+                    <span id="a0" class="c-wrapper-dropdown__activeObject">Time</span>
+                    <svg class="c-wrapper-dropdown__arrow" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="284.929px" height="284.929px"
+                        viewBox="0 0 284.929 284.929" style="enable-background:new 0 0 284.929 284.929;"
+                        xml:space="preserve">
+                        <path d="M282.082,76.511l-14.274-14.273c-1.902-1.906-4.093-2.856-6.57-2.856c-2.471,0-4.661,0.95-6.563,2.856L142.466,174.441
                                 L30.262,62.241c-1.903-1.906-4.093-2.856-6.567-2.856c-2.475,0-4.665,0.95-6.567,2.856L2.856,76.515C0.95,78.417,0,80.607,0,83.082
                                 c0,2.473,0.953,4.663,2.856,6.565l133.043,133.046c1.902,1.903,4.093,2.854,6.567,2.854s4.661-0.951,6.562-2.854L282.082,89.647
-                                c1.902-1.903,2.847-4.093,2.847-6.565C284.929,80.607,283.984,78.417,282.082,76.511z"/>
+                                c1.902-1.903,2.847-4.093,2.847-6.565C284.929,80.607,283.984,78.417,282.082,76.511z" />
+                    </svg>
+                    <ul class="c-dropdown">
+                        <li id="option1"><a id="a1" href="#">Speed</a></li>
+                        <li id="option2"><a id="a2" href="#">Results</a></li>
+                    </ul>
+                </div>
+                ​
+            </div>
+
+        </div>
+    </section>
+    <!-- Stopwatch &  buttons play/pause -->
+    <section class="o-row">
+        <div class="o-container">
+            <div class="c-stopwatch">
+                <div class="c-circleTimer">
+                    <span class="u-font-time" id="display">00:00:00</span>
+                </div>
+
+                <div class="c-controls">
+                    <button id="startGameButton" class="c-button c-buttons_mainPage__layout">
+                        Start game!
+                    </button>
+                    <button id="playButtonMain" class="c-buttonPlay o-hide">
+                        <svg class="c-buttonSVG" id="playButton" xmlns="http://www.w3.org/2000/svg" width="64"
+                            height="64" viewBox="0 0 64 64">
+                            <defs>
+                                <filter id="f1" x="0" y="0" width="200%" height="200%">
+                                    <feOffset result="offOut" in="SourceAlpha" dx="0" dy="1" />
+                                    <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
+                                    <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+                                </filter>
+                            </defs>
+                            <circle class="c-ellipse" id="Ellipse_14" data-name="Ellipse 14"
+                                transform="translate(0.5 0.5)" fill="#fffefc" filter="url(#f1)" />
+                            <path class="c-play" id="Path_1097" data-name="Path 1097" d="M 23 22 l 17 11 L 23 45 Z" />
                         </svg>
-                        <ul class="c-dropdown">
-                            <li id="option1"><a id="a1"href="#">Speed</a></li>
-                            <li id="option2"><a id="a2" href="#">Results</a></li>
-                        </ul>
-                    </div>
-                ​</div>
 
-    <div class="c-stopwatch">
-        <div class="c-circle">
-            <span class="u-font-time" id="display">00:00:00</span>
+                        <svg class="c-buttonSVG" id="pauseButton" xmlns="http://www.w3.org/2000/svg" width="64"
+                            height="64" viewBox="0 0 64 64">
+                            <defs>
+                                <filter id="f2" x="0" y="0" width="200%" height="200%">
+                                    <feOffset result="offOut" in="SourceAlpha" dx="0" dy="1" />
+                                    <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
+                                    <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+                                </filter>
+                            </defs>
+                            <circle class="c-ellipse" id="Ellipse_14" data-name="Ellipse 14"
+                                transform="translate(0.5 0.5)" fill="#fffefc" filter="url(#f2)" />
+                            <path class="c-pause" id="Path_1098" data-name="Path 1098"
+                                d="M 38 24 V 46 H 32 V 24 Z m -18 0 V 46 H 26 V 24 Z" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="infoText" class="u-text-center u-fz-sm c-text__info">
+                    <p>Take your positions on the track</p>
+                    <p>Start the game by pressing the button above</p>
+                    <p>Wait for the green light an GO</p>
+                    <p>After the race, you can see the results below</p>
+                    <p>Good luck and have fun!</p>
+                </div>
+            </div>
         </div>
+    </section>
+    <!-- Player card -->
+    <section class="o-row">
+        <div class="o-container js-etappes">
 
-        <div class="c-controls">
-            <button id="startGameButton" class="c-button c-buttons_mainPage__layout">
-                Start game!
-            </button>
-
-            <button id="playButtonMain" class="c-buttonPlay o-hide">
-                <svg id="playButton" xmlns="http://www.w3.org/2000/svg" width="63" height="63" viewBox="0 0 63 63">
-                    <g id="test" transform="translate(-0.5 -0.5)">
-                        <circle id="Ellipse_14" data-name="Ellipse 14" cx="31.5" cy="31.5" r="31.5"
-                            transform="translate(0.5 0.5)" fill="#fffefc" />
-                        <path id="Path_1097" data-name="Path 1097" d="M22.9,16.911l24.169,15.38L22.9,47.671Z"
-                            stroke="#000" stroke-width="1" />
-                    </g>
-                </svg>
-
-                <svg id="pauseButton" xmlns="http://www.w3.org/2000/svg" width="63" height="63" viewBox="0 0 63 63">
-                    <g id="test" transform="translate(-0.5 -0.5)">
-                        <circle id="Ellipse_15" data-name="Ellipse 15" cx="31.5" cy="31.5" r="31.5"
-                            transform="translate(0.5 0.5)" fill="#fffefc" />
-                        <path id="Path_1098" data-name="Path 1098"
-                            d="M43.5,17.5V45.667H36.167V17.5Zm-16.667,0V45.667H19.5V17.5Z" stroke="#000"
-                            stroke-width="1" />
-                    </g>
-                </svg>
-            </button>
 
         </div>
-        <div id="infoText" class="u-text-center">
-            <p>Start the game by pressing the button above</p>
-            <p>Take your positions on the track and wait for the led to turn green</p>
-            <p>After the race come back for the results</p>
-            <p>Good luck and have fun!</p>
+    </section>
+    <!-- Buttons End & Retry -->
+    <section class="o-row">
+        <div class="o-container">
+            <div id="c-buttons_mainPage" class="c-settings-save c-button-grid o-hide">
+                <button id="End_button" class="c-button c-buttons_mainPage__layout c-button_mainPage__save-color ">
+                    End
+                </button>
+                <p style="color: transparent; font-size: 8px;">test</p>
+                <button id="Retry_button" class="c-button c-buttons_mainPage__layout c-button_mainPage__retry-color">
+                    Retry
+                </button>
+            </div>
         </div>
-
-                <!-- Player card -->
-                <section class="o-row">
-                    <div class="o-container js-etappes">
-                        
-                  
-                    </div>
-                </section>
-    </div>
-
-    <div id="c-buttons_mainPage" class="c-settings-save c-button-grid o-hide">
-        <button id="End_button" class="c-button c-buttons_mainPage__layout c-button_mainPage__save-color ">
-            End
-        </button>
-
-        <p style="color: transparent; font-size: 8px;">test</p>
-
-        <button id="Retry_button" class="c-button c-buttons_mainPage__layout c-button_mainPage__retry-color">
-            Retry
-        </button>
-    </div>
+    </section>
 </body>
 
 </html>
