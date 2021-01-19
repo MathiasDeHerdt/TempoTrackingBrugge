@@ -1,9 +1,7 @@
 // INFO!
-//
 // ##### -> start codeblock
 // @@@@@ -> end codeblock
 // // -> info about codeblock
-//
 // INFO!
 
 const lanIP = `${window.location.hostname}:5000`;
@@ -128,8 +126,7 @@ const scriptFunction = function () {
     // Countdown - in 10sec the game will start
     function countdown() {
         const startTimer = 'start!';
-        // send message to backend that the game is about to start
-        // will activate the led
+        // send message to backend that the game is about to start will activate the led
         socket.emit('F2B_start_timer', startTimer)
 
         setTimeout(start, 2000) // Now 2sec for testing
@@ -277,9 +274,7 @@ const scriptFunction = function () {
         };
         return html;
     }
-
     // @@@@@ Dynamic extra html for etappes @@@@@
-
     //create default time html based on settings page
     // const defaultHTML = function (TypeDropdown, players, etappes) {
     //     TypeDropdown = "Time";
@@ -291,7 +286,6 @@ const scriptFunction = function () {
     // }
     // defaultHTML()
 }
-
 
 // #region ==== DOM //
 document.addEventListener('DOMContentLoaded', function () {
