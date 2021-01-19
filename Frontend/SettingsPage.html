@@ -141,6 +141,14 @@
                             </span>
                         </div>
                     </div>
+                    <div class="c-settings-setup__item">
+                        <label class="c-settings-setup__text" for="select_etappes">
+                            Distance finish line
+                        </label>
+                        <div class="c-settings-player__input">
+                            <input class="c-custom-select__text" type="text" id="select_group" name="select_group" placeholder="DISTANCE" onchange="validateSettings();">
+                        </div>
+                    </div>
                 </div>
                 <div id="player_container">
     
@@ -148,7 +156,6 @@
             </div>
             <div class="c-settings-save c-button-grid">
                 <button id="go_to_game"class="c-button c-button__save" disabled>Go to game</button>
-                <p style="color: transparent; font-size: 8px;">test</p>
                 <button id="save_settings" type="button" class="c-button c-button__save" onclick="enableButton()" disabled>Save</button>
             </div>
         </form>

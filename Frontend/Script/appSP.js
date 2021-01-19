@@ -45,6 +45,20 @@ function createNewPlayer(number) {
                 Beacon ${number}
             </label>
             <div class="c-settings-player__input">
+                <span class="c-custom-select">
+                    <select class="c-input c-custom-select__dropdown" name="select_etappes" id="select_etappes" onchange="validateSettings();">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </span>
+            </div>
+        </div>
+        <div class="c-settings-player__item">
+            <label class="c-settings-player__text" for="select_beacon_${number}">
+                Name
+            </label>
+            <div class="c-settings-player__input">
                 <input class="c-custom-select__text" type="text" id="select_beacon_${number}" name="select_beacon_${number}" placeholder="PLAYER NAME" onchange="validateSettings();">
             </div>
         </div>
