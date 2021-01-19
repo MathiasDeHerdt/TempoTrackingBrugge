@@ -68,7 +68,6 @@ class TrackingManager:
             list_scans = self.rpi_scanner.scan_rssi_by_address(esp_dev.address, 5)
             esp_beacon = self.beacon_manager.get_beacon_by_address(esp_dev.address)
 
-            esp_beacon.setTxPower(-65)
             txPower = esp_beacon.txPower #tx from ble is flawed
             finish_width = 0
 

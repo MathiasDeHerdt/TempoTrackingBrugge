@@ -9,15 +9,13 @@ class BleMeasurement():
         self.__address = jsonObj['address'].strip()
         self.__rssi = jsonObj['rssi']
         self.__time_stamp = jsonObj['timestamp']
-        txPower = -65
-        try:
-            txPower = jsonObj['txPower']
-        except: 1
+        txPower = jsonObj['txPower']
         self.set_tx_power(txPower)
 
     def set_tx_power(self, txPower):
         self.__txPower = txPower
-        self.__distance = BleHelper.distance_from_rssi(self.rssi, 4, self.__txPower)
+        nValue = 3
+        self.__distance = BleHelper.distance_from_rssi(self.__rssi, self.__txPower, nValue)
 
     @property
     def time_stamp(self):

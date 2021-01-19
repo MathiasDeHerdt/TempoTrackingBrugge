@@ -15,22 +15,28 @@ class RpiScanManager():
     def __initialize_scan(self):
         try:
             dev_id = 0
-            self.sock = rpi_ble_scan.getBLESocket(dev_id)
+            self.sock = rpi_ble_scan.openBLESocket(dev_id)
         except Exception as e:
             print(f'\n-->ERROR accessing bluetooth device!<---\nErrorMessage:{e}\n\n')
 
         rpi_ble_scan.hci_le_set_scan_parameters(self.sock)
         rpi_ble_scan.hci_enable_le_scan(self.sock)
 
+    def __stop_scan(self):
+        rpi_ble_scan.closeBLESocket(self.sock)
+
 
     def __scan_details(self):
         list_beacons_found = []
         self.__initialize_scan() #Needs to happen, otherwise will get stuck
+
         for i in range(0, self.scan_count_initial):
             registered_beacons = rpi_ble_scan.parse_events(self.sock, 5)
             for registered_beacon in registered_beacons:
                 beacon = BleBeacon(registered_beacon)
                 list_beacons_found.append(beacon)
+
+        self.__stop_scan()
         return list_beacons_found
 
     def __scan_details_filter_major_minor(self, major = 2, minor = 10):

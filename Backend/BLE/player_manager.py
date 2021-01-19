@@ -1,5 +1,5 @@
 from datetime import datetime
-from .Helpers.etappe_manager import Etappe, EtappeManager
+from .etappe_manager import Etappe, EtappeManager
 
 class PlayerManager():
     # INIT
@@ -12,10 +12,12 @@ class PlayerManager():
 
         if callback_etappe == None:
             callback_etappe = self.print_etappe
+            print("Playermanager has default callback_etappe")
         self.__callback_etappe_done = callback_etappe
 
         if callback_finished == None:
             callback_finished = self.print_finished
+            print("Playermanager has default callback_finished")
         self.__callback_player_finished = callback_finished
 
     def clear_results(self):
@@ -52,22 +54,20 @@ class PlayerManager():
             for compare_result in self.__dict_scan_results[other_device_id]:
 
                 tstamp2 = datetime.strptime(compare_result.time_stamp, "%Y-%m-%d %H:%M:%S")
-                if tstamp1 > tstamp2:
-                    td = tstamp1 - tstamp2
-                else:
-                    td = tstamp2 - tstamp1
+                td = tstamp2 - tstamp1
                 td_seconds = int(round(td.total_seconds()))
 
 
                 #Add to etappe measurements
-                if (td_seconds < 2):
+                if (td_seconds < 2 & td_seconds > 0):
                     response = self.__etappe_manager.append_measure(scan_result, compare_result, self.__finish_width)
+                    print(f'response - {response}')
 
+                    if response == 2: #race done
+                        self.__callback_etappe_done(self)
+                        self.__callback_player_finished(self)
                     if response == 1: #etappe done
                         self.__callback_etappe_done(self)
-
-                    elif response == 2: #race done
-                        self.__callback_player_finished(self)
 
                     return
 
@@ -82,8 +82,14 @@ class PlayerManager():
     def print_results(self):
         for key in self.__dict_scan_results.keys():
             print(f'key = {key}')
+            rssi = 0
+            i = 0
             for scan_result in self.__dict_scan_results[key]:
                 print(f'{scan_result}')
+                rssi += scan_result.rssi
+                i += 1
+            rssi = rssi / i
+            print(f'rssi average = {rssi}')
 
 
     def print_etappe(self, player_manager):

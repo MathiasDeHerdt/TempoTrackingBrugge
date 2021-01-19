@@ -14,8 +14,11 @@ EVT_LE_ADVERTISING_REPORT=0x02
 # my variables
 dev_id = 0
 
-def getBLESocket(devID):
-	return bluez.hci_open_dev(devID)
+def openBLESocket(device_id = 0):
+	return bluez.hci_open_dev(device_id)
+
+def closeBLESocket(sock):
+	return sock.close()
 
 def returnnumberpacket(pkt):
     myInteger = 0
@@ -65,7 +68,8 @@ def extract_details(pkt, report_pkt_offset, sock):
 
     major = int(major, 16)
     minor = int(minor, 16)
-    txPower = complement2(int(txPower, 16))
+    txPower = int(txPower, 16)
+    txPower = complement2(txPower)
 
     beacon = {
         "address" : address, 

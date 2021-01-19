@@ -32,6 +32,15 @@ class BeaconManager():
             if beacon.address == address:
                 return beacon
 
+    def filter_saved_beacons(self, selected_players):
+        filtered_beacons = []
+
+        for uuid in selected_players:
+            keep_beacon = self.get_beacon_by_uuid(uuid)
+            filtered_beacons.append(keep_beacon)
+
+        self.__beacons = filtered_beacons
+
     @property
     def list_beacons(self):
         return self.__beacons

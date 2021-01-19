@@ -27,17 +27,28 @@ class BleManager:
         self.__player_manager = {}
 
         self.__BEACON_UUID_ESP_1 = "6fc88bbe756698da486866a36ec78e05" #unexpected results with ESP
-        self.__rpi_scanner = RpiScanManager(10, 1, "device_rpi")
-        self.__finish_width = 1.2
+        self.__rpi_scanner = RpiScanManager(5, 1, "device_rpi")
+        self.__finish_width = 1.40
 
         self.__is_loop_scan_active = False
 
+        self.__callback_etappe = self.print_etappe
+        self.__callback_finish = self.print_finished
 
-    def initialize(self, etappe_count):
+
+    def initialize(self, etappe_count, finish_width, selected_players, callback_etappe, callback_finish):
         #Setup Ble Manager
+        self.__player_manager = {}
+
         self.__setup_mqtt()
+        self.__finish_width = finish_width
+        self.__callback_etappe = callback_etappe
+        self.__callback_finish = callback_finish
+        self.__beacon_manager.filter_saved_beacons(selected_players)
+
         for beacon in self.__beacon_manager.list_beacons:
-            self.__player_manager[str(beacon.address)] = PlayerManager(beacon, etappe_count, self.__finish_width)
+            address = str(beacon.address)
+            self.__player_manager[address] = PlayerManager(beacon, etappe_count, self.__finish_width, self.__callback_etappe, self.__callback_finish)
 
 
     def __setup_mqtt(self):
@@ -48,47 +59,6 @@ class BleManager:
     
     # SETUP
     #=================================================================================================================
-    def scan_finish_width(self):
-        #Calculate with of the finishing line
-        self.__finish_width = self.__scan_for_finish_distance()
-        print(f'Finish width = {self.__finish_width}')
-    
-
-    def __scan_for_finish_distance(self):
-        #Calculate average scanned distance to ESP sensor
-        self.scan_for_sensors()
-        try:
-            esp_beacon = self.__beacon_manager.get_beacon_by_uuid(self.__BEACON_UUID_ESP_1)
-            list_scans = self.__rpi_scanner.scan_rssi_by_address(esp_beacon.address, 25)
-            return self.__calculate_finish_width(esp_beacon.txPower, list_scans)
-        except:
-            print("No finish wdith could be calculated")
-            return self.__finish_width
-
-
-    def __calculate_finish_width(self, txPower, list_scans):
-        #Calculate average scanned distance to ESP sensor
-        finish_width = 0
-        for scan in list_scans:
-            jsonObj = json.loads(scan)
-            jsonObj['txPower'] = txPower
-            measure = BleMeasurement(jsonObj)
-            finish_width += measure.distance
-        finish_width = finish_width / len(list_scans)
-        return finish_width
-
-
-    def scan_for_sensors(self):
-        list_esp_scans = self.__scan_for_beacon_by_uuid(self.__BEACON_UUID_ESP_1)
-        try:
-            esp_dev = list_esp_scans[0]
-            self.__beacon_manager.append(esp_dev)
-            esp_beacon = self.__beacon_manager.get_beacon_by_address(esp_dev.address)
-            esp_beacon.setTxPower(-65) #tx from ble is flawed
-        except:
-            print("No ESP was detected")
-
-
     def scan_for_players(self):
         #reset
         self.clear() 
@@ -173,24 +143,36 @@ class BleManager:
         for key in self.__player_manager.keys():
             self.__player_manager[key].print_manager()
     
-    
+
+    def print_etappe(self, player_manager):
+        print(f'Etappe done - {player_manager}')
+
+
+    def print_finished(self, player_manager):
+        print(f'Finished - {player_manager}')
+
+
     # MQTT
     #=================================================================================================================
     def __callback_mqtt(self, msg):
         now = datetime.now()
         jsonObj = json.loads(msg.payload)
+
+        address = str(jsonObj["address"])
+        beacon = self.__beacon_manager.get_beacon_by_address(address)
+        if beacon == None:
+            return
+
         jsonObj['timestamp'] =str(now.strftime("%Y-%m-%d %H:%M:%S"))
+        jsonObj['txPower'] = beacon.txPower
 
         deviceId = jsonObj["deviceId"].strip()
-        address = str(jsonObj["address"])
-
         if deviceId in ["device_rpi", "device_esp_1"]:
             if address not in self.__player_manager.keys():
                 return
 
             measureObj = BleMeasurement(jsonObj)
-            try:  #Add txPower to measurement
-                beacon = self.__beacon_manager.get_beacon_by_address(address)
+            try:  #Add txPower to measurement 
                 measureObj.set_tx_power(beacon.txPower)
             except:1
 

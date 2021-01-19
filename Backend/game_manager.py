@@ -16,9 +16,8 @@ class GameManager:
         manager = BleManager()
         return manager
 
-    def initialize_game(self, etappe_count):
-        self.scan_finish_width()
-        self.__ble_manager.initialize(etappe_count)
+    def initialize_game(self, etappe_count, finish_width, selected_players, callback_etappe, callback_finish):
+        self.__ble_manager.initialize(etappe_count, finish_width, selected_players, callback_etappe, callback_finish)
 
 
     # SETUP GAME
@@ -27,11 +26,6 @@ class GameManager:
         print("scan for players")
         player_beacons = self.__ble_manager.scan_for_players()
         return player_beacons
-
-
-    def scan_finish_width(self):
-        self.__ble_manager.scan_finish_width()
-
 
 
     # START GAME
