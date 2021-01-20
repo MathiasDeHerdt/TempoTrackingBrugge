@@ -14,8 +14,11 @@ EVT_LE_ADVERTISING_REPORT=0x02
 # my variables
 dev_id = 0
 
-def getBLESocket(devID):
-	return bluez.hci_open_dev(devID)
+def openBLESocket(device_id = 0):
+	return bluez.hci_open_dev(device_id)
+
+def closeBLESocket(sock):
+	return sock.close()
 
 def returnnumberpacket(pkt):
     myInteger = 0
@@ -47,26 +50,34 @@ def hci_toggle_le_scan(sock, enable):
 def hci_le_set_scan_parameters(sock):
     old_filter = sock.getsockopt( bluez.SOL_HCI, bluez.HCI_FILTER, 14)
 
-def extract_details(pkt, report_pkt_offset):
+def extract_details(pkt, report_pkt_offset, sock):
     address =  str(packed_bdaddr_to_string(pkt[report_pkt_offset + 3:report_pkt_offset + 9])) #address
     uuid =  str(returnstringpacket(pkt[report_pkt_offset -22: report_pkt_offset - 6])) #uuid
     major =  str(returnstringpacket(pkt[report_pkt_offset -6: report_pkt_offset - 4])) #major
     minor = str(returnstringpacket(pkt[report_pkt_offset -4: report_pkt_offset - 2])) #minor
-    txpower = ""
+    txPower = ""
+    name = ""
     try:
-        txpower = str(returnstringpacket(pkt[report_pkt_offset -2:report_pkt_offset -1])) #txpower
+        obj = bluetooth.find_service(name=None, uuid=None, address=None)
+        nameTemp = obj[""]
+        name = nameTemp
+    except: 1
+    try:
+        txPower = str(returnstringpacket(pkt[report_pkt_offset -2:report_pkt_offset -1])) #txPower
     except: 1
 
     major = int(major, 16)
     minor = int(minor, 16)
-    txpower = complement2(int(txpower, 16))
+    txPower = int(txPower, 16)
+    txPower = complement2(txPower)
 
     beacon = {
         "address" : address, 
+        "name" : name,
         "uuid" : uuid, 
         "major" : major, 
         "minor" : minor, 
-        "txpower" : txpower
+        "txPower" : txPower
     }
     return beacon
 
@@ -98,7 +109,7 @@ def parse_events(sock, loop_count=100):
                 num_reports = struct.unpack("B", pkt[0:1])[0]
                 report_pkt_offset = 0
                 for i in range(0, num_reports):
-                    beacon = extract_details(pkt, report_pkt_offset)
+                    beacon = extract_details(pkt, report_pkt_offset, sock)
                     if beacon not in listBeacon: 
                         listBeacon.append(beacon)
 

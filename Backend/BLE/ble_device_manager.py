@@ -1,7 +1,9 @@
+#print("Importing beacon_manager....")
+
 from .ble_result_manager import ResultManager
 
 class DeviceManager():
-    def __init__(self, deviceId):
+    def __init__(self, deviceId, etappe_count):
         self.__deviceId = deviceId
         self.__list_result_manager = []
 
@@ -11,6 +13,13 @@ class DeviceManager():
     def append_beacon_list(self, list_beacons):
         for beacon in list_beacons:
             self.append_beacon(beacon)
+
+    def clear(self):
+        self.__list_result_manager = []
+
+    def clear_results(self):
+        for result_manager in self.__list_result_manager:
+                return result_manager.clear_results()
 
     def append_result(self, result):
         deviceId = result.deviceId.strip()
