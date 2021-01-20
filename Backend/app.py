@@ -9,10 +9,18 @@ import os
 import sys
 import time
 
+
 # =========================================================
 # Import - custom imports
 # =========================================================
 from repo.datarepo import DataRepository
+
+
+# =========================================================
+# Import - hardware
+# =========================================================
+from backend_hardware.game_manager import GameManager
+
 
 # =========================================================
 # Start apps
@@ -36,6 +44,17 @@ playerName = ""
 teamName = ""
 
 
+is_game_running = False
+finish_width = 0
+player_finished_count = 0
+
+
+# =========================================================
+# Global variables - Hardware
+# =========================================================
+game_manager = GameManager()
+
+
 # =========================================================
 # Hardware functions
 # =========================================================
@@ -44,16 +63,99 @@ def StartLedstrip():
     os.system('sudo python3 /home/cortana/tempotrack/backend/helpers/rgb.py')
     print("Done!")
 
+
+def scan_for_players():
+    #get a list of beacons within range
+    list_beacons = game_manager.scan_for_players()
+
+
+def start_game_loop(player_array):
+    #start the game loop
+    global game_manager
+    global is_game_running
+    global etappecount
+    global finish_width
+
+    game_manager.initialize_game(
+        etappecount, 
+        finish_width, 
+        player_array, 
+        callback_game_player_etappe, 
+        callback_game_player_finish)
+
+    game_manager.start_game_loop()
+    is_game_running = True
+
+
+def stop_game_loop():
+    #stop the running game
+    global game_manager
+
+    game_manager.stop_game_loop()
+
+
+def reset_game():
+    #clear variables for the game loop
+    global is_game_running
+    global player_finished_count
+    global game_manager
+
+    is_game_running = False
+    player_finished_count = 0
+    game_manager.clear_results()
+
+
+def clear_game_full():
+    #clear variables for the game loop
+    global is_game_running
+    global player_finished_count
+    global game_manager
+
+    is_game_running = False
+    player_finished_count = 0
+    game_manager.clear()
+
+
+def callback_game_player_etappe(callObj):
+    #callback when a player finished a etappe
+    global player_finished_count
+
+    print(f'Etappe done - game callback! - {callObj}')
+    player_finished_count += 1
+
+
+def callback_game_player_finish(callObj):
+    #callback when a player finished all of his/her etappes
+    print(f'Finished! - game callback! - {callObj}')
+    game_check_end()
+
+
+def game_check_end():
+    #check for condition for the game to end
+    global player_finished_count
+    global playercount
+    global is_game_running
+    
+    if (player_finished_count >= playercount):
+        is_game_running = False
+        stop_game_loop()
+
+
+def debug_game_manager():
+    #print the game managers for debug
+    global game_manager
+    game_manager.print_managers()
+
+
 # =========================================================
 # Routes
 # =========================================================
-
-
 @app.route(endpoint + '/game', methods=['GET'])
 def get_game():
     if request.method == 'GET':
         s = DataRepository.read_game()
         return jsonify(s), 200
+
 
 # =========================================================
 # socketio communication between front and back

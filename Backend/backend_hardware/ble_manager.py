@@ -194,7 +194,7 @@ class BleManager:
 
     # CLEAR
     #=================================================================================================================
-    def __clear_results(self):
+    def clear_results(self):
         #Clear only results
         for key in self.__player_manager.keys():
             self.__player_manager[key].clear_results()

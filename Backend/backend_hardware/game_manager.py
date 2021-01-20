@@ -1,7 +1,7 @@
 import time
 import threading
 
-from ble_manager import BleManager
+from .ble_manager import BleManager
 
 
 class GameManager:
@@ -34,6 +34,7 @@ class GameManager:
         print("Game started")
         self.__ble_manager.start_game_loop()
     
+
     def stop_game_loop(self):
         print("Game stop")
         self.__ble_manager.stop_game_loop()
@@ -41,9 +42,13 @@ class GameManager:
 
      # RESET GAME
     #=================================================================================================================
-    def reset_game(self):
-        print("reset")
+    def clear(self):
+        print("clear GameManager")
+        self.__ble_manager.clear()
 
+    def clear_results(self):
+        print("clear results")
+        self.__ble_manager.clear_results()
     
     # PRINT
     #=================================================================================================================
