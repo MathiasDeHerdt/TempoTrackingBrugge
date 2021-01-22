@@ -3,7 +3,7 @@ import sys
 import time
 print(f'System path: {sys.path}')
 
-from game_manager import GameManager
+from backend_hardware.game_manager import GameManager
 
 stop = False
 player_finished_count = 0
@@ -13,7 +13,9 @@ def callback_etappe(callObj):
     print(f'Etappe done - game callback! - {callObj}')
 
 def callback_finish(callObj):
+    global player_finished_count
     print(f'Finished! - game callback! - {callObj}')
+    player_finished_count += 1
     condition_stop()
 
 def condition_stop():
@@ -32,7 +34,9 @@ if __name__ == '__main__':
     for p in player_beacons:
         print(p)
 
-    game.initialize_game(3, 1.4, player_array, callback_etappe, callback_finish)
+    etappe_count = 3
+    finish_width = 1.3
+    game.initialize_game(etappe_count, finish_width, player_array, callback_etappe, callback_finish)
 
     time.sleep(1)
     game.start_game_loop()

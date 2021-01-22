@@ -14,10 +14,12 @@ class MqttClient:
         self.client.on_message = self.on_message
         self.client.connect(self.host, 1883, 60)
         self.callback_subscribe = callback_subscribe
+        self.is_connected = False
 
 
     def on_connect(self, client, userdata, flags, resultCode):
         print(f'Connected with result code {str(resultCode)}\n')
+        self.is_connected = True
 
 
     def on_message(self, client, userdata, msg):

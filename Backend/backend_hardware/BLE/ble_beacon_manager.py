@@ -9,6 +9,9 @@ class BeaconManager():
             print(beacon)
 
     def append(self, beacon):
+        if(beacon == None):
+            return
+            
         can_append = True
         for registered_beacon in self.__beacons:
             if beacon.uuid == registered_beacon.uuid and beacon.address == registered_beacon.address:

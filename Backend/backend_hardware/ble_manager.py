@@ -6,16 +6,15 @@ import threading
 from datetime import datetime
 
 
-from BLE.ble_beacon_manager import BeaconManager
-from BLE.player_manager import PlayerManager
+from .BLE.ble_beacon_manager import BeaconManager
+from .BLE.player_manager import PlayerManager
 
 
-from BLE.rpi_ble_scan_manager import RpiScanManager
-from BLE.Helpers.ble_beacon import BleBeacon, BleMeasurement
+from .BLE.rpi_ble_scan_manager import RpiScanManager
+from .BLE.Helpers.ble_beacon import BleBeacon, BleMeasurement
+from .BLE.Helpers.ble_helper import BleHelper
 
-from Mqtt.mqtt_client import MqttClient
-
-from MathProject import math_race
+from .Mqtt.mqtt_client import MqttClient
 
 class BleManager:
     # INIT
@@ -29,6 +28,7 @@ class BleManager:
         self.__BEACON_UUID_ESP_1 = "6fc88bbe756698da486866a36ec78e05" #unexpected results with ESP
         self.__rpi_scanner = RpiScanManager(5, 1, "device_rpi")
         self.__finish_width = 1.40
+        self.__list_device_id_rssi = ["device_esp_1", "device_esp_2"]
 
         self.__is_loop_scan_active = False
 
@@ -38,6 +38,7 @@ class BleManager:
 
     def initialize(self, etappe_count, finish_width, selected_players, callback_etappe, callback_finish):
         #Setup Ble Manager
+        print(f'BleManager - initialize')
         self.__player_manager = {}
 
         self.__setup_mqtt()
@@ -46,7 +47,11 @@ class BleManager:
         self.__callback_finish = callback_finish
         self.__beacon_manager.filter_saved_beacons(selected_players)
 
-        for beacon in self.__beacon_manager.list_beacons:
+        original_beacons = self.__beacon_manager.list_beacons
+        print(f'Filter from beaconlist = {original_beacons}')
+        for beacon in original_beacons:
+            if beacon == None:
+                continue
             address = str(beacon.address)
             self.__player_manager[address] = PlayerManager(beacon, etappe_count, self.__finish_width, self.__callback_etappe, self.__callback_finish)
 
@@ -54,6 +59,9 @@ class BleManager:
     def __setup_mqtt(self):
         #Setup MQTT and subscribe to receive measurement messages
         self.__mqtt_client = MqttClient(self.__callback_mqtt)
+        #while self.__mqtt_client.is_connected == False:
+        #    print("MQTT trying to connect...")
+        #    time.sleep(0.1)
 
 
     
@@ -130,6 +138,7 @@ class BleManager:
 
 
     def __scanning_player_distance(self):
+        return
         #Scan for player beacons during game to retrieve distance
         results = self.__rpi_scanner.scan_rssi()
         for result in results:
@@ -163,17 +172,19 @@ class BleManager:
         if beacon == None:
             return
 
-        jsonObj['timestamp'] =str(now.strftime("%Y-%m-%d %H:%M:%S"))
+        jsonObj['timestamp'] = BleHelper.datetime_to_string(now,"%Y-%m-%d %H:%M:%S")
         jsonObj['txPower'] = beacon.txPower
 
         deviceId = jsonObj["deviceId"].strip()
-        if deviceId in ["device_rpi", "device_esp_1"]:
+        if deviceId in self.__list_device_id_rssi:
+            #print(f'address = {address} --- deviceId = {deviceId}')
             if address not in self.__player_manager.keys():
                 return
 
             measureObj = BleMeasurement(jsonObj)
             try:  #Add txPower to measurement 
                 measureObj.set_tx_power(beacon.txPower)
+                #print(f'Set TX power measurement')
             except:1
 
             self.__player_manager[address].append_result(measureObj)

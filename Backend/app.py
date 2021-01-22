@@ -8,16 +8,15 @@ from datetime import date, datetime
 import os
 import sys
 import time
-
+import json
 
 # =========================================================
 # Import - custom imports
 # =========================================================
 from repo.datarepo import DataRepository
 
-
 # =========================================================
-# Import - hardware
+# Import - Hardware - Alex
 # =========================================================
 from backend_hardware.game_manager import GameManager
 
@@ -37,8 +36,8 @@ endpoint = '/api/v1'
 # =========================================================
 # Global variables
 # =========================================================
-playercount = 0
-etappecount = 0
+player_count = 0
+etappe_count = 0
 
 playerName = ""
 teamName = ""
@@ -47,6 +46,9 @@ teamName = ""
 is_game_running = False
 finish_width = 0
 player_finished_count = 0
+
+list_beacons = []
+list_uuid = []
 
 
 # =========================================================
@@ -58,31 +60,51 @@ game_manager = GameManager()
 # =========================================================
 # Hardware functions
 # =========================================================
-def StartLedstrip():
-    print("Ledstrip is starting")
-    os.system('sudo python3 /home/cortana/tempotrack/backend/helpers/rgb.py')
-    print("Done!")
+def start_led_strip():
+    print("Ledstrip starting")
+    os.system('sudo python3 /home/pialex/TempoTrackingBrugge/Backend/backend_hardware/helpers/rgb.py')
 
 
 def scan_for_players():
     #get a list of beacons within range
-    list_beacons = game_manager.scan_for_players()
+    scanned_beacons = game_manager.scan_for_players()
+    list_beacons = []
+
+    for beaconObj in scanned_beacons:
+        jsonObj = {
+            'address' : beaconObj.address,
+            'name' : beaconObj.name,
+            'uuid' : beaconObj.uuid,
+            'txPower' : beaconObj.txPower,
+            'major' : beaconObj.major,
+            'minor' : beaconObj.minor
+        }
+        list_beacons.append(jsonObj)
+
+    return list_beacons
 
 
-def start_game_loop(player_array):
+
+def start_game_loop():
     #start the game loop
     global game_manager
     global is_game_running
-    global etappecount
+    global etappe_count
     global finish_width
+    global list_uuid
 
+    #reset_game()
+    print(f'Initializing game')
     game_manager.initialize_game(
-        etappecount, 
+        etappe_count, 
         finish_width, 
-        player_array, 
+        list_uuid, 
         callback_game_player_etappe, 
-        callback_game_player_finish)
+        callback_game_player_finish
+        )
 
+    time.sleep(2)
+    print(f'Starting game')
     game_manager.start_game_loop()
     is_game_running = True
 
@@ -118,25 +140,25 @@ def clear_game_full():
 
 def callback_game_player_etappe(callObj):
     #callback when a player finished a etappe
-    global player_finished_count
-
     print(f'Etappe done - game callback! - {callObj}')
-    player_finished_count += 1
 
 
 def callback_game_player_finish(callObj):
     #callback when a player finished all of his/her etappes
+    global player_finished_count
+    
     print(f'Finished! - game callback! - {callObj}')
+    player_finished_count += 1
     game_check_end()
 
 
 def game_check_end():
     #check for condition for the game to end
     global player_finished_count
-    global playercount
+    global player_count
     global is_game_running
     
-    if (player_finished_count >= playercount):
+    if (player_finished_count >= player_count):
         is_game_running = False
         stop_game_loop()
 
@@ -145,17 +167,18 @@ def debug_game_manager():
     #print the game managers for debug
     global game_manager
     game_manager.print_managers()
-
+            
 
 # =========================================================
 # Routes
 # =========================================================
+
+
 @app.route(endpoint + '/game', methods=['GET'])
 def get_game():
     if request.method == 'GET':
         s = DataRepository.read_game()
         return jsonify(s), 200
-
 
 # =========================================================
 # socketio communication between front and back
@@ -163,10 +186,11 @@ def get_game():
 
 
 @socketio.on('F2B_game_settings')
-def all_game_settings(players, etappes, group):  # game settings
+def all_game_settings(jsonObj):  # game settings
     print("--- Game settings ---")
-    global playercount
-    global etappecount
+    global player_count
+    global etappe_count
+    global finish_width
 
     # datetime ophalen
     now = datetime.now()
@@ -184,67 +208,131 @@ def all_game_settings(players, etappes, group):  # game settings
     # gamesettings_to_datebase(players, etappes, group, dateToday)
 
     # global variabelen updaten met data van de frontend en daarna returnen
-    playercount = players
-    etappecount = etappes
+    player_count = jsonObj['countPlayer']
+    etappe_count = jsonObj['countEtappe']
+    group_name = jsonObj['groupName']
+    finish_width = jsonObj['finishWidth']
 
-    return playercount, etappecount
+    return player_count, etappe_count
 
 
 @socketio.on('F2B_player_settings')  # player settings
-def all_player_settings(name, team):
+def all_player_settings(jsonObj):
     global playerName
     global teamName
+    global list_beacons
+    global list_uuid
 
-    playerName = name
-    teamName = team
+    print(f'all_player_settings - {jsonObj}')
 
-    for i in range(len(playerName)):
-        DataRepository.insert_player(playerName[i], teamName[i])
-        print(f"user {playerName[i]} zit in team {teamName[i]}")
+    received_list = jsonObj['beacons']
+    list_uuid = []
+    filtered_list_beacon = []
 
-    return playerName, playercount
+    for jsonObj in received_list:
+        name = jsonObj['name']
+        team = jsonObj['team']
+        uuid = jsonObj['uuid']
+        print(f'name = {name} - team = {team} - uuid = {uuid}')
+
+        list_uuid.append(uuid)
+        database_store_player(jsonObj)
+
+    for uuid in list_uuid:
+        for beacon in list_beacons:
+            if beacon['uuid'] == uuid:
+                filtered_list_beacon.append(beacon)
+                database_store_beacon(beacon)
+                break
+
+    list_beacons = filtered_list_beacon
+    print(f'list_beacons - {list_beacons}')
+    print(f'list_uuid - {list_uuid}')
 
 
 @socketio.on('F2B_send_player_count')  # sending player count to frontend
 def send_player_count(data):
     # hier kijk ik of ik van de front een "ack" gestuurd krijg
-    if data == "ack":   
+    if data == "ack":
         emit_to_front()
 
     else:
         print("no ack found, not sending anything!")
 
 
-@socketio.on('F2B_start_timer')  # sending player count to frontend
+@socketio.on('F2B_start_timer')  # start signal game
 def start_the_race(data):
     if data == "start!":
         # StartLedstrip()
         print("STARTING LED")
-
+        start_game_loop()
     else:
         print("no ack found, not sending anything!")
+        
+
+@socketio.on('F2B_settingsPage_loaded')
+def settings_loaded(data):
+    print("SETTINGS PAGE LOADED")
+    print(data)
 
 
 # gaat data naar frontend sturen
 def emit_to_front():
     print("Sending to front")
-    global playercount
-    global etappecount
+    global player_count
+    global etappe_count
 
     global playerName
     global teamName
 
     # game settings
     socketio.emit('B2F_game_settings',  {
-                  "Playercount": playercount, "Etappecount": etappecount})
+                  "player_count": player_count, "etappe_count": etappe_count})
 
     socketio.emit("B2F_player_settings", {
                   "Playername": playerName, "Teamname": teamName})
 
     # player settings
+
+
 # =========================================================
-# sending data to database
+# Frontent functions - socket - Alex
 # =========================================================
+@socketio.on('F2B_beacons_request')  # sending player count to frontend
+def socket_beacons_request():
+    # Roep de hardware scan op
+    print("F2B_beacons_request - request for beacon scan received")
+    global list_beacons
+
+    list_beacons = scan_for_players()
+    jsonDict = {'beacons' : list_beacons}
+    print(f'jsonDict - {jsonDict}')
+    socketio.emit('B2F_beacons_found', jsonDict) #, broadcast = True)
+
+
+# =========================================================
+# database functions - sending data to database
+# =========================================================
+def database_store_player(jsonObj):
+    playerName = jsonObj['name']
+    teamName = jsonObj['team']
+    return
+
+    DataRepository.insert_player(playerName, teamName)
+    print(f"user {playerName} zit in team {teamName}")
+
+
+def database_store_beacon(jsonObj):
+    name = jsonObj['name']
+    address = jsonObj['address']
+    uuid = jsonObj['uuid']
+    major = jsonObj['major']
+    minor = jsonObj['minor']
+    tx_power = jsonObj['txPower']
+    return
+    
+    DataRepository.insert_player(playerName, teamName)
+    print(f"user {playerName} zit in team {teamName}")
 
 
 def gamesettings_to_datebase(player, etappe, group, date):

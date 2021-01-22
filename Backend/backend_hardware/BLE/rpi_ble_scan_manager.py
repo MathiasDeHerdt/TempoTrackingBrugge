@@ -31,7 +31,7 @@ class RpiScanManager():
         self.__initialize_scan() #Needs to happen, otherwise will get stuck
 
         for i in range(0, self.scan_count_initial):
-            registered_beacons = rpi_ble_scan.parse_events(self.sock, 5)
+            registered_beacons = rpi_ble_scan.parse_events(self.sock, 10)
             for registered_beacon in registered_beacons:
                 beacon = BleBeacon(registered_beacon)
                 list_beacons_found.append(beacon)
