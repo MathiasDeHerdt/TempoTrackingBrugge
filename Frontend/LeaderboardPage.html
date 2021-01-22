@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="apple-touch-icon" sizes="180x180" href="Images/Favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="Images/Favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="Images/Favicon/favicon-16x16.png">
+        <link rel="manifest" href="Images/Favicon/site.webmanifest">
+        <link rel="mask-icon" href="Images/Favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="stylesheet" href="Style/normalize.css">
+        <link rel="stylesheet" href="Style/screen.css">
+        <script type = "text/javascript" src="./Script/appLP.js"></script>
+        <script type = "text/javascript" src="./Script/sidebar.js"></script>
+    </head>
+        <title>LeaderboardPage</title>
+    </head>
+
+<body>
+        <!-- Navigation/Sidebar -->
+        <div  class="c-nav" id="myNav">
+
+            <div class="c-nav-content">
+                <div class="c-app__logo">
+                    <h1 class="c-logo">
+                        Tempotrack
+                    </h1>
+                </div>
+                <nav class="c-main-nav">
+                    <ul class="o-list c-main-nav__list">
+
+                        <div class="c-main-nav__list__items">
+                            <li class="c-main-nav__item">
+                                <a class="c-main-nav__link" href="MainPage.html">
+                                    <svg class="c-main-nav__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="18.333" viewBox="0 0 20 18.333">
+                                        <path id="iconmonstr-home-6" d="M17.5,11v8.333h-5v-5h-5v5h-5V11H0L10,1,20,11Zm-.833-4.922V1.833h-2.5V3.577Z" transform="translate(0 -1)" fill="#ffe600"/>
+                                    </svg>
+                                    Home
+                                </a>
+                            </li>
+                            <li class="c-main-nav__item">
+                                <a class="c-main-nav__link" href="">
+                                    <svg class="c-main-nav__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 17.548">
+                                        <path id="crown-svgrepo-com" d="M20,21.249a2.1,2.1,0,1,0-3.68,1.376l-2.169,1.99L11.384,18.9,13,17l-2.989-3.511L7.022,17l1.545,1.815L5.82,24.582,3.681,22.624a2.1,2.1,0,1,0-1.833.708l.643,7.7H17.509l.643-7.7A2.1,2.1,0,0,0,20,21.249Z" transform="translate(0 -13.487)" fill="#ffe600"/>
+                                    </svg>
+                                    Leaderboard
+                                </a>
+                            </li>
+                            <li class="c-main-nav__item">
+                                <a class="c-main-nav__link" href="SettingsPage.html">
+                                    <svg class="c-main-nav__icon" id="settings_3_" data-name="settings (3)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                                        <path id="Path_1045" data-name="Path 1045" d="M19.555,8.3l-2.34-.574a7.547,7.547,0,0,0-.492-1.2l1.2-1.992a.583.583,0,0,0-.082-.715L16.172,2.164a.583.583,0,0,0-.715-.082l-1.992,1.2a7.547,7.547,0,0,0-1.2-.492L11.707.445A.6.6,0,0,0,11.133,0H8.789a.6.6,0,0,0-.574.445l-.562,2.34a7.547,7.547,0,0,0-1.2.492l-1.992-1.2a.583.583,0,0,0-.715.082L2.086,3.828A.583.583,0,0,0,2,4.543L3.2,6.535a7.547,7.547,0,0,0-.492,1.2L.445,8.3A.578.578,0,0,0,0,8.867v2.344a.578.578,0,0,0,.445.563l2.262.574a7.547,7.547,0,0,0,.492,1.2L2,15.535a.583.583,0,0,0,.082.715L3.75,17.914A.583.583,0,0,0,4.465,18l1.992-1.2a7.547,7.547,0,0,0,1.2.492l.562,2.262A.6.6,0,0,0,8.789,20h2.344a.6.6,0,0,0,.574-.445l.562-2.262a7.547,7.547,0,0,0,1.2-.492L15.457,18a.583.583,0,0,0,.715-.082l1.664-1.664a.583.583,0,0,0,.082-.715l-1.2-1.992a7.547,7.547,0,0,0,.492-1.2l2.34-.574A.578.578,0,0,0,20,11.211V8.867A.578.578,0,0,0,19.555,8.3ZM9.961,12.969a2.93,2.93,0,1,1,2.93-2.93A2.931,2.931,0,0,1,9.961,12.969Z" fill="#ffe600"/>
+                                    </svg>
+                                    Settings
+                                </a>
+                            </li>
+                        </div>
+                    </ul>
+                    <ul class="c-main-nav__list__closed">
+                        <li class="c-main-nav__item c-main-nav__item__closed" id="js-option-close">
+                            <a class="c-main-nav__link" href="#">
+                                <svg  class="c-main-nav__icon" xmlns="http://www.w3.org/2000/svg" width="17.828" height="17.828" viewBox="0 0 17.828 17.828">
+                                    <g id="_5299154331543238955_1_" data-name="5299154331543238955 (1)" transform="translate(-4.586 -4.586)">
+                                    <line id="Line_4" data-name="Line 4" x1="15" y2="15" transform="translate(6 6)" fill="none" stroke="#ffe600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                                    <line id="Line_5" data-name="Line 5" x2="15" y2="15" transform="translate(6 6)" fill="none" stroke="#ffe600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                                    </g>
+                                </svg>
+                                Close
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    <section class="o-row o-row__top">
+        <div class='o-container o-container__topLeaderboard'>
+            <button class="c-button-nav__leaderboard" id="js-button-open">
+                <svg class="c-navSVG" id="Nav_icon" data-name="Nav icon" xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16">
+                    <rect id="Rectangle_14" data-name="Rectangle 14" width="20" height="4" rx="2" transform="translate(0 12)"/>
+                    <rect id="Rectangle_15" data-name="Rectangle 15" width="20" height="4" rx="2" transform="translate(0 6)"/>
+                    <rect id="Rectangle_16" data-name="Rectangle 16" width="20" height="4" rx="2"/>
+                </svg>    
+            </button>
+            <nav class="c-wrapper">
+                <div class="c-wrapper-dropdown" tabindex="1">
+                    <span id ="a0" class="c-wrapper-dropdown__activeObject">3 etappes</span> 
+                    <svg class="c-wrapper-dropdown__arrow" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        width="284.929px" height="284.929px" viewBox="0 0 284.929 284.929" style="enable-background:new 0 0 284.929 284.929;"
+                        xml:space="preserve">
+                        <path d="M282.082,76.511l-14.274-14.273c-1.902-1.906-4.093-2.856-6.57-2.856c-2.471,0-4.661,0.95-6.563,2.856L142.466,174.441
+                            L30.262,62.241c-1.903-1.906-4.093-2.856-6.567-2.856c-2.475,0-4.665,0.95-6.567,2.856L2.856,76.515C0.95,78.417,0,80.607,0,83.082
+                            c0,2.473,0.953,4.663,2.856,6.565l133.043,133.046c1.902,1.903,4.093,2.854,6.567,2.854s4.661-0.951,6.562-2.854L282.082,89.647
+                            c1.902-1.903,2.847-4.093,2.847-6.565C284.929,80.607,283.984,78.417,282.082,76.511z"/>
+                    </svg>
+                    <ul class="c-dropdown">
+                        <li id="option1"><a id="a1"href="#">5 etappes</a></li>
+                        <li id="option2"><a id="a2" href="#">7 etappes</a></li>
+                    </ul>
+                </div>
+            ​</nav>
+        </div>
+    </section>
+
+    <section class="o-row">
+        <div class="o-container">
+            <h1 class="c-page-logo">
+                Leaderboard
+            </h1>
+        </div>
+        <div class="c-podium">
+            <div class="c-place c-place__2" id="second">
+
+            </div>
+            <div class="c-place c-place__1" id="first">
+
+            </div>
+            <div class="c-place c-place__3" id="third">
+
+            </div>
+        </div>
+    </section>
+    <table class="c-leaderboard" id="row_container">
+    </table>
+</body>
+</html>

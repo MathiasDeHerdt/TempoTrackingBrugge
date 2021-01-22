@@ -1,53 +1,85 @@
-var total_number = 1; 
+const lanIP = `${window.location.hostname}:5000`;
+//const socket = io(`http://${lanIP}`);
+
+console.log(lanIP)
+
+var total_number = 1;
+
+// Settings
+var global_count_etappes = "";
+var global_count_players = "";
+var global_group_name = "";
+var global_distance = 0;
+
+// Players
+var global_player_name = "";
+var global_team_name = "";
+var global_beacon_name = "";
 
 function selectIcon() {
-  for (let i = 1; i <= total_number; i++) {
-    const team = "select_team_" + i;
-    const icon = "select_icon_" + i;
-    var x = document.getElementById(team).value;
-    var icon_selected = `<img class="c-settings-player__icon-img" src="Images/teams/${x}-2021.png" alt="${x}-2021">`
-    document.getElementById(icon).innerHTML = icon_selected;
-  }
+    for (let i = 1; i <= total_number; i++) {
+        const team = "select_team_" + i;
+        const icon = "select_icon_" + i;
+        var x = document.getElementById(team).value;
+        var icon_selected = `<img class="c-settings-player__icon-imgSP" src="Images/teams/${x}-2021.png" alt="${x}-2021">`
+        document.getElementById(icon).innerHTML = icon_selected;
+    }
 }
 
 function selectPlayers() {
-  var x = document.getElementById("select_players").value;
-  total_number = x;
-  removePlayers();
-  getPlayers();
+    var x = document.getElementById("select_players").value;
+    total_number = x;
+    removePlayers();
+    getPlayers();
 }
 
 function removePlayers() {
-	while (player_container.firstChild) {
-		player_container.removeChild(player_container.lastChild);
-	}
+    while (player_container.firstChild) {
+        player_container.removeChild(player_container.lastChild);
+    }
 }
 
 const getPlayers = async () => {
     for (let i = 1; i <= total_number; i++) {
         await createNewPlayer(i);
-	}
+    }
 }
 
 function createNewPlayer(number) {
-  const playerEl = document.createElement('div');
-  playerEl.classList.add('pokemon');
+    const playerEl = document.createElement('div');
 
 
-  const playerInnerHTML = `
+    const playerInnerHTML = `
   <div class="c-settings-player">
     <h2 class="c-settings-player__header c-settings-setup__item-invis">
         Player ${number}
     </h2>
     <div class="c-settings-player__bg">
         <div class="c-settings-player__item">
-            <label class="c-settings-player__text" for="select_beacon_${number}">
-                Beacon ${number}
+            <label class="c-settings-player__text" for="select_player_${number}">
+                Name
             </label>
             <div class="c-settings-player__input">
-                <input class="c-custom-select__text" type="text" id="select_beacon_${number}" name="select_beacon_${number}" placeholder="PLAYER NAME" onchange="validateSettings();">
+                <input class="c-custom-select__text" type="text" id="select_player_${number}" name="select_player_${number}" placeholder="PLAYER NAME" onchange="validateSettings();">
             </div>
         </div>
+
+        <!-- Beacon Heb ik toegevoegd en heb de onchange weggedaan, omdat deze info nog nergens wordt verwerkt -->
+        <div class="c-settings-player__item">
+        <label class="c-settings-player__text" for="select_team_${number}">
+            Beacon
+        </label>
+        <div class="c-settings-player__input">
+            <span class="c-custom-select">
+                <select class="c-input c-custom-select__dropdown" name="select_beacon_${number}" id="select_beacon_${number}";">
+                <option value="beacon 1">beacon 1</option>
+                <option value="beacon 2">beacon 2</option>
+                <option value="beacon 3">beacon 3</option>
+                <option value="beacon 4">beacon 4</option>
+                </select>
+            </span>
+        </div>
+    </div>
         <div class="c-settings-player__item">
             <label class="c-settings-player__text" for="select_team_${number}">
                 Team
@@ -84,32 +116,39 @@ function createNewPlayer(number) {
                 Icon
             </p>
             <div class="c-settings-player__input c-settings-player__icon" id="select_icon_${number}">
-                <img class="c-settings-player__icon-img" src="Images/teams/ag2r-citroen-team-2021.png" alt="ag2r-citroen-team-2021">
+                <img class="c-settings-player__icon-imgSP" src="Images/teams/ag2r-citroen-team-2021.png" alt="ag2r-citroen-team-2021">
             </div>
         </div>
     </div>
   </div>
   `;
 
-  playerEl.innerHTML = playerInnerHTML;
+    playerEl.innerHTML = playerInnerHTML;
 
-	player_container.appendChild(playerEl);
+    player_container.appendChild(playerEl);
 };
 
 function validateSettings() {
     var validate_game_settings = false;
-    
+
     console.log("----- GAME SETTINGS ------");
-    
+
     const select_players = document.getElementById('select_players').value;
     const select_group = document.getElementById('select_group').value;
     const select_etappes = document.getElementById('select_etappes').value;
-    
+    const select_distance = document.getElementById('select_distance').value;
+
+    global_count_etappes = select_etappes;
+    global_count_players = select_players;
+    global_group_name = select_group;
+    global_distance = select_distance;
+
     console.log("Player count: " + select_players);
     console.log("Game group: " + select_group);
     console.log("Etappe count: " + select_etappes);
-    
-    if ( select_players && select_group && select_etappes) {
+    console.log("Distance: " + select_distance);
+
+    if (select_players && select_group && select_etappes && select_distance) {
         validate_game_settings = true;
     }
     else {
@@ -117,47 +156,68 @@ function validateSettings() {
     }
 
     console.log("----- PLAYER SETTINGS ------");
-    
+
     for (let i = 1; i <= total_number; i++) {
         const name = "select_beacon_" + i;
         const team = "select_team_" + i;
-        
-        if (document.getElementById(name) != null) {
-            const select_name = document.getElementById(name).value;
-            const select_team = document.getElementById(team).value;
-            console.log("Player " + i + " name: " + select_name);
-            console.log("Player " + i + " team: " + select_team);
+        const player = "select_player_" + i;
 
-            if ( select_name && select_team) {
+        if (document.getElementById(name) != null) {
+            const select_name = document.getElementById(player).value;
+            const select_team = document.getElementById(team).value;
+            const select_beacon = document.getElementById(name).value
+
+            var playerName = "Player " + i + " name: " + select_name
+            var teamName = "Player " + i + " team: " + select_team
+            var beaconName = "Player " + i + " Beacon: " + select_beacon
+
+            console.log(playerName)
+            console.log(teamName)
+            console.log(beaconName)
+
+            global_player_name = select_name;
+            global_team_name = select_team;
+            global_beacon_name = select_beacon;
+
+            if (select_name && select_team && select_beacon) {
                 validate_game_settings = true;
             }
             else {
                 validate_game_settings = false;
             }
-        }     
+        }
     }
-    
+
     console.log("----- CONTROLE -----");
 
     const save_settings = document.getElementById('save_settings');
-    
+
     if (validate_game_settings) {
         save_settings.disabled = false;
+        console.log("1")
     }
     else {
         save_settings.disabled = true;
+        console.log("2")
     }
 }
 
 function enableButton() {
     const go_to_game = document.getElementById('go_to_game');
     go_to_game.disabled = false;
+    save_settings.disabled = true;
+
+    //socket.emit('F2B_game_settings', global_count_players, global_count_etappes, global_group_name)
+    //socket.emit('F2B_player_settings', global_player_name, global_team_name)
+}
+
+function goToGame() {
+    console.log('Going to MainPage.html...')
+    document.location.href = "./MainPageMDH.html"
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('Script loaded!');
-  const player_container = document.getElementById('player_container');
-  getPlayers();
+    console.log('DOM - Settings Page');
+    const player_container = document.getElementById('player_container');
+    getPlayers();
 });
-
-
