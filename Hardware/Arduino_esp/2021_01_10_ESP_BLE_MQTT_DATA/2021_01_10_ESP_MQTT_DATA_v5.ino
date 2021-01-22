@@ -3,28 +3,38 @@
 
 #include <BLEDevice.h>
 #include <BLEUtils.h>
+#include <BLEServer.h>
+#include <BLEBeacon.h>
 #include <BLEScan.h>
 #include <BLEAdvertisedDevice.h>
 #include <BLEUUID.h>
-#include <BLEBeacon.h>
+
 
 // BLE VARIABLES
+BLEScan* pBLEScan;
 int scanTime = 1; //In seconds
 int delayLoop = 100;
-BLEScan* pBLEScan;
-const int MAJOR_DESIRED = 2;
-const int MINOR_DESIRED = 10;
+const unsigned int MAJOR_DESIRED = 2;
+const unsigned int MINOR_DESIRED = 10;
+
 // WIFI VARIABLES
 const char* ssid = "TempoTracking4";
 const char* password =  "Tempo_4Brugge_5+";
+IPAddress local_IP(192, 168, 1, 3);
+IPAddress gateway(192, 168, 1, 1);
+IPAddress subnet(255, 255, 255, 0);
+
 WiFiClient espClient;
 // MQTT VARIABLES
-const char* broker = "192.168.1.101";
+const char* broker = "192.168.1.2";
 const char* outTopic ="/tempotracking4/esp_to_pi";
 const char* inTopic ="/tempotracking4/pi_to_esp";
 PubSubClient client(espClient);
+
 // OTHER VARIABLES
 long lastMsg = 0;
+const String deviceId = "device_esp_1";
+bool isScanActive = false;
 
 // BLE
 //===================================================================================================================
@@ -37,14 +47,29 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
 void setupBle(){
   Serial.println("Start BLE scanning....");
 
-  BLEDevice::init("");
+  BLEDevice::init("device_esp_1");
+  setupBleScanner();
+}
+
+void setupBleScanner(){
+  Serial.println("Start BLE scanning....");
+  //Setup for scanning
   pBLEScan = BLEDevice::getScan(); //create new scan
   //pBLEScan->setAdvertisedDeviceCallbacks(new MyAdvertisedDeviceCallbacks());
   pBLEScan->setActiveScan(true); //active scan uses more power, but get results faster
   pBLEScan->setInterval(100);
   pBLEScan->setWindow(99);  // less or equal setInterval value
-
   Serial.println("BLE scanning setup!");
+}
+
+void addCharacteristic(BLEService *pService, std::string uuid, unsigned int value){
+  BLECharacteristic *pCharacteristic = pService->createCharacteristic(
+                                         uuid,
+                                         BLECharacteristic::PROPERTY_READ |
+                                         BLECharacteristic::PROPERTY_WRITE
+                                       );
+
+  pCharacteristic->setValue(value);
 }
 
 void loopBLE() {
@@ -112,24 +137,24 @@ void extractBeacon(BLEAdvertisedDevice advertisedDevice, BLEBeacon myBeacon){
   Serial.println("rssi: " + String(rssi));
   Serial.println("txPower: " + String(txPower));
   Serial.println("major: " + String(major) + " minor: " + String(minor));
+
+  String mqttDevice = "\"deviceId\": \"" + deviceId + "\" ";
+  String mqttAddress = "\"address\": \"" + address + "\" ";
+  String mqttName = "\"name\": \"" + nameDevice + "\" ";
+  String mqttRSSI = "\"rssi\": " + String(rssi);
+  String mqttTx = "\"txPower\": " + String(txPower);
+  String mqttMajor = "\"major\": " + String(major);
+  String mqttMinor = "\"minor\": " + String(minor);
+  String mqttUUID = "\"UUID\": \"" + stringUUID + "\" ";
       
-  String mqttAddress = "\"address\":\"" + address + "\"";
-  String mqttName = "\"name\":\"" + nameDevice + "\"";
-  String mqttRSSI = "\"rssi\":" + String(rssi);
-  String mqttTx = "\"txPower\":" + String(txPower);
-  String mqttMajor = "\"major\":" + String(major);
-  String mqttMinor = "\"minor\":" + String(minor);
-  String mqttUUID = "\"UUID\":\"" + stringUUID + "\"";
-      
-  String mqqtMessage = "{" ;
-  mqqtMessage += mqttAddress + "," ;
-  mqqtMessage += mqttName + "," ;
-  mqqtMessage += mqttRSSI + "," ;
-  mqqtMessage += mqttTx + "," ;
-  mqqtMessage += mqttMajor + ",";
-  mqqtMessage += mqttMinor + ",";
-  mqqtMessage += mqttUUID;
-  mqqtMessage +=  "}";
+  String mqqtMessage = "{" + mqttDevice + "," +
+  mqttAddress + "," +
+  mqttName + "," +
+  mqttRSSI + "," + 
+  mqttTx + "," +
+  mqttMajor + "," +
+  mqttMinor + "," +
+  mqttUUID + "}";
       
   sendMessageMqtt(mqqtMessage);
 }
@@ -147,7 +172,7 @@ void setupWifi(){
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println("Status: " + String(WiFi.status()));
-  Serial.print(WiFi.localIP());
+  Serial.println(WiFi.localIP());
 }
 
 // MQTT
@@ -163,10 +188,21 @@ void callback(char* topic, byte* message, unsigned int lengthMessage) {
 
   if (String(topic) == inTopic) {
     Serial.println("Message: " + messageString);
+    if(messageString == String("\"esp_scan_start\"")){
+      setScanActive(true);
+    }
+    else if(messageString == String("\"esp_scan_stop\"")){
+      setScanActive(false);
+    }
   }
   else{
     Serial.println("Received message from unknown topic");
   }
+}
+
+void setScanActive(bool isOn){
+  Serial.println("Activating/deactivating scanning: " + bool(isScanActive));
+  isScanActive = isOn;
 }
 
 String extractMessage(byte* message, int lengthMessage){
@@ -182,8 +218,8 @@ String extractMessage(byte* message, int lengthMessage){
 void reconnect() {
   while (!client.connected()) {
     Serial.println("Attempting MQTT connection...");     // Attempt to connect
-    if (client.connect("ESP32Client")) {
-      Serial.println("Connected");
+    if (client.connect("device_esp_1")) {
+      Serial.println(deviceId);
       client.subscribe(inTopic);
     }
     else {
@@ -220,5 +256,7 @@ void setup() {
 
 void loop() {
   checkConnected();
-  loopBLE();
+  if(isScanActive == true){
+    loopBLE();
+  }
 }
