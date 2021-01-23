@@ -17,8 +17,8 @@ from .BLE.Helpers.ble_helper import BleHelper
 from .Mqtt.mqtt_client import MqttClient
 
 class BleManager:
-    # INIT
-    #=================================================================================================================
+    # =========================================================
+    #region --- INIT ==========================================================================================================================================
     def __init__(self):
         self.__mqtt_client = None
 
@@ -40,15 +40,15 @@ class BleManager:
         #Setup Ble Manager
         print(f'BleManager - initialize')
         self.__player_manager = {}
-
         self.__setup_mqtt()
         self.__finish_width = finish_width
         self.__callback_etappe = callback_etappe
         self.__callback_finish = callback_finish
         self.__beacon_manager.filter_saved_beacons(selected_players)
 
+        #Create player managers
         original_beacons = self.__beacon_manager.list_beacons
-        print(f'Filter from beaconlist = {original_beacons}')
+        print(f'Filter from beaconlist to only register following beacons = {original_beacons}')
         for beacon in original_beacons:
             if beacon == None:
                 continue
@@ -59,14 +59,11 @@ class BleManager:
     def __setup_mqtt(self):
         #Setup MQTT and subscribe to receive measurement messages
         self.__mqtt_client = MqttClient(self.__callback_mqtt)
-        #while self.__mqtt_client.is_connected == False:
-        #    print("MQTT trying to connect...")
-        #    time.sleep(0.1)
-
+    #endregion
 
     
-    # SETUP
-    #=================================================================================================================
+    # =========================================================
+    #region --- SETUP GAME ==========================================================================================================================================
     def scan_for_players(self):
         #reset
         self.clear() 
@@ -92,12 +89,31 @@ class BleManager:
         return self.__rpi_scanner.scan_beacon_uuid(uuid)
 
 
-    # LOOP
-    #=================================================================================================================
+    def clear_results(self):
+        #Clear only results
+        for key in self.__player_manager.keys():
+            self.__player_manager[key].clear_results()
+
+
+    def clear(self):
+        #Clear everything
+        self.__player_manager = {}
+        self.__beacon_manager = BeaconManager()
+    #endregion
+
+
+    # =========================================================
+    #region --- LOOP GAME ==========================================================================================================================================
     def start_game_loop(self):
         #Start game
-        self.__mqtt_client.subscribe()
-        self.start_scanning_player_distance()
+        try:
+            print('Connecting to MQTT...')
+            self.__mqtt_client.subscribe()
+            print('Begin scanning for player distance')
+            self.start_scanning_player_distance()
+        except Exception as e:
+            print(f'Exception => {e}')
+
 
     def stop_game_loop(self):
         #Stop game
@@ -107,10 +123,11 @@ class BleManager:
 
     def start_scanning_player_distance(self):
         #Start scanning for disances
-        print(f'Start scanning for distances')
-        self.__is_loop_scan_active = True
+        print(f'Activate ESP')
         self.__start_esp_scan()
+        print(f'Distance thread')
         self.__create_thread_scanning_player_distance()
+        self.__is_loop_scan_active = True
     
 
     def stop_scanning_player_distance(self):
@@ -144,10 +161,11 @@ class BleManager:
         for result in results:
             #Publish to MQTT to save
             self.__mqtt_client.publish_to_pi(result)
+    #endregion
 
 
-    # DEBUG
-    #=================================================================================================================
+    # =========================================================
+    #region --- DEBUG GAME ==========================================================================================================================================
     def print_registered_results(self):
         for key in self.__player_manager.keys():
             self.__player_manager[key].print_manager()
@@ -159,10 +177,11 @@ class BleManager:
 
     def print_finished(self, player_manager):
         print(f'Finished - {player_manager}')
+    #endregion
 
 
-    # MQTT
-    #=================================================================================================================
+    # =========================================================
+    #region --- MQTT ==========================================================================================================================================
     def __callback_mqtt(self, msg):
         now = datetime.now()
         jsonObj = json.loads(msg.payload)
@@ -191,25 +210,17 @@ class BleManager:
             
         else:
             print(f'No corresponding device was found for this MQTT message => {jsonObj}')
+    #endregion
 
 
-    # ESP CONTROL
-    #=================================================================================================================
+    # =========================================================
+    #region --- ESP ==========================================================================================================================================
     def __start_esp_scan(self):   
+        print(f'Sending ESP32s to start - esp_scan_start')
         self.__mqtt_client.sendMessage("esp_scan_start")
 
     def __stop_esp_scan(self):
+        print(f'Sending ESP32s to stop - esp_scan_stop')
         self.__mqtt_client.sendMessage("esp_scan_stop")
+    #endregion
 
-
-
-    # CLEAR
-    #=================================================================================================================
-    def clear_results(self):
-        #Clear only results
-        for key in self.__player_manager.keys():
-            self.__player_manager[key].clear_results()
-
-    def clear(self):
-        self.__player_manager = {}
-        self.__beacon_manager = BeaconManager()

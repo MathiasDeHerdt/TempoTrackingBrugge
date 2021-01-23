@@ -9,10 +9,13 @@ from datetime import datetime
 class EtappeManager:
     # INIT
     #=================================================================================================================
-    def __init__(self, etappe_count):
+    def __init__(self, etappe_count, beacon):
+        self.__beacon = beacon
         self.__etappe_index = 0
         self.__etappe_count = etappe_count
-        self.__etappe_array = [Etappe()] * etappe_count
+        self.__etappe_array = [None] * etappe_count
+        for index in range(0, etappe_count):
+            self.__etappe_array[index] = Etappe(index + 1, beacon)
         
         self.__is_timed_out = False
         self.__time_out_count = 5
@@ -36,7 +39,7 @@ class EtappeManager:
 
     def append_measure(self, measure_device_1, measure_device_2, finish_width):
         #Dont allow new measurements to be used when timed out
-        if(self.__is_timed_out == True):
+        if self.__is_timed_out == True:
             return 0, None, self
 
         #Skip if max ettape count exeeded
@@ -69,16 +72,40 @@ class EtappeManager:
         return False
 
 
+    def json_from_etappe_manager(self):
+        list_etappe = self.etappe_list
+        jsonList = []
+
+        for etappe in list_etappe:
+            jsonList.append(etappe.json_from_etappe())
+
+        jsonObj = {
+            'count' : self.etappe_count,
+            'etappes' : jsonList,
+            'address' : self.__beacon.address,
+            'uuid' : self.__beacon.uuid
+        }
+        return jsonObj
+
+
     @property
     def etappe_count(self):
         #get etappe count
         return self.__etappe_count
 
 
+    @property
+    def etappe_list(self):
+        #get etappe count
+        return self.__etappe_array
+
+
+
 class Etappe:
     # INIT
     #=================================================================================================================
-    def __init__(self):
+    def __init__(self, etappe_number, beacon):
+        self.__beacon = beacon
         self.first_distance = None
         self.shortest_distance = 1000
         self.last_distance = None
@@ -89,6 +116,7 @@ class Etappe:
         self.__treshhold = 3
         self.__finish_timestamp = None
         self.__has_finished = False
+        self.__etappe_number = etappe_number
 
 
     def append_measure(self, measure_device_1, measure_device_2, finish_width):
@@ -151,9 +179,32 @@ class Etappe:
         time_to_finish = BleHelper.get_time(distance_first_to_short, speed)
         return BleHelper.datetime_to_string(BleHelper.add_seconds_to_timestamp(tstamp_first, time_to_finish))
 
+    def json_from_etappe(self):
+        jsonObj = {
+            'number' : self.number,
+            'timestamp' : self.timestamp,
+            'address' : self.__beacon.address,
+            'uuid' : self.__beacon.uuid
+        }
+        return jsonObj
 
-    def get_finish_time(self):  
+
+    @property
+    def timestamp(self):
+        #get etappe timestamp
         return self.__finish_timestamp
+
+
+    @property
+    def number(self):
+        #get etappe number
+        return self.__etappe_number
+
+
+
+
+
+
 
 
         # def append_measure(self, measure1, measure2, finish_width):

@@ -33,8 +33,8 @@ class MqttClient:
 
 
     def subscribe(self):
-        self.client.subscribe(self.topic_subscribe)
         self.client.loop_start()
+        self.client.subscribe(self.topic_subscribe)
 
     def unsubscribe(self):
         self.client.loop_stop()
