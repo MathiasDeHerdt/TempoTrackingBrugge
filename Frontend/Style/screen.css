@@ -407,12 +407,6 @@ select {
   min-height: 100%;
 }
 
-.o-container__topLeaderboard {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
 /*
        #endregion Rows and containers
   */

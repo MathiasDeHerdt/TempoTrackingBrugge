@@ -48,80 +48,83 @@ const getPlayers = async () => {
 function createNewPlayer(number) {
     const playerEl = document.createElement('div');
 
-
     const playerInnerHTML = `
-  <div class="c-settings-player">
-    <h2 class="c-settings-player__header c-settings-setup__item-invis">
-        Player ${number}
-    </h2>
-    <div class="c-settings-player__bg">
-        <div class="c-settings-player__item">
-            <label class="c-settings-player__text" for="select_player_${number}">
-                Name
-            </label>
-            <div class="c-settings-player__input">
-                <input class="c-custom-select__text" type="text" id="select_player_${number}" name="select_player_${number}" placeholder="PLAYER NAME" onchange="validateSettings();">
+    <div class="c-settings-player">
+        <!-- Settings player ${number} -->
+        <h2 class="c-settings-player__header c-settings-setup__item-invis">
+            Player ${number}
+        </h2>
+        <div class="c-settings-player__bg">
+            <!-- Player ${number} Name -->
+            <div class="c-settings-player__item">
+                <label class="c-settings-player__text" for="select_player_${number}">
+                    Name
+                </label>
+                <div class="c-settings-player__input">
+                    <input class="c-custom-select__text" type="text" id="select_player_${number}" name="select_player_${number}" placeholder="PLAYER NAME" onchange="validateSettings();">
+                </div>
             </div>
-        </div>
-
-        <!-- Beacon Heb ik toegevoegd en heb de onchange weggedaan, omdat deze info nog nergens wordt verwerkt -->
-        <div class="c-settings-player__item">
-        <label class="c-settings-player__text" for="select_team_${number}">
-            Beacon
-        </label>
-        <div class="c-settings-player__input">
-            <span class="c-custom-select">
-                <select class="c-input c-custom-select__dropdown" name="select_beacon_${number}" id="select_beacon_${number}";">
-                <option value="beacon 1">beacon 1</option>
-                <option value="beacon 2">beacon 2</option>
-                <option value="beacon 3">beacon 3</option>
-                <option value="beacon 4">beacon 4</option>
-                </select>
-            </span>
+            <!-- Beacon Heb ik toegevoegd en heb de onchange weggedaan, omdat deze info nog nergens wordt verwerkt -->
+            <!-- Player ${number} Beacon -->
+            <div class="c-settings-player__item">
+                <label class="c-settings-player__text" for="select_team_${number}">
+                    Beacon
+                </label>
+                <div class="c-settings-player__input">
+                    <span class="c-custom-select">
+                        <select class="c-input c-custom-select__dropdown" name="select_beacon_${number}" id="select_beacon_${number}";">
+                        <option value="beacon 1">beacon 1</option>
+                        <option value="beacon 2">beacon 2</option>
+                        <option value="beacon 3">beacon 3</option>
+                        <option value="beacon 4">beacon 4</option>
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <!-- Player ${number} Team -->
+            <div class="c-settings-player__item">
+                <label class="c-settings-player__text" for="select_team_${number}">
+                    Team
+                </label>
+                <div class="c-settings-player__input">
+                    <span class="c-custom-select">
+                        <select class="c-input c-custom-select__dropdown" name="select_team_${number}" id="select_team_${number}" onchange="selectIcon(); validateSettings();">
+                            <option value="ag2r-citroen-team">AG2R Citroën Team</option>
+                            <option value="alpecin-fenix">Alpecin - Fenix</option>
+                            <option value="astana-premier-tech">Astana - Premier Tech</option>
+                            <option value="bahrain-victorious">Bahrain - Victorious</option>
+                            <option value="bora-hansgrohe">BORA - hansgrohe</option>
+                            <option value="cofidis-solutions-credits">Cofidis</option>
+                            <option value="deceuninck-quick-step">Deceuninck - Quick-Step</option>
+                            <option value="ef-pro-cycling">EF Education - Nippo</option>
+                            <option value="groupama-fdj">Groupama - FDJ</option>
+                            <option value="ineos-grenadiers">INEOS Grenadiers</option>
+                            <option value="intermarche-wanty-gobert">Intermarché Wanty Gobert</option>
+                            <option value="israel-start-up-nation">Israel Start-Up Nation</option>
+                            <option value="lotto-soudal">Lotto Soudal</option>
+                            <option value="movistar-team">Movistar Team</option>
+                            <option value="team-bikeexchange">Team BikeExchange</option>
+                            <option value="team-dsm">Team DSM</option>
+                            <option value="team-jumbo-visma">Team Jumbo-Visma</option>
+                            <option value="team-qhubeka-assos">Team Qhubeka ASSOS</option>
+                            <option value="trek-segafredo">Trek - Segafredo</option>
+                            <option value="uae-team-emirates">UAE-Team Emirates</option>
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <!-- Player ${number} Icon -->
+            <div class="c-settings-player__item">
+                <p class="c-settings-player__text">
+                    Icon
+                </p>
+                <div class="c-settings-player__input c-settings-player__icon" id="select_icon_${number}">
+                    <img class="c-settings-player__icon-imgSP" src="Images/teams/ag2r-citroen-team-2021.png" alt="ag2r-citroen-team-2021">
+                </div>
+            </div>
         </div>
     </div>
-        <div class="c-settings-player__item">
-            <label class="c-settings-player__text" for="select_team_${number}">
-                Team
-            </label>
-            <div class="c-settings-player__input">
-                <span class="c-custom-select">
-                    <select class="c-input c-custom-select__dropdown" name="select_team_${number}" id="select_team_${number}" onchange="selectIcon(); validateSettings();">
-                        <option value="ag2r-citroen-team">AG2R Citroën Team</option>
-                        <option value="alpecin-fenix">Alpecin - Fenix</option>
-                        <option value="astana-premier-tech">Astana - Premier Tech</option>
-                        <option value="bahrain-victorious">Bahrain - Victorious</option>
-                        <option value="bora-hansgrohe">BORA - hansgrohe</option>
-                        <option value="cofidis-solutions-credits">Cofidis</option>
-                        <option value="deceuninck-quick-step">Deceuninck - Quick-Step</option>
-                        <option value="audi">EF Education - Nippo</option>
-                        <option value="groupama-fdj">Groupama - FDJ</option>
-                        <option value="ineos-grenadiers">INEOS Grenadiers</option>
-                        <option value="audi">Intermarché Wanty Gobert</option>
-                        <option value="israel-start-up-nation">Israel Start-Up Nation</option>
-                        <option value="lotto-soudal">Lotto Soudal</option>
-                        <option value="movistar-team">Movistar Team</option>
-                        <option value="team-bikeexchange">Team BikeExchange</option>
-                        <option value="team-dsm">Team DSM</option>
-                        <option value="team-jumbo-visma">Team Jumbo-Visma</option>
-                        <option value="audi">Team Qhubeka ASSOS</option>
-                        <option value="audi">Trek - Segafredo</option>
-                        <option value="uae-team-emirates">UAE-Team Emirates</option>
-                    </select>
-                </span>
-            </div>
-        </div>
-        <div class="c-settings-player__item">
-            <p class="c-settings-player__text">
-                Icon
-            </p>
-            <div class="c-settings-player__input c-settings-player__icon" id="select_icon_${number}">
-                <img class="c-settings-player__icon-imgSP" src="Images/teams/ag2r-citroen-team-2021.png" alt="ag2r-citroen-team-2021">
-            </div>
-        </div>
-    </div>
-  </div>
-  `;
+    `;
 
     playerEl.innerHTML = playerInnerHTML;
 
@@ -213,7 +216,7 @@ function enableButton() {
 
 function goToGame() {
     console.log('Going to MainPage.html...')
-    document.location.href = "./MainPageMDH.html"
+    document.location.href = "./MainPage.html"
 }
 
 document.addEventListener('DOMContentLoaded', function () {
