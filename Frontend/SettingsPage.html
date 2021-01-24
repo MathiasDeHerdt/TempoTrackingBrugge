@@ -4,154 +4,191 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="Style/normalize.css">
-        <link rel="stylesheet" href="Style/screenSP.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="Images/Favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="Images/Favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="Images/Favicon/favicon-16x16.png">
+        <link rel="manifest" href="Images/Favicon/site.webmanifest">
+        <link rel="mask-icon" href="Images/Favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
 
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
-        </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.js"></script>
 
-        <script type = "text/javascript" src="./Script/appSP.js"></script>
-    </head>
+        <link rel="stylesheet" href="style/normalize.css">
+        <link rel="stylesheet" href="style/screen.css">
+
+
+        <script type="text/javascript" src="./script/appSP.js"></script>
+        <script type="text/javascript" src="./script/sidebar.js"></script>
+
         <title>SettingsPage</title>
     </head>
 
-<body>
-    <div class="c-nav" id="myNav">
-        <div class="c-nav-content">
-            <div class="c-app__logo">
-                <h1 class="c-logo">
-                    Tempotrack
-                </h1>
+    <body>
+        <!-- Navigation - Sidebar -->
+        <div  class="c-nav" id="myNav">
+            <div class="c-nav-content">
+                <!-- Navigation - Sidebar - Title -->
+                <div class="c-app__logo">
+                    <h1 class="c-logo">
+                        Tempotrack
+                    </h1>
+                </div>
+                <nav class="c-main-nav">
+                    <ul class="o-list c-main-nav__list">
+                        <div class="c-main-nav__list__items">
+                            <!-- Navigation - Sidebar - Home -->
+                            <li class="c-main-nav__item">
+                                <a class="c-main-nav__link" href="#">
+                                    <svg class="c-main-nav__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="18.333" viewBox="0 0 20 18.333">
+                                        <path id="iconmonstr-home-6" d="M17.5,11v8.333h-5v-5h-5v5h-5V11H0L10,1,20,11Zm-.833-4.922V1.833h-2.5V3.577Z" transform="translate(0 -1)" fill="#ffe600"/>
+                                    </svg>
+                                    Home
+                                </a>
+                            </li>
+                            <!-- Navigation - Sidebar - Leaderboard -->
+                            <li class="c-main-nav__item">
+                                <a class="c-main-nav__link" href="LeaderboardPage.html">
+                                    <svg class="c-main-nav__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 17.548">
+                                        <path id="crown-svgrepo-com" d="M20,21.249a2.1,2.1,0,1,0-3.68,1.376l-2.169,1.99L11.384,18.9,13,17l-2.989-3.511L7.022,17l1.545,1.815L5.82,24.582,3.681,22.624a2.1,2.1,0,1,0-1.833.708l.643,7.7H17.509l.643-7.7A2.1,2.1,0,0,0,20,21.249Z" transform="translate(0 -13.487)" fill="#ffe600"/>
+                                    </svg>
+                                    Leaderboard
+                                </a>
+                            </li>
+                            <!-- Navigation - Sidebar - Settings -->
+                            <li class="c-main-nav__item">
+                                <a class="c-main-nav__link" href="SettingsPage.html">
+                                    <svg class="c-main-nav__icon" id="settings_3_" data-name="settings (3)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                                        <path id="Path_1045" data-name="Path 1045" d="M19.555,8.3l-2.34-.574a7.547,7.547,0,0,0-.492-1.2l1.2-1.992a.583.583,0,0,0-.082-.715L16.172,2.164a.583.583,0,0,0-.715-.082l-1.992,1.2a7.547,7.547,0,0,0-1.2-.492L11.707.445A.6.6,0,0,0,11.133,0H8.789a.6.6,0,0,0-.574.445l-.562,2.34a7.547,7.547,0,0,0-1.2.492l-1.992-1.2a.583.583,0,0,0-.715.082L2.086,3.828A.583.583,0,0,0,2,4.543L3.2,6.535a7.547,7.547,0,0,0-.492,1.2L.445,8.3A.578.578,0,0,0,0,8.867v2.344a.578.578,0,0,0,.445.563l2.262.574a7.547,7.547,0,0,0,.492,1.2L2,15.535a.583.583,0,0,0,.082.715L3.75,17.914A.583.583,0,0,0,4.465,18l1.992-1.2a7.547,7.547,0,0,0,1.2.492l.562,2.262A.6.6,0,0,0,8.789,20h2.344a.6.6,0,0,0,.574-.445l.562-2.262a7.547,7.547,0,0,0,1.2-.492L15.457,18a.583.583,0,0,0,.715-.082l1.664-1.664a.583.583,0,0,0,.082-.715l-1.2-1.992a7.547,7.547,0,0,0,.492-1.2l2.34-.574A.578.578,0,0,0,20,11.211V8.867A.578.578,0,0,0,19.555,8.3ZM9.961,12.969a2.93,2.93,0,1,1,2.93-2.93A2.931,2.931,0,0,1,9.961,12.969Z" fill="#ffe600"/>
+                                    </svg>
+                                    Settings
+                                </a>
+                            </li>
+                        </div>
+                    </ul>
+                    <ul class="c-main-nav__list__closed">
+                        <!-- Navigation - Sidebar - Close -->
+                        <li class="c-main-nav__item c-main-nav__item__closed" id="js-option-close">
+                            <a class="c-main-nav__link" href="#">
+                                <svg  class="c-main-nav__icon" xmlns="http://www.w3.org/2000/svg" width="17.828" height="17.828" viewBox="0 0 17.828 17.828">
+                                    <g id="_5299154331543238955_1_" data-name="5299154331543238955 (1)" transform="translate(-4.586 -4.586)">
+                                    <line id="Line_4" data-name="Line 4" x1="15" y2="15" transform="translate(6 6)" fill="none" stroke="#ffe600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                                    <line id="Line_5" data-name="Line 5" x2="15" y2="15" transform="translate(6 6)" fill="none" stroke="#ffe600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                                    </g>
+                                </svg>
+                                Close
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-            <nav class="c-main-nav">
-                <ul class="o-list c-main-nav__list">
-                    <div class="c-main-nav__list__items">
-                        <li class="c-main-nav__item">
-                            <a class="c-main-nav__link" href="#">
-                                <svg class="c-main-nav__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="18.333" viewBox="0 0 20 18.333">
-                                    <path id="iconmonstr-home-6" d="M17.5,11v8.333h-5v-5h-5v5h-5V11H0L10,1,20,11Zm-.833-4.922V1.833h-2.5V3.577Z" transform="translate(0 -1)" fill="#ffe600"/>
-                                </svg>
-                                Home
-                            </a>
-                        </li>
-                        <li class="c-main-nav__item">
-                            <a class="c-main-nav__link" href="#">
-                                <svg class="c-main-nav__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 17.548">
-                                    <path id="crown-svgrepo-com" d="M20,21.249a2.1,2.1,0,1,0-3.68,1.376l-2.169,1.99L11.384,18.9,13,17l-2.989-3.511L7.022,17l1.545,1.815L5.82,24.582,3.681,22.624a2.1,2.1,0,1,0-1.833.708l.643,7.7H17.509l.643-7.7A2.1,2.1,0,0,0,20,21.249Z" transform="translate(0 -13.487)" fill="#ffe600"/>
-                                </svg>
-                                Leaderboard
-                            </a>
-                        </li>
-                        <li class="c-main-nav__item">
-                            <a class="c-main-nav__link" href="#">
-                                <svg class="c-main-nav__icon" id="settings_3_" data-name="settings (3)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-                                    <path id="Path_1045" data-name="Path 1045" d="M19.555,8.3l-2.34-.574a7.547,7.547,0,0,0-.492-1.2l1.2-1.992a.583.583,0,0,0-.082-.715L16.172,2.164a.583.583,0,0,0-.715-.082l-1.992,1.2a7.547,7.547,0,0,0-1.2-.492L11.707.445A.6.6,0,0,0,11.133,0H8.789a.6.6,0,0,0-.574.445l-.562,2.34a7.547,7.547,0,0,0-1.2.492l-1.992-1.2a.583.583,0,0,0-.715.082L2.086,3.828A.583.583,0,0,0,2,4.543L3.2,6.535a7.547,7.547,0,0,0-.492,1.2L.445,8.3A.578.578,0,0,0,0,8.867v2.344a.578.578,0,0,0,.445.563l2.262.574a7.547,7.547,0,0,0,.492,1.2L2,15.535a.583.583,0,0,0,.082.715L3.75,17.914A.583.583,0,0,0,4.465,18l1.992-1.2a7.547,7.547,0,0,0,1.2.492l.562,2.262A.6.6,0,0,0,8.789,20h2.344a.6.6,0,0,0,.574-.445l.562-2.262a7.547,7.547,0,0,0,1.2-.492L15.457,18a.583.583,0,0,0,.715-.082l1.664-1.664a.583.583,0,0,0,.082-.715l-1.2-1.992a7.547,7.547,0,0,0,.492-1.2l2.34-.574A.578.578,0,0,0,20,11.211V8.867A.578.578,0,0,0,19.555,8.3ZM9.961,12.969a2.93,2.93,0,1,1,2.93-2.93A2.931,2.931,0,0,1,9.961,12.969Z" fill="#ffe600"/>
-                                </svg>
-                                Settings
-                            </a>
-                        </li>
-                    </div>
-                </ul>
-                <ul class="c-main-nav__list__closed">
-                    <li class="c-main-nav__item c-main-nav__item__closed" id="js-option-close">
-                        <a class="c-main-nav__link" href="#">
-                            <svg  class="c-main-nav__icon" xmlns="http://www.w3.org/2000/svg" width="17.828" height="17.828" viewBox="0 0 17.828 17.828">
-                                <g id="_5299154331543238955_1_" data-name="5299154331543238955 (1)" transform="translate(-4.586 -4.586)">
-                                  <line id="Line_4" data-name="Line 4" x1="15" y2="15" transform="translate(6 6)" fill="none" stroke="#ffe600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-                                  <line id="Line_5" data-name="Line 5" x2="15" y2="15" transform="translate(6 6)" fill="none" stroke="#ffe600" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-                                </g>
-                            </svg>
-                            Close
-                        </a>
-                    </li>
-                </ul>
-            </nav>
         </div>
-    </div>
-
-    <section class="o-row">
-        <div class='o-container'>
-            <button class="c-button-nav" id="js-button-open">
-                <svg id="Nav_icon" data-name="Nav icon" xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16">
-                    <rect id="Rectangle_14" data-name="Rectangle 14" width="20" height="4" rx="2" transform="translate(0 12)"/>
-                    <rect id="Rectangle_15" data-name="Rectangle 15" width="20" height="4" rx="2" transform="translate(0 6)"/>
-                    <rect id="Rectangle_16" data-name="Rectangle 16" width="20" height="4" rx="2"/>
-                </svg>    
-            </button>
-        </div>
-    </section>
-
-    <section class="o-row o-row--lg">
-        <form id="gameSettings" action="">
-            <div class="o-container u-max-width-xs">
-                <h1 class="c-page-logo">
-                    <svg class="c-page-nav__icon" id="settings_3_" data-name="settings (3)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-                        <path id="Path_1045" data-name="Path 1045" d="M19.555,8.3l-2.34-.574a7.547,7.547,0,0,0-.492-1.2l1.2-1.992a.583.583,0,0,0-.082-.715L16.172,2.164a.583.583,0,0,0-.715-.082l-1.992,1.2a7.547,7.547,0,0,0-1.2-.492L11.707.445A.6.6,0,0,0,11.133,0H8.789a.6.6,0,0,0-.574.445l-.562,2.34a7.547,7.547,0,0,0-1.2.492l-1.992-1.2a.583.583,0,0,0-.715.082L2.086,3.828A.583.583,0,0,0,2,4.543L3.2,6.535a7.547,7.547,0,0,0-.492,1.2L.445,8.3A.578.578,0,0,0,0,8.867v2.344a.578.578,0,0,0,.445.563l2.262.574a7.547,7.547,0,0,0,.492,1.2L2,15.535a.583.583,0,0,0,.082.715L3.75,17.914A.583.583,0,0,0,4.465,18l1.992-1.2a7.547,7.547,0,0,0,1.2.492l.562,2.262A.6.6,0,0,0,8.789,20h2.344a.6.6,0,0,0,.574-.445l.562-2.262a7.547,7.547,0,0,0,1.2-.492L15.457,18a.583.583,0,0,0,.715-.082l1.664-1.664a.583.583,0,0,0,.082-.715l-1.2-1.992a7.547,7.547,0,0,0,.492-1.2l2.34-.574A.578.578,0,0,0,20,11.211V8.867A.578.578,0,0,0,19.555,8.3ZM9.961,12.969a2.93,2.93,0,1,1,2.93-2.93A2.931,2.931,0,0,1,9.961,12.969Z" fill="#ffe600"/>
+        <!-- Navigation - Top -->
+        <section class="o-row ">
+            <div class="o-container">
+                <!-- Navigation - Hamburger icon -->
+                <button class="c-button-nav" id="js-button-open">
+                    <svg  class="c-navSVG"id="Nav_icon" data-name="Nav icon" xmlns="http://www.w3.org/2000/svg" width="20" height="16" viewBox="0 0 20 16">
+                        <rect id="Rectangle_14" data-name="Rectangle 14" width="20" height="4" rx="2" transform="translate(0 12)"/>
+                        <rect id="Rectangle_15" data-name="Rectangle 15" width="20" height="4" rx="2" transform="translate(0 6)"/>
+                        <rect id="Rectangle_16" data-name="Rectangle 16" width="20" height="4" rx="2"/>
                     </svg>
-                    
-                </h1>
-                <p class="u-text-center u-fz-lg">Settings</p>
-                <div class="c-settings-setup">
-                    <h2 class="c-settings-setup__header c-settings-setup__item-invis">
-                        Players & Etappes
-                    </h2>
-                    <div class="c-settings-setup__item">
-                        <label class="c-settings-setup__text" for="select_players">
-                            Player count
-                        </label>
-                        <div class="c-settings-player__input">
-                            <span class="c-custom-select">
-                                <select class="c-input c-custom-select__dropdown" name="select_players" id="select_players" onchange="selectPlayers(); validateSettings();">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                            </span>
+                </button>
+            </div>
+        </section>
+        <!-- Settings -->
+        <section class="o-row o-row--lg">
+            <form id="gameSettings" action="">
+                <!-- Settings - Top -->
+                <div class="o-container">
+                    <!-- Settings - Header -->
+                    <div class="c-page-logo">
+                        <!-- Settings - Header - Icon -->
+                        <svg class="c-page-nav__icon" id="settings_3_" data-name="settings (3)"
+                            xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                            <path id="Path_1045" data-name="Path 1045"
+                                d="M19.555,8.3l-2.34-.574a7.547,7.547,0,0,0-.492-1.2l1.2-1.992a.583.583,0,0,0-.082-.715L16.172,2.164a.583.583,0,0,0-.715-.082l-1.992,1.2a7.547,7.547,0,0,0-1.2-.492L11.707.445A.6.6,0,0,0,11.133,0H8.789a.6.6,0,0,0-.574.445l-.562,2.34a7.547,7.547,0,0,0-1.2.492l-1.992-1.2a.583.583,0,0,0-.715.082L2.086,3.828A.583.583,0,0,0,2,4.543L3.2,6.535a7.547,7.547,0,0,0-.492,1.2L.445,8.3A.578.578,0,0,0,0,8.867v2.344a.578.578,0,0,0,.445.563l2.262.574a7.547,7.547,0,0,0,.492,1.2L2,15.535a.583.583,0,0,0,.082.715L3.75,17.914A.583.583,0,0,0,4.465,18l1.992-1.2a7.547,7.547,0,0,0,1.2.492l.562,2.262A.6.6,0,0,0,8.789,20h2.344a.6.6,0,0,0,.574-.445l.562-2.262a7.547,7.547,0,0,0,1.2-.492L15.457,18a.583.583,0,0,0,.715-.082l1.664-1.664a.583.583,0,0,0,.082-.715l-1.2-1.992a7.547,7.547,0,0,0,.492-1.2l2.34-.574A.578.578,0,0,0,20,11.211V8.867A.578.578,0,0,0,19.555,8.3ZM9.961,12.969a2.93,2.93,0,1,1,2.93-2.93A2.931,2.931,0,0,1,9.961,12.969Z"
+                                fill="#ffe600" />
+                        </svg>
+                    </div>
+                    <!-- Settings - Header - Title -->
+                    <h1 class="u-text-center u-title-fz__SP">Settings</h1>
+                    <!-- Settings - Game -->
+                    <div class="c-settings-setup">
+                        <!-- Settings - Game - Header -->
+                        <h2 class="c-settings-setup__header c-settings-setup__item-invis">
+                            Players & Etappes
+                        </h2>
+                        <!-- Settings - Game - Player Count -->
+                        <div class="c-settings-setup__item">
+                            <label class="c-settings-setup__text" for="select_players">
+                                Player count
+                            </label>
+                            <div class="c-settings-player__input">
+                                <span class="c-custom-select">
+                                    <select class="c-input c-custom-select__dropdown" name="select_players"
+                                        id="select_players" onchange="selectPlayers(); validateSettings();">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Settings - Game - Group -->
+                        <div class="c-settings-setup__item">
+                            <label class="c-settings-player__text" for="select_group">
+                                Game group
+                            </label>
+                            <div class="c-settings-player__input">
+                                <input class="c-custom-select__text" type="text" id="select_group" name="select_group"
+                                    placeholder="GROUP NAME" onchange="validateSettings();">
+                            </div>
+                        </div>
+                        <!-- Settings - Game - Etappe Count -->
+                        <div class="c-settings-setup__item">
+                            <label class="c-settings-setup__text" for="select_etappes">
+                                Etappes
+                            </label>
+                            <div class="c-settings-player__input">
+                                <span class="c-custom-select">
+                                    <select class="c-input c-custom-select__dropdown" name="select_etappes"
+                                        id="select_etappes" onchange="validateSettings();">
+                                        <option value="3">3</option>
+                                        <option value="5">5</option>
+                                        <option value="7">7</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                        <!-- Settings - Game - Distance -->
+                        <div class="c-settings-setup__item">
+                            <label class="c-settings-setup__text" for="select_distance">
+                                Distance (m)
+                            </label>
+                            <div class="c-settings-player__input">
+                                <input class="c-custom-select__text" type="text" id="select_distance" name="select_distance"
+                                    placeholder="0">
+                            </div>
                         </div>
                     </div>
-                    <div class="c-settings-setup__item">
-                        <label class="c-settings-player__text" for="select_group">
-                            Game group
-                        </label>
-                        <div class="c-settings-player__input">
-                            <input class="c-custom-select__text" type="text" id="select_group" name="select_group" placeholder="GROUP" onchange="validateSettings();">
-                        </div>
-                    </div>
-                    <div class="c-settings-setup__item">
-                        <label class="c-settings-setup__text" for="select_etappes">
-                            Etappes
-                        </label>
-                        <div class="c-settings-player__input">
-                            <span class="c-custom-select">
-                                <select class="c-input c-custom-select__dropdown" name="select_etappes" id="select_etappes" onchange="validateSettings();">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                </select>
-                            </span>
-                        </div>
+                    <!-- Settings - Players -->
+                    <div id="player_container">
+
                     </div>
                 </div>
-                <div id="player_container">
-    
+                <!-- Settings - Bottom -->
+                <div class="c-settings-saveSP c-button-gridSP">
+                    <!-- Settings - Go to game -->
+                    <button id="go_to_game" class="c-button c-button__saveSP" type="button" onclick="goToGame()" disabled>
+                        Go to game
+                    </button>
+                    <!-- Settings - Save -->
+                    <button id="save_settings" type="button" class="c-button c-button__saveSP" onclick="enableButton()" disabled>
+                        Save
+                    </button>
                 </div>
-            </div>
-            <div class="c-settings-save c-button-grid">
-                <button id="go_to_game"class="c-button c-button__save" disabled>Go to game</button>
-                <p style="color: transparent; font-size: 8px;">test</p>
-                <button id="save_settings" type="button" class="c-button c-button__save" onclick="enableButton()" disabled>Save</button>
-            </div>
-        </form>
-    </section>
-</body>
+            </form>
+        </section>
+    </body>
 </html>
