@@ -48,21 +48,6 @@ class DataRepository:
         return Database.get_rows(sql, params)
 
     @staticmethod
-    def read_leaderboard_3():
-        sql = "SELECT p.PlayerName, p.TeamName, g.GroupName, r.TotalTime FROM playertbl as p INNER JOIN resulttbl as r ON r.PlayerID = p.PlayerID INNER JOIN gametbl as g ON p.GameID = g.GameID WHERE g.EtappeCount = 3 ORDER BY r.TotalTime ASC;"
-        return Database.get_rows(sql)
-
-    @staticmethod
-    def read_leaderboard_5():
-        sql = "SELECT p.PlayerName, p.TeamName, g.GroupName, r.TotalTime FROM playertbl as p INNER JOIN resulttbl as r ON r.PlayerID = p.PlayerID INNER JOIN gametbl as g ON p.GameID = g.GameID WHERE g.EtappeCount = 5 ORDER BY r.TotalTime ASC;"
-        return Database.get_rows(sql)
-
-    @staticmethod
-    def read_leaderboard_7():
-        sql = "SELECT p.PlayerName, p.TeamName, g.GroupName, r.TotalTime FROM playertbl as p INNER JOIN resulttbl as r ON r.PlayerID = p.PlayerID INNER JOIN gametbl as g ON p.GameID = g.GameID WHERE g.EtappeCount = 7 ORDER BY r.TotalTime ASC;"
-        return Database.get_rows(sql)
-
-    @staticmethod
     def read_player_result():
         sql = "SELECT P.PlayerName, P.TeamName, R.TotalTime, R.AvgSpeed FROM playertbl P, resulttbl R WHERE P.PlayerID = R.PlayerID ORDER BY R.TotalTime ASC"
         return Database.get_rows(sql)
