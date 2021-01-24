@@ -22,6 +22,12 @@ class DataRepository:
         return Database.get_rows(sql)
 
     @staticmethod
+    def read_game_by_date(date):
+        sql = "SELECT * FROM gametbl WHERE Date=%s"
+        params = [date]
+        return Database.get_one_row(sql, params)
+
+    @staticmethod
     def read_player():
         sql = "SELECT * FROM playertbl"
         return Database.get_rows(sql)
@@ -70,14 +76,14 @@ class DataRepository:
 
     @staticmethod
     def insert_game(player, etappe, group, date):
-        sql = "INSERT INTO gametbl(GroupName, PlayerCount, EttapeCount, Date) VALUES (%s, %s, %s, %s)"
+        sql = "INSERT INTO gametbl(GroupName, PlayerCount, EtappeCount, Date) VALUES (%s, %s, %s, %s)"
         params = [group, player, etappe, date]
         return Database.execute_sql(sql, params)
 
     @staticmethod
-    def insert_player(playername, teamname):
-        sql = "INSERT INTO playertbl (PlayerName, TeamName) VALUES (%s, %s)"
-        params = [playername, teamname]
+    def insert_player(playername, teamname, beaconId, gameId):
+        sql = "INSERT INTO playertbl (PlayerName, TeamName, BeaconId, GameId) VALUES (%s, %s, %s, %s)"
+        params = [playername, teamname, beaconId, gameId]
         return Database.execute_sql(sql, params)
 
     @staticmethod
@@ -87,15 +93,15 @@ class DataRepository:
         return Database.execute_sql(sql, params)
 
     @staticmethod
-    def insert_result(totalTime, avgSpeed):
-        sql = "INSERT INTO resulttbl (TotalTime, AvgSpeed) VALUES (%s, %s)"
-        params = [totalTime, avgSpeed]
+    def insert_result(totalTime, avgSpeed, playerID):
+        sql = "INSERT INTO resulttbl (TotalTime, AvgSpeed, PlayerID) VALUES (%s, %s, %s)"
+        params = [totalTime, avgSpeed, playerID]
         return Database.execute_sql(sql, params)
 
     @staticmethod
-    def insert_etappe(timePerEtappe, speedPerEtappe):
-        sql = "INSERT INTO etappetbl (TimePerEtap, SpeedPerEtap) VALUES (%s, %s)"
-        params = [timePerEtappe, speedPerEtappe]
+    def insert_etappe(timePerEtappe, speedPerEtappe, playerID):
+        sql = "INSERT INTO etappetbl (TimePerEtap, SpeedPerEtap, PlayerID) VALUES (%s, %s, %s)"
+        params = [timePerEtappe, speedPerEtappe, playerID]
         return Database.execute_sql(sql, params)
 
     @staticmethod
