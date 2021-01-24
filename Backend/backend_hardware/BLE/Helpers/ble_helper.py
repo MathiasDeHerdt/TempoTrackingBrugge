@@ -94,7 +94,7 @@ class BleHelper():
     @staticmethod
     def get_speed(distance, time):
         try:
-            return distance/time
+            return float(distance) / float(time)
         except:
             return None
 

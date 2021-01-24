@@ -37,6 +37,12 @@ class DataRepository:
         return Database.get_rows(sql)
 
     @staticmethod
+    def read_beacon_by_uuid(uuid):
+        sql = "SELECT * FROM beacontbl WHERE UUID=%s"
+        params = [uuid]
+        return Database.get_one_row(sql, params)
+
+    @staticmethod
     def read_etappe():
         sql = "SELECT * FROM etappetbl"
         return Database.get_rows(sql)
@@ -51,6 +57,12 @@ class DataRepository:
     def read_player_result():
         sql = "SELECT P.PlayerName, P.TeamName, R.TotalTime, R.AvgSpeed FROM playertbl P, resulttbl R WHERE P.PlayerID = R.PlayerID ORDER BY R.TotalTime ASC"
         return Database.get_rows(sql)
+
+    @staticmethod
+    def read_player_by_game(gameID):
+        sql = "SELECT * FROM playertbl WHERE GameID=%s"
+        params = [gameID]
+        return Database.get_rows(sql, params)
 
     # =========================================================
     # Inserts
@@ -99,6 +111,12 @@ class DataRepository:
     def update_beacon(major, minor, uuid, adres, txPower, beaconID):
         sql = "UPDATE beacontbl SET Major=%s, Minor=%s, UUID=%s, Address=%s, Tx_power=%s WHERE BeaconID = %s;"
         params = [major, minor, uuid, adres, txPower, beaconID]
+        return Database.execute_sql(sql, params)
+
+    @staticmethod
+    def update_beacon_by_uuid(major, minor, uuid, adres, txPower):
+        sql = "UPDATE beacontbl SET Major=%s, Minor=%s, Address=%s, Tx_power=%s WHERE UUID=%s;"
+        params = [major, minor, adres, txPower, uuid]
         return Database.execute_sql(sql, params)
 
     @staticmethod

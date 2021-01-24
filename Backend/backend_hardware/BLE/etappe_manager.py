@@ -20,13 +20,14 @@ class EtappeManager:
         self.__is_timed_out = False
         self.__time_out_count = 5
         self.__time_out_thread = None
-        self.__start_time_out_timestamp = None
+        self.__time_out_timestamp = None
+        self.__start_timestamp = None
 
 
     def start_time_out(self, start_timestamp):
         print(f'Etappe manager timeout - start')
         self.__is_timed_out = True
-        self.__start_time_out_timestamp = start_timestamp
+        self.__time_out_timestamp = start_timestamp
         self.__time_out_thread = threading.Thread(target=self.thread_time_out)
         self.__time_out_thread.start()
 
@@ -35,6 +36,11 @@ class EtappeManager:
         time.sleep(self.__time_out_count)
         print(f'Etappe manager timeout - done')
         self.__is_timed_out = False
+
+
+    def set_start_timestamp(self, timestamp):
+        self.__start_timestamp = timestamp
+        self.__etappe_array[0].set_start_timestamp(timestamp)
 
 
     def append_measure(self, measure_device_1, measure_device_2, finish_width):
@@ -59,6 +65,9 @@ class EtappeManager:
 
             if self.__etappe_index >= self.__etappe_count:
                 return 2, etappe_obj, self
+            else:
+                timestamp = BleHelper.datetime_to_string(datetime.now())
+                self.__etappe_array[self.__etappe_index].set_start_timestamp(timestamp)
             return 1, etappe_obj, self
 
         #No etappe completed
@@ -74,16 +83,28 @@ class EtappeManager:
 
     def json_from_etappe_manager(self):
         list_etappe = self.etappe_list
+        avgSpeed = 0
+        totalTime = 0
         jsonList = []
+        playerID = -1
 
         for etappe in list_etappe:
-            jsonList.append(etappe.json_from_etappe())
+            jsonEtappe = etappe.json_from_etappe()
+            jsonList.append(jsonEtappe)
+            avgSpeed += jsonEtappe['SpeedPerEtappe']
+            totalTime += jsonEtappe['TimePerEtappe']
+            playerID = jsonEtappe['PlayerID']
+
+        avgSpeed = float(avgSpeed) / self.etappe_count
 
         jsonObj = {
-            'count' : self.etappe_count,
-            'etappes' : jsonList,
-            'address' : self.__beacon.address,
-            'uuid' : self.__beacon.uuid
+            'PlayerID' : playerID,
+            'TotalTime' : totalTime,
+            'AvgSpeed' : avgSpeed,
+            'EtappeCount' : self.etappe_count,
+            'EtappeList' : jsonList,
+            'Address' : self.__beacon.address,
+            'UUID' : self.__beacon.uuid
         }
         return jsonObj
 
@@ -117,6 +138,21 @@ class Etappe:
         self.__finish_timestamp = None
         self.__has_finished = False
         self.__etappe_number = etappe_number
+        self.__start_timestamp = None
+
+        self.__playerID = -1
+        self.__speed = 0
+        self.__timePerEtappe = 0
+
+
+    def set_playerID(self, id):
+        self.__playerID = id
+
+    def set_speed(self, speed):
+        self.__speed = speed
+
+    def set_start_timestamp(self, timestamp):
+        self.__start_timestamp = timestamp
 
 
     def append_measure(self, measure_device_1, measure_device_2, finish_width):
@@ -163,6 +199,7 @@ class Etappe:
             self.__finish_timestamp = self.last_measure_obj.time_stamp
             #self.__finish_timestamp = self.calc_finish_timestamp()
             print(f'timestamp = {self.__finish_timestamp}, treshhold passed = {offset} - {self.shortest_distance}m - {self.last_distance}m')
+            self.__timePerEtappe = BleHelper.get_timestamp_difference(self.__start_timestamp, self.__finish_timestamp)
             return True
 
         return False
@@ -179,12 +216,16 @@ class Etappe:
         time_to_finish = BleHelper.get_time(distance_first_to_short, speed)
         return BleHelper.datetime_to_string(BleHelper.add_seconds_to_timestamp(tstamp_first, time_to_finish))
 
+
     def json_from_etappe(self):
         jsonObj = {
-            'number' : self.number,
-            'timestamp' : self.timestamp,
-            'address' : self.__beacon.address,
-            'uuid' : self.__beacon.uuid
+            'Address' : self.__beacon.address,
+            'UUID' : self.__beacon.uuid,
+            'TimeStamp' : self.__finish_timestamp,
+            'TimePerEtappe' : self.__timePerEtappe,
+            'SpeedPerEtappe' : self.__speed,
+            'PlayerID' : self.__playerID,
+            'Number' : self.__etappe_number
         }
         return jsonObj
 

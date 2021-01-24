@@ -40,9 +40,9 @@ class GameManager:
 
     # =========================================================
     #region --- LOOP GAME ==========================================================================================================================================
-    def start_game_loop(self):
+    def start_game_loop(self, start_time_stamp):
         try:
-            self.__ble_manager.start_game_loop()
+            self.__ble_manager.start_game_loop(start_time_stamp)
             print("Game started")
         except Exception as e:
             print(f'Exception => {e}')
