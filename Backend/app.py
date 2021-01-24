@@ -271,6 +271,16 @@ def socket_beacons_request():
     jsonDict = {'beacons' : list_beacons}
     print(f'jsonDict - {jsonDict}')
     socketio.emit('B2F_beacons_found', jsonDict, broadcast = True)
+
+@socketio.on('F2B_leaderboard_loaded')
+def leaderboard_loaded(data, etappe):
+    global leaderboard
+
+    if data == "ack":
+        emit_to_leaderboard(etappe)
+
+    else:
+        print("Failed sending leaderboard data")
 #endregion
 
 
@@ -333,6 +343,12 @@ def emit_to_front():
 
     socketio.emit("B2F_player_settings", {
                   "Playername": playerName, "Teamname": teamName})
+
+
+def emit_to_leaderboard(etappe):
+    print("Sending to leaderboard")
+    s = DataRepository.read_leaderboard(etappe)
+    socketio.emit("B2F_leaderboard_data", s)
 
     # player settings
 #endregion
