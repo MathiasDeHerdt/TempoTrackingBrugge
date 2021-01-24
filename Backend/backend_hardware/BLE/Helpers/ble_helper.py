@@ -1,4 +1,5 @@
 import math
+from datetime import datetime, timedelta
 
 #https://www.driehoekberekenen.nl/hoogte/
 #https://xaktly.com/MathNonRightTrig.html
@@ -104,3 +105,26 @@ class BleHelper():
             return distance/speed
         except:
             return None
+
+
+    @staticmethod
+    def add_seconds_to_timestamp(timestamp_string, seconds, format_timestamp = "%Y-%m-%d %H:%M:%S"): 
+        tstamp = datetime.strptime(timestamp_string, format_timestamp)
+        added_seconds = timedelta(0, seconds)
+        return tstamp + added_seconds
+
+    @staticmethod
+    def get_timestamp_difference(timestamp_1_string, timestamp_2_string, format_timestamp = "%Y-%m-%d %H:%M:%S"): 
+        tstamp1 = BleHelper.get_timestamp_format(timestamp_1_string, format_timestamp)
+        tstamp2 = BleHelper.get_timestamp_format(timestamp_2_string, format_timestamp)
+        td = tstamp2 - tstamp1
+        td_seconds = int(round(td.total_seconds())) #in seconds
+        return  td_seconds
+
+    @staticmethod
+    def get_timestamp_format(timestamp_string, format_timestamp = "%Y-%m-%d %H:%M:%S"): 
+        return datetime.strptime(timestamp_string, format_timestamp)
+
+    @staticmethod
+    def datetime_to_string(timestamp, format_timestamp = "%Y-%m-%d %H:%M:%S"):
+        return str(timestamp.strftime(format_timestamp))

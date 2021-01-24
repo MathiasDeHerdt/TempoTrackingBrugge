@@ -9,6 +9,9 @@ class BeaconManager():
             print(beacon)
 
     def append(self, beacon):
+        if(beacon == None):
+            return
+            
         can_append = True
         for registered_beacon in self.__beacons:
             if beacon.uuid == registered_beacon.uuid and beacon.address == registered_beacon.address:
@@ -35,8 +38,8 @@ class BeaconManager():
     def filter_saved_beacons(self, selected_players):
         filtered_beacons = []
 
-        for uuid in selected_players:
-            keep_beacon = self.get_beacon_by_uuid(uuid)
+        for player in selected_players:
+            keep_beacon = self.get_beacon_by_uuid(player['uuid'])
             filtered_beacons.append(keep_beacon)
 
         self.__beacons = filtered_beacons

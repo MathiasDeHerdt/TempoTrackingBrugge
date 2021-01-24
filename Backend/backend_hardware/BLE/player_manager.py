@@ -1,14 +1,17 @@
 from datetime import datetime
 from .etappe_manager import Etappe, EtappeManager
+from .Helpers.ble_helper import BleHelper
 
 class PlayerManager():
-    # INIT
-    #=================================================================================================================
+    # =========================================================
+    #region --- INIT ==========================================================================================================================================
     def __init__(self, beacon, etappe_count, finish_width, callback_etappe = None,  callback_finished = None):
         self.__beacon = beacon #BleBeacon
         self.__finish_width = finish_width
         self.__dict_scan_results = {} #Dictionnary of all scan results grouped by scan device
-        self.__etappe_manager = EtappeManager(etappe_count) #Keeps track of players etappes
+        self.__etappe_manager = EtappeManager(etappe_count, beacon) #Keeps track of players etappes
+
+        self.__list_device_id_rssi = ["device_esp_1", "device_esp_2"]
 
         if callback_etappe == None:
             callback_etappe = self.print_etappe
@@ -19,14 +22,19 @@ class PlayerManager():
             callback_finished = self.print_finished
             print("Playermanager has default callback_finished")
         self.__callback_player_finished = callback_finished
+    #endregion
 
+
+    # =========================================================
+    #region --- CLEAR ==========================================================================================================================================
     def clear_results(self):
         etappe_count = self.__etappe_manager.etappe_count
-        self.__etappe_manager = EtappeManager(etappe_count)
+        self.__etappe_manager = EtappeManager(etappe_count, self.__beacon)
+    #endregion
 
 
-    # APPEND
-    #=================================================================================================================
+    # =========================================================
+    #region --- APPEND ==========================================================================================================================================
     def append_result(self, scan_result):
         if self.__etappe_manager.has_finished():
             return
@@ -42,38 +50,46 @@ class PlayerManager():
             self.__dict_scan_results[device_id].append(scan_result)
 
             #Check difference in time
-            other_device_id = "device_esp_1"
-            if  (device_id != "device_rpi"):
-                other_device_id = "device_rpi"
+            other_device_id = self.__list_device_id_rssi[0]
+            if  (device_id == self.__list_device_id_rssi[0]):
+                other_device_id = self.__list_device_id_rssi[1]
 
             if other_device_id not in self.__dict_scan_results.keys():
                 return
 
+            #Get closest result to check the general distance
+            tstamp1 = scan_result.time_stamp
+            compare_result = self.__get_closest_measure(tstamp1, other_device_id)
+            response, etappeObj, managerObj = self.__etappe_manager.append_measure(scan_result, compare_result, self.__finish_width)
+            print(f'response - {response}')
 
-            tstamp1 = datetime.strptime(scan_result.time_stamp, "%Y-%m-%d %H:%M:%S")
-            for compare_result in self.__dict_scan_results[other_device_id]:
-
-                tstamp2 = datetime.strptime(compare_result.time_stamp, "%Y-%m-%d %H:%M:%S")
-                td = tstamp2 - tstamp1
-                td_seconds = int(round(td.total_seconds()))
-
-
-                #Add to etappe measurements
-                if (td_seconds < 2 & td_seconds > 0):
-                    response = self.__etappe_manager.append_measure(scan_result, compare_result, self.__finish_width)
-                    print(f'response - {response}')
-
-                    if response == 2: #race done
-                        self.__callback_etappe_done(self)
-                        self.__callback_player_finished(self)
-                    if response == 1: #etappe done
-                        self.__callback_etappe_done(self)
-
-                    return
+            #Use callbacks when an etappe is finished
+            if response == 2: #race done
+                self.__callback_etappe_done(etappeObj)
+                self.__callback_player_finished(managerObj)
+            if response == 1: #etappe done
+                self.__callback_etappe_done(etappeObj)
 
 
-    # PRINT
-    #=================================================================================================================
+    def __get_closest_measure(self, tstamp1, other_device_id):
+        compare_result = None
+        for result in self.__dict_scan_results[other_device_id]:
+            #Check difference in seconds with previous results
+            tstamp2 = result.time_stamp
+            td_seconds = BleHelper.get_timestamp_difference(tstamp2, tstamp1)
+
+            #Add to etappe measurements as long as they were before
+            if (td_seconds < 2):
+                if (td_seconds > 0):
+                    compare_result = result
+                else:
+                    return compare_result
+        return compare_result
+    #endregion
+
+
+    # =========================================================
+    #region --- PRINT ==========================================================================================================================================
     def print_manager(self):
         print(f'beacon: \n{self.__beacon}')
         self.print_results()
@@ -98,3 +114,4 @@ class PlayerManager():
 
     def print_finished(self, player_manager):
         print("Finished!")
+    #endregion
