@@ -39,6 +39,15 @@ class DatabaseManager:
             print(f'Exception => {e}')
             return {'BeaconList' : []}, 500
 
+    def get_beacon_by_uuid(self, UUID):
+        try:
+            data = DataRepository.read_beacon_by_uuid(UUID)
+            return {'Beacon' : data}, 200
+
+        except Exception as e:
+            print(f'Exception => {e}')
+            return {'Beacon' : None}, 500
+
     def get_players_by_gameID(self, GameID):
         try:
             data = DataRepository.read_player_by_game(GameID)
@@ -91,7 +100,7 @@ class DatabaseManager:
             SpeedPerEtap = jsonObj['SpeedPerEtap']
             PlayerID = jsonObj['PlayerID']
 
-            print(f"etappe {PlayerID} naar database")
+            print(f"etappe {PlayerID} naar database\n {jsonObj}")
             response = DataRepository.insert_etappe(TimePerEtap, SpeedPerEtap, PlayerID)
             print(f"response {response}")
             return {'Message' : "Etappe was stored"}, 200

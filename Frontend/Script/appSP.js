@@ -128,9 +128,9 @@ const createBeaconDropdown = function(number) {
 };
 
 const createBeaconDropdownItem = function(beacon){
-    const uuid = beacon.uuid;
-    const showName = `${uuid.substring(0, 8)}...`;
-    const htmlItem = `<option value="${uuid}">${showName}</option>`;
+    const UUID = beacon['UUID'];
+    const showName = `${UUID.substring(0, 8)}...`;
+    const htmlItem = `<option value="${UUID}">${showName}</option>`;
     return htmlItem;
 };
 
@@ -256,9 +256,9 @@ const checkInput = function(input){
 
 const addPlayerToList = function(playerName, teamName, beaconName){
     jsonObj = {
-        'name' : playerName,
-        'team' : teamName,
-        'uuid' : beaconName
+        'PlayerName' : playerName,
+        'TeamName' : teamName,
+        'UUID' : beaconName
     };
     global_playerList.push(jsonObj)
 };
@@ -313,16 +313,16 @@ const pageLoaded = function () {
 const saveSettings = function () {
     console.log(`F2B_game_settings`);
     jsonGameSettings = {
-        'countPlayer' : global_countPlayers,
-        'countEtappe' : global_countEtappes,
-        'groupName' : global_groupName,
-        'finishWidth' : global_distance
+        'PlayerCount' : global_countPlayers,
+        'EtappeCount' : global_countEtappes,
+        'GroupName' : global_groupName,
+        'FinishWidth' : global_distance
     }
     socket.emit('F2B_game_settings', jsonGameSettings);
 
     console.log(`F2B_player_settings`);
     jsonPlayerSettings = {
-        'beacons' : global_playerList
+        'Players' : global_playerList
     }
     socket.emit('F2B_player_settings', jsonPlayerSettings);
 };

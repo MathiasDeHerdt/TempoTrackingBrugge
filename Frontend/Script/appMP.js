@@ -6,8 +6,7 @@ console.log(lanIP)
 // ##### Globale variabelen #####
 var globalPlayerCount = 0
 var globalEtappeCount = 0
-var globalPlayerName = ""
-var globalTeamName = ""
+var globalPlayerList = []
 
 var globalPlayerTable = ""
 var globalTotalResultTable = ""
@@ -57,18 +56,18 @@ var dropDownWord2 = ""
 const socketsFuction = function () {
     // Get data about the PLAYERS from the backend
     socket.on('B2F_player_settings', function (dataPlayer) {
-        // console.log(dataPlayer)
+        console.log(dataPlayer)
 
         // fill the global variables with data
-        globalPlayerName = dataPlayer.Playername
-        globalTeamName = dataPlayer.Teamname
+        globalPlayerList = dataPlayer['Players'];
+        console.log(globalPlayerList);
 
-        jsonFunction(globalTeamName, globalPlayerName)
+        jsonFunction(globalPlayerList);
     })
 
     // Get data about the GAME from the backend
     socket.on('B2F_game_settings', function (dataGame) {
-        // console.log(dataGame)
+        console.log(dataGame)
 
         // fill the global variables with data
         globalPlayerCount = dataGame.Playercount
@@ -76,7 +75,7 @@ const socketsFuction = function () {
     })
 }
 
-const jsonFunction = function (teamN, playerN) {
+const jsonFunction = function (globalPlayerList) {
     globalResultTable1 = '{"resulttbl":[' +
         '{"ResultID":"1","Date":"2021","Time":"24","PlayerID":"3"},' +
         '{"ResultID":"2","Date":"2021","Time":"29","PlayerID":"2"},' +
@@ -112,29 +111,41 @@ const jsonFunction = function (teamN, playerN) {
         '{"ResultID":"2","Date":"2021","Time":"29","PlayerID":"1"},' +
         '{"ResultID":"3","Date":"2021","Time":"37","PlayerID":"2"}]}';
 
-    jsonPlayer(playerN, teamN)
+    jsonPlayer(globalPlayerList)
 }
 
-const jsonPlayer = function (playerN, teamN) {
-    globalPlayerTable = '{"playertbl":[]}';
+const jsonPlayer = function (globalPlayerList) {
+    globalPlayerTable = [];
+    console.log(globalPlayerList);
 
     for (let index = 0; index < globalPlayerCount; index++) {
-        var object_players = JSON.parse(globalPlayerTable);
+        let Player = globalPlayerList[index];
+        console.log("Player");
+        console.log(Player);
+        let PlayerName = Player['PlayerName'];
+        let TeamName = Player['TeamName'];
 
-        object_players['playertbl'].push({ "PlayerID": `${index + 1}`, "PlayerName": `${playerN[index]}`, "TeamName": `${teamN[index]}`, "TotalTime": 0  });
-        globalPlayerTable = JSON.stringify(object_players);
+        let jsonObj = { 
+            "PlayerID": `${index+1}`, 
+            "PlayerName": `${PlayerName}`, 
+            "TeamName": `${TeamName}`, 
+            "TotalTime": 0  };
+
+        globalPlayerTable.push(jsonObj);
 
         if (index == 0) {
-            globalPlayer1 = playerN[index]
+            globalPlayer1 = PlayerName;
         }
         else if (index == 1) {
-            globalPlayer2 = playerN[index]
+            globalPlayer2 = PlayerName;
         }
         else if (index == 2) {
-            globalPlayer3 = playerN[index]
+            globalPlayer3 = PlayerName;
         }
     }
 
+    console.log("globalPlayerTable");
+    console.log(globalPlayerTable);
     scriptFunction()
 }
 
@@ -318,11 +329,14 @@ const scriptFunction = function () {
 
     // ##### Show the etappes #####
     const showEtappes = function () {
+        console.log("showEtappes");
         let html = document.querySelector(".js-etappes");
 
         html.innerHTML = "";
+        console.log(globalDropDownWord);
 
         if (globalDropDownWord == "" || globalDropDownWord == "Time" || globalDropDownWord == "Speed") {
+            console.log(`globalEtappeCount = ${globalEtappeCount}`);
             for (let index = 0; index < globalEtappeCount; index++) {
                 html.innerHTML += extraHTML(index + 1);
                 getResultV2(index + 1)
@@ -359,7 +373,9 @@ const scriptFunction = function () {
 
     // ##### Get results out of json #####
     const getResultV2 = function (etappe) {
-        var result
+        var result;
+
+        console.log("getResultV2");
 
         htmlPlayer1 = document.querySelector(".js-player1");
         htmlPlayer2 = document.querySelector(".js-player2");
@@ -399,10 +415,9 @@ const scriptFunction = function () {
             htmlPlayer7.innerHTML = "";
         }
 
-        var objectResult = JSON.parse(result)
-        var objectPlayer = JSON.parse(globalPlayerTable)
+        var objectResult = JSON.parse(result);
 
-        const a1 = objectPlayer.playertbl;
+        const a1 = globalPlayerTable
         const a2 = objectResult.resulttbl;
 
         const merge = (arr1, arr2) => {
@@ -420,6 +435,7 @@ const scriptFunction = function () {
         }
         var mergedJSON = merge(a2, a1)
 
+        console.log(mergedJSON);
         for (let index = 0; index < globalPlayerCount; index++) {
             var naam = mergedJSON[index].PlayerName
             var tijd = mergedJSON[index].Time;
@@ -487,15 +503,15 @@ const scriptFunction = function () {
     }
 
     const getResultV3 = function () {
+        console.log("getResultV3");
+
         htmlTimeResult = document.querySelector(".js-player1");
         htmlSpeedResult = document.querySelector(".js-player2");
 
         htmlTimeResult.innerHTML= "";
         htmlSpeedResult.innerHTML = "";
 
-        var object_players = JSON.parse(globalPlayerTable)
-
-        const a1 = object_players.playertbl;
+        const a1 = globalPlayerTable;
 
         for (let index = 0; index < globalPlayerCount; index++) {
             if (globalPlayer1 == a1[index].PlayerName) {
@@ -538,7 +554,7 @@ const scriptFunction = function () {
     }
 
     const getTotalTime = function (etappe) {
-        var result
+        var result;
 
         if (etappe == 1) {
             result = globalResultTable1;
@@ -562,11 +578,8 @@ const scriptFunction = function () {
             result = globalResultTable7;
         }
 
-        var objectResult = JSON.parse(result)
-        var objectPlayer = JSON.parse(globalPlayerTable)
-
-        const a1 = objectPlayer.playertbl;
-        const a2 = objectResult.resulttbl;
+        const a1 = globalPlayerTable;
+        const a2 = JSON.parse(result).resulttbl;
 
         const merge = (arr1, arr2) => {
             const temp = []

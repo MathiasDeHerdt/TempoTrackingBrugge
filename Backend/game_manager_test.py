@@ -65,6 +65,7 @@ def test_player_list(list_scan):
     global database_game_settings
 
     list_players = []
+    database_beacons = []
     index = 1
     for beaconObj in list_scan:
         jsonObj = {
@@ -75,8 +76,9 @@ def test_player_list(list_scan):
         list_beacons.append(jsonObj)
         database_manager.store_beacon(jsonObj)
 
-    response, code = database_manager.get_beacon_list()
-    database_beacons = response['BeaconList']
+        response, code = database_manager.get_beacon_by_uuid(beaconObj.uuid)
+        database_beacons.append(response['Beacon'])
+
     print(f'Database beacons => \n{database_beacons}')
 
     game_settings['PlayerCount'] = len(database_beacons)
@@ -112,7 +114,7 @@ def print_test_game():
     Settings = response['Settings']
     print_game_settings(Settings)
     GameID = Settings['GameID']
-    print('\n')
+    print('>----------\n')
 
     #Print beacons
     response, code = database_manager.get_beacon_list()
@@ -127,18 +129,23 @@ def print_test_game():
     for p in PlayerList:
         print_player(p)
         PlayerID = p['PlayerID']
+        print('>----------')
 
         #Print etappes
         response, code = database_manager.get_etappes_by_player(PlayerID)
         EtappeList = response['EtappeList']
         for e in EtappeList:
             print_etappe(e)
+            print('-')
+        print('>----------')
 
         #Print results/finish
         response, code = database_manager.get_results_by_player(PlayerID)
         ResultList = response['ResultList']
-        for e in ResultList:
-            print_finish(e)
+        for r in ResultList:
+            print_finish(r)
+
+        print('\n---------------------------------n')
 
     print('\n')
 
@@ -152,11 +159,9 @@ def print_game_settings(jsonObj):
     EtappeCount = jsonObj['EtappeCount']
     Date = jsonObj['Date']
 
-    msg = f'\n>----------\n'
-    msg += f'GameID = {GameID} --- GroupName = {GroupName}\n'
+    msg = f'GameID = {GameID} --- GroupName = {GroupName}\n'
     msg += f'PlayerCount = {PlayerCount} --- EtappeCount = {EtappeCount}\n'
     msg += f'Date = {Date}\n'
-    msg += f'>----------\n'
     print(msg)
 
 
@@ -168,12 +173,9 @@ def print_player(jsonObj):
     BeaconID = jsonObj['BeaconID']
     GameID = jsonObj['GameID']
 
-    msg = f'\n>----------\n'
-    msg += f'PlayerID = {PlayerID} --- PlayerName = {PlayerName}\n'
+    msg = f'PlayerID = {PlayerID} --- PlayerName = {PlayerName} --- BeaconID = {BeaconID}\n'
     msg += f'TeamName = {TeamName}\n'
-    msg += f'BeaconID = {BeaconID}\n'
     msg += f'GameID = {GameID}\n'
-    msg += f'>----------\n'
     print(msg)
 
 
@@ -186,13 +188,10 @@ def print_beacon(jsonObj):
     Address = jsonObj['Address']
     Tx_power = jsonObj['Tx_power']
 
-    msg = f'\n>----------\n'
-    msg += f'BeaconID = {BeaconID}\n'
+    msg = f'BeaconID = {BeaconID}\n'
     msg += f'Major = {Major} --- Minor = {Minor}\n'
-    msg += f'UUID = {UUID}\n'
-    msg += f'Address = {Address}\n'
+    msg += f'UUID = {UUID} --- Address = {Address}\n'
     msg += f'Tx_power = {Tx_power}\n'
-    msg += f'>----------\n'
     print(msg)
 
 
@@ -203,26 +202,21 @@ def print_finish(jsonObj):
     AvgSpeed = jsonObj['AvgSpeed'] 
     PlayerID = jsonObj['PlayerID']
 
-    msg = f'\n>----------\n'
-    msg += f'ResultID = {ResultID} --- PlayerID = {PlayerID}\n'
-    msg += f'TotalTime = {TotalTime}\n'
-    msg += f'AvgSpeed = {AvgSpeed}\n'
-    msg += f'>----------\n'
+    msg = f'ResultID = {ResultID} --- PlayerID = {PlayerID}\n'
+    msg += f'TotalTime = {TotalTime} --- AvgSpeed = {AvgSpeed}\n'
     print(msg)
 
 
 def print_etappe(jsonObj):
     #Print etappe json
 
+    EtappeID = jsonObj['EtappeID']
     TimePerEtap = jsonObj['TimePerEtap']
     SpeedPerEtap = jsonObj['SpeedPerEtap'] 
     PlayerID = jsonObj['PlayerID']
 
-    msg = f'\n>----------\n'
-    msg += f'PlayerID = {PlayerID}\n'
-    msg += f'TimePerEtap = {TimePerEtap}\n'
-    msg += f'SpeedPerEtappe = {SpeedPerEtap}\n'
-    msg += f'>----------\n'
+    msg = f'PlayerID = {PlayerID} --- EtappeID = {EtappeID}\n'
+    msg += f'TimePerEtap = {TimePerEtap} --- SpeedPerEtappe = {SpeedPerEtap}\n'
     print(msg)
 #endregion
 

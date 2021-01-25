@@ -219,6 +219,7 @@ class Etappe:
 
     def json_from_etappe(self):
         jsonObj = {
+            'EtappeID' : -1,
             'Address' : self.__beacon.address,
             'UUID' : self.__beacon.uuid,
             'TimeStamp' : self.__finish_timestamp,
