@@ -22,15 +22,21 @@ class DataRepository:
         return Database.get_rows(sql)
 
     @staticmethod
-    def read_game_by_date(date):
+    def read_game_by_date(Date):
         sql = "SELECT * FROM gametbl WHERE Date=%s"
-        params = [date]
+        params = [Date]
         return Database.get_one_row(sql, params)
 
     @staticmethod
     def read_player():
         sql = "SELECT * FROM playertbl"
         return Database.get_rows(sql)
+
+    @staticmethod
+    def read_player_by_game(GameID):
+        sql = "SELECT * FROM playertbl WHERE GameID=%s"
+        params = [GameID]
+        return Database.get_rows(sql, params)
 
     @staticmethod
     def read_result():
@@ -43,15 +49,27 @@ class DataRepository:
         return Database.get_rows(sql)
 
     @staticmethod
-    def read_beacon_by_uuid(uuid):
+    def read_beacon_by_uuid(UUID):
         sql = "SELECT * FROM beacontbl WHERE UUID=%s"
-        params = [uuid]
+        params = [UUID]
         return Database.get_one_row(sql, params)
 
     @staticmethod
     def read_etappe():
         sql = "SELECT * FROM etappetbl"
         return Database.get_rows(sql)
+
+    @staticmethod
+    def read_etappe_by_player(PlayerID):
+        sql = "SELECT * FROM etappetbl WHERE PlayerID=%s"
+        params = [PlayerID]
+        return Database.get_rows(sql, params)
+
+    @staticmethod
+    def read_result_by_player(PlayerID):
+        sql = "SELECT * FROM resulttbl WHERE PlayerID=%s"
+        params = [PlayerID]
+        return Database.get_rows(sql, params)
 
     @staticmethod
     def read_leaderboard(etappe):
@@ -64,11 +82,6 @@ class DataRepository:
         sql = "SELECT P.PlayerName, P.TeamName, R.TotalTime, R.AvgSpeed FROM playertbl P, resulttbl R WHERE P.PlayerID = R.PlayerID ORDER BY R.TotalTime ASC"
         return Database.get_rows(sql)
 
-    @staticmethod
-    def read_player_by_game(gameID):
-        sql = "SELECT * FROM playertbl WHERE GameID=%s"
-        params = [gameID]
-        return Database.get_rows(sql, params)
 
     # =========================================================
     # Inserts

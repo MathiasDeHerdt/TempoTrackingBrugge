@@ -91,8 +91,8 @@ class EtappeManager:
         for etappe in list_etappe:
             jsonEtappe = etappe.json_from_etappe()
             jsonList.append(jsonEtappe)
-            avgSpeed += jsonEtappe['SpeedPerEtappe']
-            totalTime += jsonEtappe['TimePerEtappe']
+            avgSpeed += jsonEtappe['SpeedPerEtap']
+            totalTime += jsonEtappe['TimePerEtap']
             playerID = jsonEtappe['PlayerID']
 
         avgSpeed = float(avgSpeed) / self.etappe_count
@@ -145,8 +145,8 @@ class Etappe:
         self.__timePerEtappe = 0
 
 
-    def set_playerID(self, id):
-        self.__playerID = id
+    def set_playerID(self, PlayerID):
+        self.__playerID = PlayerID
 
     def set_speed(self, speed):
         self.__speed = speed
@@ -222,8 +222,8 @@ class Etappe:
             'Address' : self.__beacon.address,
             'UUID' : self.__beacon.uuid,
             'TimeStamp' : self.__finish_timestamp,
-            'TimePerEtappe' : self.__timePerEtappe,
-            'SpeedPerEtappe' : self.__speed,
+            'TimePerEtap' : self.__timePerEtappe,
+            'SpeedPerEtap' : self.__speed,
             'PlayerID' : self.__playerID,
             'Number' : self.__etappe_number
         }

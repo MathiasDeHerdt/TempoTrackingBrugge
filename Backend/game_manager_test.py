@@ -1,4 +1,5 @@
 
+import os
 import sys
 import time
 from datetime import datetime
@@ -50,7 +51,8 @@ def test_game_settings():
     global database_manager
 
     database_manager.store_game_settings(game_settings)
-    database_game_settings, code = database_manager.get_game_settings_by_date(game_settings['Date'])
+    response, code = database_manager.get_settings_by_date(game_settings['Date'])
+    database_game_settings = response['Settings']
     print(f'Database game => \n{database_game_settings}')
 
 
@@ -73,7 +75,7 @@ def test_player_list(list_scan):
         list_beacons.append(jsonObj)
         database_manager.store_beacon(jsonObj)
 
-    response, code = database_manager.get_game_beacon_list()
+    response, code = database_manager.get_beacon_list()
     database_beacons = response['BeaconList']
     print(f'Database beacons => \n{database_beacons}')
 
@@ -92,7 +94,7 @@ def test_player_list(list_scan):
         database_manager.store_player(jsonObj)
         index += 1
 
-    response, code = database_manager.get_game_player_list(gameID)
+    response, code = database_manager.get_players_by_gameID(gameID)
     database_players = response['PlayerList']
     print(f'Database players => \n{database_players}')
 #endregion
@@ -100,16 +102,126 @@ def test_player_list(list_scan):
 
 # =========================================================
 #region --- Print ==========================================================================================================================================
+def print_test_game():
+    global game_settings
+    Date = game_settings['Date']
+    print('\n======================================================================\n')
+
+    #Print game settings
+    response, code = database_manager.get_settings_by_date(Date)
+    Settings = response['Settings']
+    print_game_settings(Settings)
+    GameID = Settings['GameID']
+    print('\n')
+
+    #Print beacons
+    response, code = database_manager.get_beacon_list()
+    BeaconList = response['BeaconList']
+    for b in BeaconList:
+        print_beacon(b)
+    print('\n======================================================================\n')
+
+    #Print players
+    response, code = database_manager.get_players_by_gameID(GameID)
+    PlayerList = response['PlayerList']
+    for p in PlayerList:
+        print_player(p)
+        PlayerID = p['PlayerID']
+
+        #Print etappes
+        response, code = database_manager.get_etappes_by_player(PlayerID)
+        EtappeList = response['EtappeList']
+        for e in EtappeList:
+            print_etappe(e)
+
+        #Print results/finish
+        response, code = database_manager.get_results_by_player(PlayerID)
+        ResultList = response['ResultList']
+        for e in ResultList:
+            print_finish(e)
+
+    print('\n')
+
+
+
+def print_game_settings(jsonObj):
+    #Print game settings json
+    GameID = jsonObj['GameID']
+    GroupName = jsonObj['GroupName']
+    PlayerCount = jsonObj['PlayerCount'] 
+    EtappeCount = jsonObj['EtappeCount']
+    Date = jsonObj['Date']
+
+    msg = f'\n>----------\n'
+    msg += f'GameID = {GameID} --- GroupName = {GroupName}\n'
+    msg += f'PlayerCount = {PlayerCount} --- EtappeCount = {EtappeCount}\n'
+    msg += f'Date = {Date}\n'
+    msg += f'>----------\n'
+    print(msg)
+
+
+def print_player(jsonObj):
+    #Print player json
+    PlayerID = jsonObj['PlayerID']
+    PlayerName = jsonObj['PlayerName']
+    TeamName = jsonObj['TeamName'] 
+    BeaconID = jsonObj['BeaconID']
+    GameID = jsonObj['GameID']
+
+    msg = f'\n>----------\n'
+    msg += f'PlayerID = {PlayerID} --- PlayerName = {PlayerName}\n'
+    msg += f'TeamName = {TeamName}\n'
+    msg += f'BeaconID = {BeaconID}\n'
+    msg += f'GameID = {GameID}\n'
+    msg += f'>----------\n'
+    print(msg)
+
+
+def print_beacon(jsonObj):
+    #Print beacon json
+    BeaconID = jsonObj['BeaconID']
+    Major = jsonObj['Major']
+    Minor = jsonObj['Minor'] 
+    UUID = jsonObj['UUID']
+    Address = jsonObj['Address']
+    Tx_power = jsonObj['Tx_power']
+
+    msg = f'\n>----------\n'
+    msg += f'BeaconID = {BeaconID}\n'
+    msg += f'Major = {Major} --- Minor = {Minor}\n'
+    msg += f'UUID = {UUID}\n'
+    msg += f'Address = {Address}\n'
+    msg += f'Tx_power = {Tx_power}\n'
+    msg += f'>----------\n'
+    print(msg)
+
+
+def print_finish(jsonObj):
+    #Print finish result json
+    ResultID = jsonObj['ResultID']
+    TotalTime = jsonObj['TotalTime']
+    AvgSpeed = jsonObj['AvgSpeed'] 
+    PlayerID = jsonObj['PlayerID']
+
+    msg = f'\n>----------\n'
+    msg += f'ResultID = {ResultID} --- PlayerID = {PlayerID}\n'
+    msg += f'TotalTime = {TotalTime}\n'
+    msg += f'AvgSpeed = {AvgSpeed}\n'
+    msg += f'>----------\n'
+    print(msg)
+
+
 def print_etappe(jsonObj):
     #Print etappe json
-    TimePerEtappe = jsonObj['TimePerEtappe']
-    SpeedPerEtappe = jsonObj['SpeedPerEtappe'] 
+
+    TimePerEtap = jsonObj['TimePerEtap']
+    SpeedPerEtap = jsonObj['SpeedPerEtap'] 
     PlayerID = jsonObj['PlayerID']
 
     msg = f'\n>----------\n'
     msg += f'PlayerID = {PlayerID}\n'
-    msg += f'TimePerEtappe = {TimePerEtappe}\n'
-    msg += f'SpeedPerEtappe = {SpeedPerEtappe}\n'
+    msg += f'TimePerEtap = {TimePerEtap}\n'
+    msg += f'SpeedPerEtappe = {SpeedPerEtap}\n'
     msg += f'>----------\n'
     print(msg)
 #endregion
@@ -123,7 +235,7 @@ def callback_etappe(callObj):
 
     jsonObj = callObj.json_from_etappe()
 
-    speedPerEtappe = BleHelper.get_speed(game_settings['RaceDistance'], jsonObj['TimePerEtappe'])
+    speedPerEtappe = BleHelper.get_speed(game_settings['RaceDistance'], jsonObj['TimePerEtap'])
     playerID = -1
     for p in database_players:
         for b in database_beacons:
@@ -137,8 +249,8 @@ def callback_etappe(callObj):
     jsonObj = callObj.json_from_etappe()
 
     #print(f'\nEtappe done - game callback! \njsonObj = {jsonObj}\n')
-    print_etappe(jsonObj)
     response, code = database_manager.store_etappe(jsonObj)
+    print_etappe(jsonObj)
 
 
 def callback_finish(callObj):
@@ -157,6 +269,10 @@ def callback_finish(callObj):
 
 # =========================================================
 #region --- Other functions ==========================================================================================================================================
+def start_led_strip(): #start de ledstrip
+    print("Ledstrip starting")
+    os.system('sudo python3 /home/pialex/TempoTrackingBrugge/Backend/backend_hardware/helpers/rgb.py')
+
 def condition_stop():
     global stop
     global player_finished_count
@@ -191,6 +307,8 @@ if __name__ == '__main__':
     for i in range(0,1):
         reset_game()
 
+        start_led_strip()
+
         game.initialize_game(
             game_settings['EtappeCount'], 
             game_settings['FinishWidth'], 
@@ -204,7 +322,8 @@ if __name__ == '__main__':
         while stop == False:
             time.sleep(2)
 
-        print(f'\n\n Scan results during the race: \n')
         #game.print_managers()
         game.stop_game_loop()
+
+        print_test_game()
 #endregion

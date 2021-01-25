@@ -20,18 +20,17 @@ class DatabaseManager:
 
 
     # =========================================================
-    #region --- INIT ==========================================================================================================================================
-    def get_game_settings_by_date(self, date):
+    #region --- Get functions ==========================================================================================================================================
+    def get_settings_by_date(self, Date):
         try:
-            data = DataRepository.read_game_by_date(date)
-            return data, 200
+            data = DataRepository.read_game_by_date(Date)
+            return {'Settings' : data}, 200
 
         except Exception as e:
             print(f'Exception => {e}')
             return None, 500
-    
 
-    def get_game_beacon_list(self):
+    def get_beacon_list(self):
         try:
             data = DataRepository.read_beacon()
             return {'BeaconList' : data}, 200
@@ -40,20 +39,37 @@ class DatabaseManager:
             print(f'Exception => {e}')
             return {'BeaconList' : []}, 500
 
-
-    def get_game_player_list(self, gameID):
+    def get_players_by_gameID(self, GameID):
         try:
-            data = DataRepository.read_player_by_game(gameID)
+            data = DataRepository.read_player_by_game(GameID)
             return {'PlayerList' : data}, 200
 
         except Exception as e:
             print(f'Exception => {e}')
             return {'PlayerList' : []}, 500
+
+    def get_etappes_by_player(self, PlayerID):
+        try:
+            data = DataRepository.read_etappe_by_player(PlayerID)
+            return {'EtappeList' : data}, 200
+
+        except Exception as e:
+            print(f'Exception => {e}')
+            return {'EtappeList' : []}, 500
+
+    def get_results_by_player(self, PlayerID):
+        try:
+            data = DataRepository.read_result_by_player(PlayerID)
+            return {'ResultList' : data}, 200
+
+        except Exception as e:
+            print(f'Exception => {e}')
+            return {'ResultList' : []}, 500
     #endregion
 
 
     # =========================================================
-    #region --- Database ==========================================================================================================================================
+    #region --- Store functions ==========================================================================================================================================
     def store_finish(self, jsonObj):
         try:
             TotalTime = jsonObj['TotalTime']
@@ -71,12 +87,13 @@ class DatabaseManager:
     
     def store_etappe(self, jsonObj):
         try:
-            timePerEtappe = jsonObj['TimePerEtappe']
-            speedPerEtappe = jsonObj['SpeedPerEtappe']
-            playerID = jsonObj['PlayerID']
+            TimePerEtap = jsonObj['TimePerEtap']
+            SpeedPerEtap = jsonObj['SpeedPerEtap']
+            PlayerID = jsonObj['PlayerID']
 
-            print(f"etappe {playerID} naar database")
-            DataRepository.insert_etappe(timePerEtappe, speedPerEtappe, playerID)
+            print(f"etappe {PlayerID} naar database")
+            response = DataRepository.insert_etappe(TimePerEtap, SpeedPerEtap, PlayerID)
+            print(f"response {response}")
             return {'Message' : "Etappe was stored"}, 200
 
         except Exception as e:
@@ -86,13 +103,13 @@ class DatabaseManager:
 
     def store_game_settings(self, jsonObj):
         try:
-            group_name = jsonObj['GroupName']
-            player_count = jsonObj['PlayerCount']
-            ettape_count = jsonObj['EtappeCount']
-            date = jsonObj['Date']
+            GroupName = jsonObj['GroupName']
+            PlayerCount = jsonObj['PlayerCount']
+            EtappeCount = jsonObj['EtappeCount']
+            Date = jsonObj['Date']
 
-            print(f"game {group_name} naar database")
-            DataRepository.insert_game(player_count, ettape_count, group_name, date)
+            print(f"game {GroupName} naar database")
+            DataRepository.insert_game(PlayerCount, EtappeCount, GroupName, Date)
             return {'Message' : "Game settings was stored"}, 200
 
         except Exception as e:

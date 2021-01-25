@@ -58,6 +58,7 @@ class GameManager:
     # PRINT
     #=================================================================================================================
     def print_managers(self):
+        #print(f'\n\n Scan results during the race: \n')
         self.__ble_manager.print_registered_results()
     #endregion
 
