@@ -65,7 +65,7 @@ def scan_for_players(): #get a list of beacons within range
     for beaconObj in scanned_beacons:
         jsonObj = {
             'address' : beaconObj.address, 'name' : beaconObj.name,
-            'uuid' : beaconObj.uuid, 'txPower' : beaconObj.txPower,
+            'UUID' : beaconObj.uuid, 'txPower' : beaconObj.txPower,
             'major' : beaconObj.major, 'minor' : beaconObj.minor
         }
         list_beacons.append(jsonObj)
@@ -197,11 +197,11 @@ def all_game_settings(jsonObj):  # game settings
     # gamesettings_to_datebase(players, etappes, group, dateToday)
 
     # global variabelen updaten met data van de frontend en daarna returnen
-    player_count = jsonObj['countPlayer']
-    etappe_count = jsonObj['countEtappe']
-    group_name = jsonObj['groupName']
-    finish_width = jsonObj['finishWidth']
-    print(f'game_settings =>\n player_count = {list_beacons}\n etappe_count = {etappe_count}\n group_name = {group_name}\n finish_width = {finish_width}')
+    player_count = jsonObj['PlayerCount']
+    etappe_count = jsonObj['EtappeCount']
+    group_name = jsonObj['GroupName']
+    finish_width = jsonObj['FinishWidth']
+    print(f'game_settings =>\n list_beacons = {list_beacons} \n player_count = {player_count} \n etappe_count = {etappe_count}\n group_name = {group_name}\n finish_width = {finish_width}')
 
 
 @socketio.on('F2B_player_settings')  # player settings
@@ -213,19 +213,19 @@ def all_player_settings(jsonObj):
 
     print(f'all_player_settings - {jsonObj}')
 
-    list_players = jsonObj['beacons']
+    list_players = jsonObj['Players']
     filtered_list_beacon = []
 
     for jsonObj in list_players:
-        name = jsonObj['name']
-        team = jsonObj['team']
-        uuid = jsonObj['uuid']
+        name = jsonObj['PlayerName']
+        team = jsonObj['TeamName']
+        uuid = jsonObj['UUID']
         print(f'name = {name} - team = {team} - uuid = {uuid}')
         #database_store_player(jsonObj)
 
     for player in list_players:
         for beacon in list_beacons:
-            if beacon['uuid'] == player['uuid']:
+            if beacon['UUID'] == player['UUID']:
                 filtered_list_beacon.append(beacon)
                 #database_store_beacon(beacon)
                 break
@@ -250,7 +250,7 @@ def start_the_race(data):
     if data == "start!":
         # StartLedstrip()
         print("STARTING LED")
-        start_game_loop()
+        #start_game_loop()
     else:
         print("no ack found, not sending anything!")
         
@@ -336,13 +336,14 @@ def emit_to_front():
 
     global playerName
     global teamName
+    print(f'list_players - {list_players}')
 
     # game settings
     socketio.emit('B2F_game_settings',  {
-                  "player_count": player_count, "etappe_count": etappe_count})
+                  "Playercount": player_count, "Etappecount": etappe_count})
 
-    socketio.emit("B2F_player_settings", {
-                  "Playername": playerName, "Teamname": teamName})
+    print(f'playerName - {playerName}')
+    socketio.emit("B2F_player_settings", {"Players": list_players} )
 
 
 def emit_to_leaderboard(etappe):
