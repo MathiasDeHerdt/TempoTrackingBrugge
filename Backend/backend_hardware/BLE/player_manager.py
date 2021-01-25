@@ -27,6 +27,13 @@ class PlayerManager():
 
     # =========================================================
     #region --- CLEAR ==========================================================================================================================================
+    def set_start_timestamp(self, timestamp):
+        self.__etappe_manager.set_start_timestamp(timestamp)
+    #endregion
+
+
+    # =========================================================
+    #region --- CLEAR ==========================================================================================================================================
     def clear_results(self):
         etappe_count = self.__etappe_manager.etappe_count
         self.__etappe_manager = EtappeManager(etappe_count, self.__beacon)

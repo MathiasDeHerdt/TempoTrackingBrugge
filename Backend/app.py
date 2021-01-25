@@ -388,5 +388,5 @@ def gamesettings_to_datebase(player, etappe, group, date):
 #region --- App run ==========================================================================================================================================
 if __name__ == '__main__':
     # app.run(host="0.0.0.0", port=5000, debug=True)
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True, threaded=True)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
 #endregion

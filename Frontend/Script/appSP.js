@@ -1,61 +1,76 @@
-const lanIP = `${window.location.hostname}:5000`;
-//const socket = io(`http://${lanIP}`);
 
+//#region === Variables =====================================================================================================
+const lanIP = `${window.location.hostname}:5000`;
+const socket = io(`http://${lanIP}`);
 console.log(lanIP)
 
-var total_number = 1;
+
+// Html elements
+let html_listPlayerContainer;
+let html_countPlayer, html_selectedGroup, html_countEtappe, html_countDistance;
+let btnSaveSettings, btnToGame;
 
 // Settings
-var global_count_etappes = "";
-var global_count_players = "";
-var global_group_name = "";
-var global_distance = 0;
+let totalPlayerCount = 1;
+
+let global_countPlayers = totalPlayerCount;
+let global_countEtappes = 0;
+let global_groupName = "";
+let global_distance = 0;
 
 // Players
-var global_player_name = "";
-var global_team_name = "";
-var global_beacon_name = "";
+let global_playerList = [];
 
-function selectIcon() {
-    for (let i = 1; i <= total_number; i++) {
+// Beacons
+let global_listBeacons = []
+
+//#endregion
+
+
+//#region === HTML Functions =====================================================================================================
+const selectIcon = function() {
+    //Select icon corresponding to team
+    for (let i = 1; i <= totalPlayerCount; i++) {
         const team = "select_team_" + i;
         const icon = "select_icon_" + i;
-        var x = document.getElementById(team).value;
-        var icon_selected = `<img class="c-settings-player__icon-imgSP" src="Images/teams/${x}-2021.png" alt="${x}-2021">`
-        document.getElementById(icon).innerHTML = icon_selected;
+        var teamName = document.getElementById(team).value;
+        var selectedIcon = `<img class="c-settings-player__icon-imgSP" src="./Images/teams/${teamName}-2021.png" alt="${teamName}-2021">`
+        document.getElementById(icon).innerHTML = selectedIcon;
     }
-}
+};
 
-function selectPlayers() {
-    var x = document.getElementById("select_players").value;
-    total_number = x;
-    removePlayers();
-    getPlayers();
-}
-
-function removePlayers() {
-    while (player_container.firstChild) {
-        player_container.removeChild(player_container.lastChild);
+const clearPlayerList = function() {
+    //Clear player tabs
+    while (html_listPlayerContainer.firstChild) {
+        html_listPlayerContainer.removeChild(html_listPlayerContainer.lastChild);
     }
-}
+};
 
-const getPlayers = async () => {
-    for (let i = 1; i <= total_number; i++) {
-        await createNewPlayer(i);
+const createPlayerList = async function () {
+    //As long as no beacons are available, no player list
+    if(global_listBeacons.length <= 0)
+        return;
+
+    //Fill list with player tabs
+    for (let i = 1; i <= totalPlayerCount; i++) {
+        playerTab = await createPlayerTab(i);
+        html_listPlayerContainer.appendChild(playerTab);
     }
-}
+};
 
-function createNewPlayer(number) {
-    const playerEl = document.createElement('div');
+const createPlayerTab = function (number) {
+    //Retrieve dropdowns + create object
+    const playerTab = document.createElement('div');
+    const html_teamDropdown = createTeamDropdown(number);
+    const html_beaconDropdown = createBeaconDropdown(number);
 
+    //Create one player tab
     const playerInnerHTML = `
     <div class="c-settings-player">
-        <!-- Settings player ${number} -->
         <h2 class="c-settings-player__header c-settings-setup__item-invis">
             Player ${number}
         </h2>
         <div class="c-settings-player__bg">
-            <!-- Player ${number} Name -->
             <div class="c-settings-player__item">
                 <label class="c-settings-player__text" for="select_player_${number}">
                     Name
@@ -64,163 +79,285 @@ function createNewPlayer(number) {
                     <input class="c-custom-select__text" type="text" id="select_player_${number}" name="select_player_${number}" placeholder="PLAYER NAME" onchange="validateSettings();">
                 </div>
             </div>
+
             <!-- Beacon Heb ik toegevoegd en heb de onchange weggedaan, omdat deze info nog nergens wordt verwerkt -->
-            <!-- Player ${number} Beacon -->
             <div class="c-settings-player__item">
                 <label class="c-settings-player__text" for="select_team_${number}">
                     Beacon
                 </label>
-                <div class="c-settings-player__input">
-                    <span class="c-custom-select">
-                        <select class="c-input c-custom-select__dropdown" name="select_beacon_${number}" id="select_beacon_${number}";">
-                        <option value="beacon 1">beacon 1</option>
-                        <option value="beacon 2">beacon 2</option>
-                        <option value="beacon 3">beacon 3</option>
-                        <option value="beacon 4">beacon 4</option>
-                        </select>
-                    </span>
-                </div>
+            <div class="c-settings-player__input">
+                <span class="c-custom-select">
+                    ${html_beaconDropdown}
+                </span>
             </div>
-            <!-- Player ${number} Team -->
-            <div class="c-settings-player__item">
-                <label class="c-settings-player__text" for="select_team_${number}">
-                    Team
-                </label>
-                <div class="c-settings-player__input">
-                    <span class="c-custom-select">
-                        <select class="c-input c-custom-select__dropdown" name="select_team_${number}" id="select_team_${number}" onchange="selectIcon(); validateSettings();">
-                            <option value="ag2r-citroen-team">AG2R Citroën Team</option>
-                            <option value="alpecin-fenix">Alpecin - Fenix</option>
-                            <option value="astana-premier-tech">Astana - Premier Tech</option>
-                            <option value="bahrain-victorious">Bahrain - Victorious</option>
-                            <option value="bora-hansgrohe">BORA - hansgrohe</option>
-                            <option value="cofidis-solutions-credits">Cofidis</option>
-                            <option value="deceuninck-quick-step">Deceuninck - Quick-Step</option>
-                            <option value="ef-pro-cycling">EF Education - Nippo</option>
-                            <option value="groupama-fdj">Groupama - FDJ</option>
-                            <option value="ineos-grenadiers">INEOS Grenadiers</option>
-                            <option value="intermarche-wanty-gobert">Intermarché Wanty Gobert</option>
-                            <option value="israel-start-up-nation">Israel Start-Up Nation</option>
-                            <option value="lotto-soudal">Lotto Soudal</option>
-                            <option value="movistar-team">Movistar Team</option>
-                            <option value="team-bikeexchange">Team BikeExchange</option>
-                            <option value="team-dsm">Team DSM</option>
-                            <option value="team-jumbo-visma">Team Jumbo-Visma</option>
-                            <option value="team-qhubeka-assos">Team Qhubeka ASSOS</option>
-                            <option value="trek-segafredo">Trek - Segafredo</option>
-                            <option value="uae-team-emirates">UAE-Team Emirates</option>
-                        </select>
-                    </span>
-                </div>
+        </div>
+        <div class="c-settings-player__item">
+            <label class="c-settings-player__text" for="select_team_${number}">
+                Team
+            </label>
+            <div class="c-settings-player__input">
+                <span class="c-custom-select">
+                    ${html_teamDropdown}
+                </span>
             </div>
-            <!-- Player ${number} Icon -->
-            <div class="c-settings-player__item">
-                <p class="c-settings-player__text">
-                    Icon
-                </p>
-                <div class="c-settings-player__input c-settings-player__icon" id="select_icon_${number}">
-                    <img class="c-settings-player__icon-imgSP" src="Images/teams/ag2r-citroen-team-2021.png" alt="ag2r-citroen-team-2021">
-                </div>
+        </div>
+        <div class="c-settings-player__item">
+            <p class="c-settings-player__text">
+                Icon
+            </p>
+            <div class="c-settings-player__input c-settings-player__icon" id="select_icon_${number}">
+                <img class="c-settings-player__icon-imgSP" src="Images/teams/ag2r-citroen-team-2021.png" alt="ag2r-citroen-team-2021">
             </div>
         </div>
     </div>
     `;
 
-    playerEl.innerHTML = playerInnerHTML;
-
-    player_container.appendChild(playerEl);
+    //Return tab
+    playerTab.innerHTML = playerInnerHTML;
+    return playerTab;
 };
 
-function validateSettings() {
-    var validate_game_settings = false;
+const createBeaconDropdown = function(number) {
+    //Create dropdown for beacons
+    let html_dropdown = `<select class="c-input c-custom-select__dropdown" name="select_beacon_${number}" id="select_beacon_${number}";">`;
+    for(const beacon of global_listBeacons){
+        html_dropdown += createBeaconDropdownItem(beacon);
+    }
+    html_dropdown += `</select>`;
+    return html_dropdown;
+};
 
-    console.log("----- GAME SETTINGS ------");
+const createBeaconDropdownItem = function(beacon){
+    const uuid = beacon.uuid;
+    const showName = `${uuid.substring(0, 8)}...`;
+    const htmlItem = `<option value="${uuid}">${showName}</option>`;
+    return htmlItem;
+};
 
-    const select_players = document.getElementById('select_players').value;
-    const select_group = document.getElementById('select_group').value;
-    const select_etappes = document.getElementById('select_etappes').value;
-    const select_distance = document.getElementById('select_distance').value;
+const createTeamDropdown = function(number) {
+    //Create dropdown for teams
+    const html_dropdown = `
+    <select class="c-input c-custom-select__dropdown" name="select_team_${number}" id="select_team_${number}" onchange="selectIcon(); validateSettings();">
+        <option value="ag2r-citroen-team">AG2R Citroën Team</option>
+        <option value="alpecin-fenix">Alpecin - Fenix</option>
+        <option value="astana-premier-tech">Astana - Premier Tech</option>
+        <option value="bahrain-victorious">Bahrain - Victorious</option>
+        <option value="bora-hansgrohe">BORA - hansgrohe</option>
+        <option value="cofidis-solutions-credits">Cofidis</option>
+        <option value="deceuninck-quick-step">Deceuninck - Quick-Step</option>
+        <option value="audi">EF Education - Nippo</option>
+        <option value="groupama-fdj">Groupama - FDJ</option>
+        <option value="ineos-grenadiers">INEOS Grenadiers</option>
+        <option value="audi">Intermarché Wanty Gobert</option>
+        <option value="israel-start-up-nation">Israel Start-Up Nation</option>
+        <option value="lotto-soudal">Lotto Soudal</option>
+        <option value="movistar-team">Movistar Team</option>
+        <option value="team-bikeexchange">Team BikeExchange</option>
+        <option value="team-dsm">Team DSM</option>
+        <option value="team-jumbo-visma">Team Jumbo-Visma</option>
+        <option value="audi">Team Qhubeka ASSOS</option>
+        <option value="audi">Trek - Segafredo</option>
+        <option value="uae-team-emirates">UAE-Team Emirates</option>
+    </select>`;
+    return html_dropdown;
+};
+//#endregion
 
-    global_count_etappes = select_etappes;
-    global_count_players = select_players;
-    global_group_name = select_group;
-    global_distance = select_distance;
 
-    console.log("Player count: " + select_players);
-    console.log("Game group: " + select_group);
-    console.log("Etappe count: " + select_etappes);
-    console.log("Distance: " + select_distance);
+//#region === Validation Functions =====================================================================================================
+const validateSettings = function() {
+    let isGameValid = validateSettingsGame();
+    let isPlayersValid = validateSettingsPlayers();
 
-    if (select_players && select_group && select_etappes && select_distance) {
-        validate_game_settings = true;
+    console.log("----- CONTROLE -----");
+
+    if (isGameValid == true && isPlayersValid == true) {
+        save_settings.disabled = false;
+        console.log("Settings are valid")
     }
     else {
-        validate_game_settings = false;
+        save_settings.disabled = true;
+        console.log("Settings are NOT valid!!")
     }
+};
 
+const validateSettingsGame = function(){
+    //Check game settings
+    console.log("----- GAME SETTINGS ------");
+    isValid = false;
+
+    global_countPlayers = parseInt(html_countPlayer.value);
+    global_groupName    = html_selectedGroup.value;
+    global_countEtappes = parseInt(html_countEtappe.value);
+    global_distance     = parseFloat(html_countDistance.value);
+
+    console.log("Player count: " + global_countPlayers);
+    console.log("Game group: " + global_groupName);
+    console.log("Etappe count: " + global_countEtappes);
+    console.log("Distance: " + global_distance);
+
+    if (global_countPlayers > 0 && global_countEtappes > 0 && global_distance > 0 &&
+        checkInput(global_groupName) == true) {
+        isValid = true;
+    }
+    return isValid;
+};
+
+const validateSettingsPlayers = function(){
+    //Check player settings
     console.log("----- PLAYER SETTINGS ------");
+    isValid = true;
 
-    for (let i = 1; i <= total_number; i++) {
+    //Wipe old list
+    global_playerList = [];
+
+    //Check each player tab
+    if(totalPlayerCount <= 0)
+        return false;
+
+    for (let i = 1; i <= totalPlayerCount; i++) {
         const name = "select_beacon_" + i;
         const team = "select_team_" + i;
         const player = "select_player_" + i;
 
         if (document.getElementById(name) != null) {
-            const select_name = document.getElementById(player).value;
-            const select_team = document.getElementById(team).value;
-            const select_beacon = document.getElementById(name).value
+            const playerName = document.getElementById(player).value;
+            const teamName = document.getElementById(team).value;
+            const beaconName = document.getElementById(name).value
 
-            var playerName = "Player " + i + " name: " + select_name
-            var teamName = "Player " + i + " team: " + select_team
-            var beaconName = "Player " + i + " Beacon: " + select_beacon
+            console.log(`
+            Player ${i} - name: ${playerName} \n 
+            Player ${i} - team: ${teamName} \n
+            Player ${i} - beacon: ${beaconName}`);
 
-            console.log(playerName)
-            console.log(teamName)
-            console.log(beaconName)
-
-            global_player_name = select_name;
-            global_team_name = select_team;
-            global_beacon_name = select_beacon;
-
-            if (select_name && select_team && select_beacon) {
-                validate_game_settings = true;
+            //If all is filled in, add to player list
+            if (checkInput(playerName) == true && 
+                checkInput(teamName) == true && 
+                checkInput(beaconName) == true) {
+                addPlayerToList(playerName, teamName, beaconName)
             }
-            else {
-                validate_game_settings = false;
+            else{
+                isValid = false;
             }
         }
     }
 
-    console.log("----- CONTROLE -----");
+    return isValid;
+};
 
-    const save_settings = document.getElementById('save_settings');
+const checkInput = function(input){
+    console.log(`Checking input - ${input}`);
+    if(input != null && input.length > 0)
+        return true;
 
-    if (validate_game_settings) {
-        save_settings.disabled = false;
-        console.log("1")
-    }
-    else {
-        save_settings.disabled = true;
-        console.log("2")
-    }
-}
+    console.log(`Checking input FALSE - ${input}`);
+    return false;
+};
 
-function enableButton() {
-    const go_to_game = document.getElementById('go_to_game');
-    go_to_game.disabled = false;
-    save_settings.disabled = true;
+const addPlayerToList = function(playerName, teamName, beaconName){
+    jsonObj = {
+        'name' : playerName,
+        'team' : teamName,
+        'uuid' : beaconName
+    };
+    global_playerList.push(jsonObj)
+};
+//#endregion
 
-    //socket.emit('F2B_game_settings', global_count_players, global_count_etappes, global_group_name)
-    //socket.emit('F2B_player_settings', global_player_name, global_team_name)
-}
 
-function goToGame() {
-    console.log('Going to MainPage.html...')
+//#region === Event functions =====================================================================================================
+const clickSaveSettings = function() {
+    btnToGame.disabled = false;
+    btnSaveSettings.disabled = true;
+    saveSettings();
+};
+
+const clickToGame = function() {
+    console.log('Going to MainPage.html...');
+    //startGame(); //temp
     document.location.href = "./MainPage.html"
-}
+};
+
+const chancePlayerCount = function() {
+    //Get number of players
+    totalPlayerCount = html_countPlayer.value;
+
+    //Create list of player tabs
+    clearPlayerList();
+    createPlayerList();
+};
+//#endregion
+
+
+//#region === Socket - Responses =====================================================================================================
+const listenToSocket = function () {
+    console.log("listenToSocket");
+    socket.on('B2F_beacons_found', setBeaconList);
+};
+
+const setBeaconList = function(jsonObj){
+    global_listBeacons = jsonObj['beacons'];
+    console.log(`B2F_beacons_found`);
+    //console.log(global_listBeacons)
+    createPlayerList();
+};
+//#endregion
+
+
+//#region === Socket - Requests =====================================================================================================
+const pageLoaded = function () {
+    console.log(`F2B_beacons_request`);
+    socket.emit('F2B_beacons_request');
+};
+
+const saveSettings = function () {
+    console.log(`F2B_game_settings`);
+    jsonGameSettings = {
+        'countPlayer' : global_countPlayers,
+        'countEtappe' : global_countEtappes,
+        'groupName' : global_groupName,
+        'finishWidth' : global_distance
+    }
+    socket.emit('F2B_game_settings', jsonGameSettings);
+
+    console.log(`F2B_player_settings`);
+    jsonPlayerSettings = {
+        'beacons' : global_playerList
+    }
+    socket.emit('F2B_player_settings', jsonPlayerSettings);
+};
+
+const startGame = function () {
+    console.log(`F2B_start_timer`);
+    socket.emit('F2B_start_timer', "start!");
+};
+//#endregion
+
+
+//#region === DOM Content =====================================================================================================
+const getElements = function(){
+    html_listPlayerContainer = document.getElementById('player_container');
+    html_countPlayer = document.getElementById("select_players");
+    html_selectedGroup = document.getElementById('select_group');
+    html_countEtappe = document.getElementById('select_etappes');
+    html_countDistance = document.getElementById('select_finish');
+
+    btnSaveSettings = document.getElementById('save_settings');
+    btnToGame = document.getElementById('go_to_game');
+};
 
 document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM - Settings Page');
-    const player_container = document.getElementById('player_container');
-    getPlayers();
+    pageLoaded();
+
+    //Get HTML elements
+    getElements();
+
+    //Socket IO
+    listenToSocket();
+
+    //Other
+    validateSettings();
 });
+//#endregion
+  

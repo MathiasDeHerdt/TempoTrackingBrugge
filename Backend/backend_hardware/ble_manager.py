@@ -104,13 +104,13 @@ class BleManager:
 
     # =========================================================
     #region --- LOOP GAME ==========================================================================================================================================
-    def start_game_loop(self):
+    def start_game_loop(self, start_time_stamp):
         #Start game
         try:
             print('Connecting to MQTT...')
             self.__mqtt_client.subscribe()
             print('Begin scanning for player distance')
-            self.start_scanning_player_distance()
+            self.start_scanning_player_distance(start_time_stamp)
         except Exception as e:
             print(f'Exception => {e}')
 
@@ -121,12 +121,13 @@ class BleManager:
         self.stop_scanning_player_distance()
     
 
-    def start_scanning_player_distance(self):
+    def start_scanning_player_distance(self, start_time_stamp):
         #Start scanning for disances
         print(f'Activate ESP')
         self.__start_esp_scan()
-        print(f'Distance thread')
-        self.__create_thread_scanning_player_distance()
+        for key in self.__player_manager.keys():
+            self.__player_manager[key].set_start_timestamp(start_time_stamp)
+        #self.__create_thread_scanning_player_distance() #disabled cause rpi is bad at it
         self.__is_loop_scan_active = True
     
 
