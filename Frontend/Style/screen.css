@@ -1120,9 +1120,9 @@ button a {
 }
 
 .c-leaderboard {
-  width: 100%;
   border-collapse: collapse;
   text-align: center;
+  width: 100%;
 }
 
 .c-leaderboard-header {
@@ -1905,8 +1905,8 @@ select#select_beacon_3 {
   }
 
   .c-page-logo {
-    font-size: var(--global-fz-lg-x);
-    margin-bottom: var(--global-whitespace-xxl);
+    font-size: var(--global-fz-lg);
+    margin-bottom: var(--global-whitespace-lg);
   }
 
   .c-leaderboard-header {
@@ -2020,11 +2020,11 @@ select#select_beacon_3 {
 
   /* #region Settings page */
 
-  .c-page-logo {
+  /* .c-page-logo {
     height: var(--global-whitespace-md);
     font-size: var(--global-fz-md);
     margin-bottom: calc(var(--global-whitespace-lg) * 1.1);
-  }
+  } */
 
   .c-page-nav__icon {
     width: 4rem;
@@ -2429,15 +2429,15 @@ select#select_beacon_3 {
     font-size: 1.25rem;
   }
 
+  .c-page-logo {
+    height: var(--global-whitespace-md);
+    font-size: var(--global-fz-lg-xx);
+    margin-bottom: calc(var(--global-whitespace-lg) * 1.1);
+  }
+
   /* #endregion */
 
   /* #region Settings page */
-
-  .c-page-logo {
-    height: var(--global-whitespace-md);
-    font-size: var(--global-fz-md);
-    margin-bottom: calc(var(--global-whitespace-lg) * 1.1);
-  }
 
   .c-page-nav__icon {
     width: 4.5rem;
