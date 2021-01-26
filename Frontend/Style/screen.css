@@ -1032,6 +1032,12 @@ button a {
   transform: translate(2.5px, -2px);
 }
 
+.c-etappe__body{
+  display: grid;
+  grid-template-columns: 1fr minmax(14rem, 1fr) 1fr;
+  grid-template-rows: 1rem minmax(6rem, 1fr) 1rem;
+}
+
 .c-etappe__1 {
   display: grid;
   grid-template-columns: 1fr 14rem 1fr;
@@ -1078,12 +1084,15 @@ button a {
 }
 
 .c-etappe__playersTotal {
-  margin: 0.5rem 0.75rem 0rem 0.75rem;
+  --c-etappe__playersTotal-side: 0.75rem;
+  --c-etappe__playersTotal-top: 0.5rem;
+  margin: var(--c-etappe__playersTotal-top) var(--c-etappe__playersTotal-side);
 }
 
 .c-etappe__playersTotal p {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  --c-etappe__playersTotal-p-margin: 0.5rem;
+  margin-top: var(--c-etappe__playersTotal-p-margin);
+  margin-bottom: var(--c-etappe__playersTotal-p-margin);
 }
 
 .c-etappe_player {
@@ -1886,9 +1895,14 @@ select#select_beacon_3 {
   }
 
   .c-etappe__playersTotal {
+    --c-etappe__playersTotal-p-margin: 0.75rem;
+
+    --c-etappe__playersTotal-side: 1.25rem;
+    --c-etappe__playersTotal-top: 0.75rem;
+
     font-size: 1rem;
-    margin: 0.75rem 1.25rem 0 1.25rem;
   }
+
   .c-button-grid {
     margin-left: 15%;
     margin-right: 15%;
@@ -2301,8 +2315,12 @@ select#select_beacon_3 {
   }
 
   .c-etappe__playersTotal {
+    --c-etappe__playersTotal-p-margin: 1rem;
+
+    --c-etappe__playersTotal-side: 1.5rem;
+    --c-etappe__playersTotal-top: 1rem;
+
     font-size: 1.25rem;
-    margin: 1rem 1.5rem 0 1.5rem;
   }
 
   .c-button-grid {
