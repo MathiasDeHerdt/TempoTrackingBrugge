@@ -53,6 +53,7 @@
 
   /*Red*/
   --global-color-charlie-neutral: #d70202;
+  --global-color-charlie-light: #e65c5c;
 
   /* #endregion Global colors brown & yellow */
 
@@ -432,6 +433,7 @@ select {
 .c-button:hover,
 .c-button:focus {
   box-shadow: var(--global-boxshadow);
+  background-color: var(--global-color-beta-light) !important;
 }
 
 .c-button:active,
@@ -1032,7 +1034,7 @@ button a {
   transform: translate(2.5px, -2px);
 }
 
-.c-etappe__body{
+.c-etappe__body {
   display: grid;
   grid-template-columns: 1fr minmax(14rem, 1fr) 1fr;
   grid-template-rows: 1rem minmax(6rem, 1fr) 1rem;
@@ -2584,3 +2586,18 @@ select#select_beacon_3 {
 }
 
 /* #endregion*/
+
+.c-button-brown {
+  background-color: var(--global-color-alpha-neutral) !important;
+}
+
+.c-button-brown:hover {
+  background-color: var(--global-color-alpha-light) !important;
+}
+
+.c-button-red {
+}
+
+.c-button-red:hover {
+  background-color: var(--global-color-charlie-light) !important;
+}
