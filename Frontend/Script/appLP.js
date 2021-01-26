@@ -3,22 +3,9 @@ const socket = io(`http://${lanIP}`);
 
 console.log(lanIP)
 
-let counter = 0;
-const max_etappes = 10;
-
-let array_leaderboard = []
-
-var global_player_name_test = ""
-var global_team_name_test = ""
-var global_group_name_test = ""
-var global_total_time_test = ""
-
-const max_leaderboard_players = 10
-
-
+// listens to the backend and gets the data from the database
 const listenToSockets = function () {
     socket.on('B2F_leaderboard_data', function (dataLeaderboard) {
-        console.log(dataLeaderboard)
         createLeaderBoard(dataLeaderboard);
     })
 }
@@ -46,10 +33,15 @@ const DropdownEtappes = function () {
     }
     wrapperdropdown.addEventListener("click", Dropdown)
 
+    // look what got selected in the dropdown menu (3,5 or 7)
+    // send the amount back to the backend
     const createEtappeHTML = function (etappes) {
+
+        // send message again to backend but now the etappes is a variable
         const youCanSend = "ack"
         socket.emit('F2B_leaderboard_loaded', youCanSend, etappes)
 
+        // listen to socket to get the data from the backend
         listenToSockets()
     }
 
@@ -102,20 +94,12 @@ const DropdownEtappes = function () {
     list.forEach(Clickfunction)
 }
 
-function selectTeam(team) {
-    var team_selected = `<img class="c-img-icon__leaderboard" src="Images/teams/${team}-2021.png" alt="${team}-2021">`;
-    return team_selected;
-}
-
-function removeLeaderboard() {
-    while (row_container.firstChild) {
-        row_container.removeChild(row_container.lastChild);
-    }
-}
+// dynamicly create the leaderboardpage with the data from the backend
 const createLeaderBoard = function (data) {
     var positions = [document.getElementById('first'), document.getElementById('second'), document.getElementById('third')]
     const idList = ['first', 'second', 'third'];
 
+    // fill the top 3 best players in the circles
     for (let index = 0; index < 3; index++) {
         positions[index].innerHTML = `
         <div class="c-circle" id="${idList[index]}">
@@ -131,6 +115,7 @@ const createLeaderBoard = function (data) {
     `;
     }
 
+    // titles above the top 10 players
     let html = `<tr class="c-leaderboard-header">
     <th>Rank</th>
     <th>Name</th>
@@ -139,6 +124,7 @@ const createLeaderBoard = function (data) {
     <th>Time</th>
   </tr>`;
 
+    // put the 10 fastest players on the leaderboard for fastest to slowest
     for (let index = 0; index < data.length; index++) {
         html = html + `
         <tr class="c-leaderboard-row">
@@ -156,9 +142,13 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('DOM - LeaderboardPage');
     const row_container = document.getElementById('row_container');
 
+    // send message to back that the page is loaded
+    // and ready to get data
+    // 3 is hardcoded because the page opens on 3 etappes
     const youCanSend = "ack"
     socket.emit('F2B_leaderboard_loaded', youCanSend, 3)
 
     listenToSockets()
+
     DropdownEtappes();
 });
