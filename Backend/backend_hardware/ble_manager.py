@@ -6,7 +6,7 @@ import threading
 from datetime import datetime
 
 
-from .BLE.ble_beacon_manager import BeaconManager
+from .BLE.beacon_manager import BeaconManager
 from .BLE.player_manager import PlayerManager
 
 
