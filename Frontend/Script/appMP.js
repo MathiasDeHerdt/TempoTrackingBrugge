@@ -621,7 +621,7 @@ const scriptFunction = function () {
 
         etappeEl.classList.add('c-etappe');
         etappeInnerHTML = `
-        <div class="c-etappe__item">
+        <div class="c-etappe__3">
           <div class="c-etappe__card">
             <div class="c-etappe__title">
                 <p class="c-E1">Etappe ${number}</p>
@@ -641,7 +641,7 @@ const scriptFunction = function () {
 
         etappeEl.classList.add('c-etappe');
         etappeInnerHTML = `
-        <div class="c-etappe__item">
+        <div class="c-etappe__3">
           <div class="c-etappe__card">
             <div class="c-etappe__title">
                 <p class="c-E1">${title}</p>
