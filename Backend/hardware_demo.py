@@ -31,7 +31,7 @@ date_today = substring[0]
 print(f'date_today = {date_today}')
 
 game_settings = {
-    'GroupName' : 'hardwareTestGroup',
+    'GroupName' : 'ag2r-citroen-team',
     'PlayerCount' : 0,
     'EtappeCount' : 3,
     'Date' : date_today,
@@ -107,7 +107,7 @@ def test_player_list(list_scan):
 def print_test_game():
     global game_settings
     Date = game_settings['Date']
-    print('\n======================================================================\n')
+    print('\n=========================================================================================================\n')
 
     #Print game settings
     response, code = database_manager.get_settings_by_date(Date)
@@ -121,7 +121,7 @@ def print_test_game():
     BeaconList = response['BeaconList']
     for b in BeaconList:
         print_beacon(b)
-    print('\n======================================================================\n')
+    print('\n=========================================================================================================\n')
 
     #Print players
     response, code = database_manager.get_players_by_gameID(GameID)
@@ -145,7 +145,7 @@ def print_test_game():
         for r in ResultList:
             print_finish(r)
 
-        print('\n---------------------------------n')
+        print('\n=============================================================n')
 
     print('\n')
 
@@ -191,7 +191,7 @@ def print_beacon(jsonObj):
     msg = f'BeaconID = {BeaconID}\n'
     msg += f'Major = {Major} --- Minor = {Minor}\n'
     msg += f'UUID = {UUID} --- Address = {Address}\n'
-    msg += f'Tx_power = {Tx_power}\n'
+    msg += f'Tx_power = {Tx_power}dB\n'
     print(msg)
 
 
@@ -203,7 +203,7 @@ def print_finish(jsonObj):
     PlayerID = jsonObj['PlayerID']
 
     msg = f'ResultID = {ResultID} --- PlayerID = {PlayerID}\n'
-    msg += f'TotalTime = {TotalTime} --- AvgSpeed = {AvgSpeed}\n'
+    msg += f'TotalTime = {TotalTime}s --- AvgSpeed = {AvgSpeed}km/h\n'
     print(msg)
 
 
@@ -216,7 +216,7 @@ def print_etappe(jsonObj):
     PlayerID = jsonObj['PlayerID']
 
     msg = f'PlayerID = {PlayerID} --- EtappeID = {EtappeID}\n'
-    msg += f'TimePerEtap = {TimePerEtap} --- SpeedPerEtappe = {SpeedPerEtap}\n'
+    msg += f'TimePerEtap = {TimePerEtap}s --- SpeedPerEtappe = {SpeedPerEtap}km/h\n'
     print(msg)
 #endregion
 
@@ -230,6 +230,7 @@ def callback_etappe(callObj):
     jsonObj = callObj.json_from_etappe()
 
     speedPerEtappe = BleHelper.get_speed(game_settings['RaceDistance'], jsonObj['TimePerEtap'])
+    speedPerEtappe = speedPerEtappe * 3.6 #km/h
     playerID = -1
     for p in database_players:
         for b in database_beacons:
