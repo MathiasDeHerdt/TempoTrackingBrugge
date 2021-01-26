@@ -145,18 +145,18 @@ const createTeamDropdown = function(number) {
         <option value="bora-hansgrohe">BORA - hansgrohe</option>
         <option value="cofidis-solutions-credits">Cofidis</option>
         <option value="deceuninck-quick-step">Deceuninck - Quick-Step</option>
-        <option value="audi">EF Education - Nippo</option>
+        <option value="ef-pro-cycling">EF Education - Nippo</option>
         <option value="groupama-fdj">Groupama - FDJ</option>
         <option value="ineos-grenadiers">INEOS Grenadiers</option>
-        <option value="audi">Intermarché Wanty Gobert</option>
+        <option value="intermarche-wanty-gobert">Intermarché Wanty Gobert</option>
         <option value="israel-start-up-nation">Israel Start-Up Nation</option>
         <option value="lotto-soudal">Lotto Soudal</option>
         <option value="movistar-team">Movistar Team</option>
         <option value="team-bikeexchange">Team BikeExchange</option>
         <option value="team-dsm">Team DSM</option>
         <option value="team-jumbo-visma">Team Jumbo-Visma</option>
-        <option value="audi">Team Qhubeka ASSOS</option>
-        <option value="audi">Trek - Segafredo</option>
+        <option value="team-qhubeka-assos">Team Qhubeka ASSOS</option>
+        <option value="trek-segafredo">Trek - Segafredo</option>
         <option value="uae-team-emirates">UAE-Team Emirates</option>
     </select>`;
     return html_dropdown;
@@ -274,7 +274,6 @@ const clickSaveSettings = function() {
 
 const clickToGame = function() {
     console.log('Going to MainPage.html...');
-    //startGame(); //temp
     document.location.href = "./MainPage.html"
 };
 
@@ -298,6 +297,7 @@ const listenToSocket = function () {
 const setBeaconList = function(jsonObj){
     global_listBeacons = jsonObj['beacons'];
     console.log(`B2F_beacons_found`);
+    console.log(global_listBeacons);
     //console.log(global_listBeacons)
     createPlayerList();
 };
@@ -325,11 +325,6 @@ const saveSettings = function () {
         'Players' : global_playerList
     }
     socket.emit('F2B_player_settings', jsonPlayerSettings);
-};
-
-const startGame = function () {
-    console.log(`F2B_start_timer`);
-    socket.emit('F2B_start_timer', "start!");
 };
 //#endregion
 
