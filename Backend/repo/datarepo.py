@@ -73,7 +73,7 @@ class DataRepository:
 
     @staticmethod
     def read_leaderboard(etappe):
-        sql = "SELECT p.PlayerName, p.TeamName, g.GroupName, r.TotalTime FROM playertbl as p INNER JOIN resulttbl as r ON r.PlayerID = p.PlayerID INNER JOIN gametbl as g ON p.GameID = g.GameID WHERE g.EtappeCount = %s ORDER BY r.TotalTime ASC;"
+        sql = "SELECT p.PlayerName, p.TeamName, g.GroupName, r.TotalTime FROM playertbl as p INNER JOIN resulttbl as r ON r.PlayerID = p.PlayerID INNER JOIN gametbl as g ON p.GameID = g.GameID WHERE g.EtappeCount = %s ORDER BY r.TotalTime ASC LIMIT 10;"
         params = [etappe]
         return Database.get_rows(sql, params)
 

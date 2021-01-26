@@ -128,8 +128,8 @@ class DatabaseManager:
 
     def store_player(self, jsonObj):
         try:
-            playerName = jsonObj['name']
-            teamName = jsonObj['team']
+            playerName = jsonObj['PlayerName']
+            teamName = jsonObj['TeamName']
             beaconId = jsonObj['BeaconID']
             gameId = jsonObj['GameID']
 

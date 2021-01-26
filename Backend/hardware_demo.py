@@ -31,7 +31,7 @@ date_today = substring[0]
 print(f'date_today = {date_today}')
 
 game_settings = {
-    'GroupName' : 'ag2r-citroen-team',
+    'GroupName' : 'Demo',
     'PlayerCount' : 0,
     'EtappeCount' : 3,
     'Date' : date_today,
@@ -87,10 +87,10 @@ def test_player_list(list_scan):
     gameID = database_game_settings['GameID']
     for beaconObj in database_beacons:
         jsonObj = {
-            'name' : f'player{index}',
-            'team' : f'team{index}',
+            'PlayerName' : f'player{index}',
+            'TeamName' : f'ag2r-citroen-team',
             'BeaconID' : beaconObj['BeaconID'],
-            'GameID' : gameID
+            'GameID' : gameID,
         }
         list_players.append(jsonObj)
         database_manager.store_player(jsonObj)
